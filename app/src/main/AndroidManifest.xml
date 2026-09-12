@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="false" />
+
+    <!--
+        Ez a ket engedely KIZAROLAG az opcionalis, ingyenes Open Food Facts
+        termeknev-lekerdezeshez kell (uj/ismeretlen vonalkod eseten). A kamera
+        kepe / OCR / lejarati datum felismeres tovabbra is 100%-ban a
+        telefonon, halozat nelkul tortenik - ez semmit nem valtoztat azon.
+    -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!--
+        Ez kell a lejarat-elotti ertesitesekhez (Android 13 / API 33-tol
+        futasidoben be kell kerni a felhasznalotol -- lasd ScannerScreen.kt
+        NotificationSettingsDialog). A hatterellenorzest WorkManager vegzi,
+        NINCS foreground service es NINCS exact alarm engedely.
+    -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ShelfLife">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.ShelfLife"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
