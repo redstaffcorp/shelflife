@@ -18,7 +18,7 @@
 
     <!--
         Ez kell a lejarat-elotti ertesitesekhez (Android 13 / API 33-tol
-        futasidoben be kell kerni a felhasznalotol -- lasd ScannerScreen.kt
+        futasidoben be kell kerni a felhasznalotol - lasd ScannerScreen.kt
         NotificationSettingsDialog). A hatterellenorzest WorkManager vegzi,
         NINCS foreground service es NINCS exact alarm engedely.
     -->

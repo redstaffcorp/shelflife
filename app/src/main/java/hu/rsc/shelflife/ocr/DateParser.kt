@@ -18,87 +18,168 @@ data class DateCandidate(
 
 /**
  * Az OCR altal visszaadott nyers szovegsorokbol probal lejarati datumot kiszurni.
- * Ez NEM ert semmit a szovegbol -- csak mintaillesztes + hasznos/kizaro kulcsszavak
- * + logikai ervenyessegi szurok kombinacioja. Szandekosan egyszeru, hogy a pilotban
- * jol lehessen latni, mikor es mennyire talal el.
+ * Mintaillesztes + hasznos/kizaro kulcsszavak + logikai ervenyessegi szurok.
+ *
+ * Tintasugaras / pontmatrix nyomatnal (pl. vodros tejfol fedele) az OCR tipikusan:
+ *  - betunek olvas szamjegyet (0->O, 1->I/l, 5->S, 8->B ...),
+ *  - a pontot vesszonek / kettospontnak vagy szokoznek latja, vagy elhagyja,
+ *  - a datum egy sorba kerul a LOT/tetelszammal es az idoponttal,
+ *  - kulcsszo nincs a fedelen (az a doboz oldalan van: "lasd a fedelen").
+ * Ezeket a normalizeLine() + a lazabb mintak kezelik.
  */
 object DateParser {
+    // Megj.: a datum-mintak szelen \b helyett "nem szamjegy" hatart hasznalunk, mert a
+    // mintas fedelen az OCR a hatter betuit hozzaragaszthatja (pl. "TEJ25 10.2026").
+
 
     private val POSITIVE_KEYWORDS = listOf(
         "EXP", "EXPIRY", "EXPIRES", "BBE", "BEST BEFORE", "BEST-BEFORE",
         "LEJARAT", "LEJÁRAT", "FOGYASZTHATO", "FOGYASZTHATÓ",
-        "MINOSEGET", "MINŐSÉGÉT", "FOGY", "USE BY", "USE-BY"
+        "MINOSEGET", "MINŐSÉGÉT", "FOGY", "USE BY", "USE-BY", "MIN."
     )
 
-    private val NEGATIVE_KEYWORDS = listOf(
-        "LOT", "GYARTVA", "GYÁRTVA", "MFG", "PROD", "L:", "TETEL", "TÉTEL", "BATCH"
+    // Kizaro kulcsszo + az utana kovetkezo token (tetelszam, gyartasi datum) -- ezt
+    // kivagjuk a sorbol, de a sor tobbi reszet (amiben a lejarat lehet) megtartjuk.
+    private val NEGATIVE_TOKEN = Regex(
+        """\b(?:LOT|GYARTVA|GYÁRTVA|GYÁRTÁS|GYARTAS|MFG|PROD|TETEL|TÉTEL|BATCH|CH\.?-?B)\s*[:.]?\s*[A-Z0-9./\-]+"""
     )
+
+    // "L:2781", "L 2781", "L2781" -- tetelszam
+    private val LOT_SHORT = Regex("""\bL\s?[:.]?\s?\d[0-9A-Z]{2,}\b""")
+
+    // Idopont (pl. 13:42, 08:05) -- sokszor a datum mellett van a fedelen, zavarna a mintakat.
+    // A lookahead miatt a "25 12:10 2026" / "12:10.2026" tipusu datumot nem nyeli el.
+    private val TIME = Regex("""\b([01]?\d|2[0-3])\s?:\s?[0-5]\d(\s?:\s?[0-5]\d)?\b(?!\s?[.\-/,:+÷·*]?\s?\d)""")
 
     private val MONTH_NAMES = mapOf(
         "JAN" to 1, "FEB" to 2, "MAR" to 3, "MÁR" to 3, "APR" to 4, "ÁPR" to 4,
         "MAY" to 5, "MAJ" to 5, "MÁJ" to 5, "JUN" to 6, "JÚN" to 6,
-        "JUL" to 7, "JÚL" to 7, "AUG" to 8, "SEP" to 9, "SZEPT" to 9,
+        "JUL" to 7, "JÚL" to 7, "AUG" to 8, "SEP" to 9, "SZEPT" to 9, "SZE" to 9,
         "OCT" to 10, "OKT" to 10, "NOV" to 11, "DEC" to 12
     )
 
-    // pl. 2026.09.11 / 2026-09-11 / 2026/09/11 (ev-honap-nap)
-    private val YMD = Regex("""\b(20\d{2})[.\-/](0?[1-9]|1[0-2])[.\-/](0?[1-9]|[12]\d|3[01])\b""")
+    // Datum-szeparator: . - / , : + ÷ · * -- a pontmatrix pontot / ketpontot az OCR
+    // sokfele jelnek latja (vesszo, kettospont, osztasjel, plusz), vagy szokoznek.
+    private const val SEP = """\s?[.\-/,:+÷·*]\s?"""
+    private const val SEP_OR_SPACE = """(?:\s?[.\-/,:+÷·*]\s?|\s)"""
 
-    // pl. 11.09.2026 / 11/09/2026 (nap-honap-teljes ev)
-    private val DMY_FULL = Regex("""\b(0?[1-9]|[12]\d|3[01])[.\-/](0?[1-9]|1[0-2])[.\-/](20\d{2})\b""")
+    // pl. 2026.09.11 / 2026-09-11 / 2026. 09. 11.
+    private val YMD = Regex("""(?<!\d)(20\d{2})$SEP(0?[1-9]|1[0-2])$SEP(0?[1-9]|[12]\d|3[01])(?!\d)""")
 
-    // pl. 11.09.26 (nap-honap-rovid ev) -- csak kulcsszo mellett fogadjuk el, mert nagyon ketertelmu
-    private val DMY_SHORT = Regex("""\b(0?[1-9]|[12]\d|3[01])[.\-/](0?[1-9]|1[0-2])[.\-/](\d{2})\b""")
+    // pl. 11.09.2026
+    // pl. 11.09.2026 / 25 10 2026 / 25÷10.2026 (Pilos tejfol fedele)
+    private val DMY_FULL = Regex("""(?<!\d)(0?[1-9]|[12]\d|3[01])$SEP_OR_SPACE(0?[1-9]|1[0-2])$SEP_OR_SPACE(20\d{2})(?!\d)""")
+
+    // pl. 11.09.26 / 11,09,26 / 11 09 26 (nap-honap-rovid ev)
+    private val DMY_SHORT = Regex("""(?<!\d)(0?[1-9]|[12]\d|3[01])$SEP_OR_SPACE(0[1-9]|1[0-2]|[1-9])$SEP_OR_SPACE(\d{2})(?!\d)""")
+
+    // pl. 110926 -- szeparator nelkul (a pontokat elnyelte az OCR). Csak kulcsszo mellett.
+    private val DMY_COMPACT = Regex("""(?<!\d)(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])(\d{2})(?!\d)""")
 
     // pl. 11 SEP 2026 / 11SZEPT26
     private val DAY_MONTHNAME_YEAR = Regex(
-        """\b(0?[1-9]|[12]\d|3[01])\s*[.\-]?\s*([A-ZÁÉÍÓÖŐÚÜŰ]{3,6})\.?\s*(20\d{2}|\d{2})\b"""
+        """(?<!\d)(0?[1-9]|[12]\d|3[01])\s*[.\-]?\s*([A-ZÁÉÍÓÖŐÚÜŰ]{3,6})\.?\s*(20\d{2}|\d{2})(?!\d)"""
+    )
+
+    private val DIGIT_LOOKALIKES = mapOf(
+        'O' to '0', 'Q' to '0', 'D' to '0', 'Ö' to '0', 'Ó' to '0',
+        'I' to '1', 'L' to '1', '|' to '1', '!' to '1', 'Í' to '1', 'J' to '1',
+        'Z' to '2', 'S' to '5', 'B' to '8', 'G' to '6', 'T' to '7'
     )
 
     fun findBestCandidate(lines: List<String>): DateCandidate? {
         val candidates = mutableListOf<DateCandidate>()
-        for (index in lines.indices) {
-            val line = lines[index].uppercase()
-            if (NEGATIVE_KEYWORDS.any { line.contains(it) }) continue
+        val upper = lines.map { it.uppercase() }
+        for (index in upper.indices) {
+            val raw = upper[index]
+            val keywordNearby = POSITIVE_KEYWORDS.any { raw.contains(it) } ||
+                (index > 0 && POSITIVE_KEYWORDS.any { upper[index - 1].contains(it) })
 
-            val keywordNearby = POSITIVE_KEYWORDS.any { line.contains(it) } ||
-                (index > 0 && POSITIVE_KEYWORDS.any { lines[index - 1].uppercase().contains(it) })
-
-            extractFromLine(line, keywordNearby)?.let { candidates.add(it) }
+            val cleaned = normalizeLine(raw)
+            extractFromLine(cleaned, keywordNearby)?.let { candidates.add(it) }
+        }
+        if (candidates.isEmpty()) {
+            // A ferden / gorbe feluletre nyomott datumot az OCR ket sorra tordelheti
+            // ("2026" es "25 10."): a szomszedos sorokat mindket sorrendben osszefuzve is probaljuk.
+            for (i in 0 until upper.size - 1) {
+                for (joined in listOf(upper[i] + " " + upper[i + 1], upper[i + 1] + " " + upper[i])) {
+                    val kw = POSITIVE_KEYWORDS.any { joined.contains(it) }
+                    extractFromLine(normalizeLine(joined), kw)?.let { candidates.add(it) }
+                }
+            }
         }
         if (candidates.isEmpty()) return null
         return candidates.firstOrNull { it.hasPositiveKeyword } ?: candidates.first()
     }
 
+    /** Visible for testing. */
+    internal fun normalizeLine(upperLine: String): String {
+        var s = upperLine
+        s = NEGATIVE_TOKEN.replace(s, " ")
+        s = LOT_SHORT.replace(s, " ")
+        s = s.split(Regex("""\s+""")).joinToString(" ") { fixDigitToken(it) }
+        s = TIME.replace(s, " ")
+        return s.replace(Regex("""\s+"""), " ").trim()
+    }
+
+    /**
+     * Egy "szamnak latszo" tokenben a hasonlo betuket szamjegyre csereli.
+     * Csak akkor nyul hozza, ha a token mar most is tobbsegeben szamjegy, es nincs
+     * benne 3+ betus szakasz (igy az "OKT", "SEP", "EXP" erintetlen marad).
+     */
+    private fun fixDigitToken(token: String): String {
+        if (token.isEmpty()) return token
+        if (Regex("""[A-ZÁÉÍÓÖŐÚÜŰ]{3,}""").containsMatchIn(token)) return token
+        val digits = token.count { it.isDigit() }
+        val lookalikes = token.count { it in DIGIT_LOOKALIKES }
+        if (digits == 0 || lookalikes == 0 || lookalikes > digits) return token
+        // Csak akkor, ha a tokenben szamjegyen, hasonlo betun es datum-elvalasztón kivul nincs mas
+        // (pl. "2S", "1O.2O26" igen; "L04N4" nem).
+        if (token.any { !it.isDigit() && it !in DIGIT_LOOKALIKES && it !in ".-/,:+÷·*" }) return token
+        return token.map { DIGIT_LOOKALIKES[it] ?: it }.joinToString("")
+    }
+
     private fun extractFromLine(line: String, keywordNearby: Boolean): DateCandidate? {
         YMD.find(line)?.let { m ->
             val (y, mo, d) = m.destructured
-            return buildCandidate(y.toInt(), mo.toInt(), d.toInt(), m.value, ambiguous = false, keywordNearby)
+            buildCandidate(y.toInt(), mo.toInt(), d.toInt(), m.value, false, keywordNearby)?.let { return it }
         }
         DMY_FULL.find(line)?.let { m ->
             val (d, mo, y) = m.destructured
-            val dayInt = d.toInt()
-            val monthInt = mo.toInt()
-            val ambiguous = dayInt <= 12 && monthInt <= 12 && dayInt != monthInt
-            return buildCandidate(y.toInt(), monthInt, dayInt, m.value, ambiguous, keywordNearby)
+            buildCandidate(y.toInt(), mo.toInt(), d.toInt(), m.value, isAmbiguous(d, mo), keywordNearby)
+                ?.let { return it }
         }
         DAY_MONTHNAME_YEAR.find(line)?.let { m ->
             val (d, monName, y) = m.destructured
             val month = MONTH_NAMES.entries.firstOrNull { monName.startsWith(it.key) }?.value
             if (month != null) {
-                return buildCandidate(normalizeYear(y), month, d.toInt(), m.value, ambiguous = false, keywordNearby)
+                buildCandidate(normalizeYear(y), month, d.toInt(), m.value, false, keywordNearby)?.let { return it }
             }
         }
+        // Rovid ev: kulcsszo nelkul is elfogadjuk (a fedelen szinte sosem all kulcsszo),
+        // de ilyenkor szukebb idoablakot engedunk (lasd buildCandidate), hogy egy
+        // veletlen szamharmas ne jojjon at.
+        for (m in DMY_SHORT.findAll(line)) {
+            val (d, mo, y) = m.destructured
+            buildCandidate(
+                normalizeYear(y), mo.toInt(), d.toInt(), m.value, isAmbiguous(d, mo), keywordNearby,
+                strict = !keywordNearby
+            )?.let { return it }
+        }
         if (keywordNearby) {
-            DMY_SHORT.find(line)?.let { m ->
+            DMY_COMPACT.find(line)?.let { m ->
                 val (d, mo, y) = m.destructured
-                val dayInt = d.toInt()
-                val monthInt = mo.toInt()
-                val ambiguous = dayInt <= 12 && monthInt <= 12 && dayInt != monthInt
-                return buildCandidate(normalizeYear(y), monthInt, dayInt, m.value, ambiguous, keywordNearby)
+                buildCandidate(normalizeYear(y), mo.toInt(), d.toInt(), m.value, isAmbiguous(d, mo), true, strict = true)
+                    ?.let { return it }
             }
         }
         return null
+    }
+
+    private fun isAmbiguous(d: String, mo: String): Boolean {
+        val dayInt = d.toInt()
+        val monthInt = mo.toInt()
+        return dayInt <= 12 && monthInt <= 12 && dayInt != monthInt
     }
 
     private fun normalizeYear(y: String): Int {
@@ -112,7 +193,8 @@ object DateParser {
         day: Int,
         raw: String,
         ambiguous: Boolean,
-        keywordNearby: Boolean
+        keywordNearby: Boolean,
+        strict: Boolean = false
     ): DateCandidate? {
         val date = try {
             LocalDate.of(year, month, day)
@@ -120,10 +202,15 @@ object DateParser {
             return null
         }
         val today = LocalDate.now()
-        // Szanity-check: lejarat ritkan van mar a multban, es tullogikatlanul messze a jovoben
-        // (ilyenkor valoszinuleg egy vonalkod-toredeket vagy tetelszamot olvasott be tevesen).
-        if (date.isBefore(today.minusDays(30))) return null
-        if (date.isAfter(today.plusYears(6))) return null
-        return DateCandidate(date, raw, ambiguous, keywordNearby)
+        // Szanity-check: lejarat ritkan van mar a multban, es tul messze a jovoben
+        // (ilyenkor valoszinuleg vonalkod-toredeket vagy tetelszamot olvasott be tevesen).
+        if (strict) {
+            if (date.isBefore(today.minusDays(7))) return null
+            if (date.isAfter(today.plusYears(3))) return null
+        } else {
+            if (date.isBefore(today.minusDays(30))) return null
+            if (date.isAfter(today.plusYears(6))) return null
+        }
+        return DateCandidate(date, raw.trim(), ambiguous, keywordNearby)
     }
 }

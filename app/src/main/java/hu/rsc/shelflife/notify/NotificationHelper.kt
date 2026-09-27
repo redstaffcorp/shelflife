@@ -69,14 +69,14 @@ object NotificationHelper {
             val notification = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle("Hamarosan lejár: ${item.productName}")
-                .setContentText(daysLeftLabel(item.expiry))
+                .setContentText(daysLeftLabel(item.expiry) + estimatedSuffix(item))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .build()
             manager.notify(item.id.hashCode(), notification)
         } else {
             val style = NotificationCompat.InboxStyle()
-            items.forEach { style.addLine("${it.productName} — ${daysLeftLabel(it.expiry)}") }
+            items.forEach { style.addLine("${it.productName} — ${daysLeftLabel(it.expiry)}${estimatedSuffix(it)}") }
             val notification = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle("${items.size} termék lejárata közeleg")
@@ -88,6 +88,10 @@ object NotificationHelper {
             manager.notify(SUMMARY_NOTIFICATION_ID, notification)
         }
     }
+
+    // Becsult lejaratnal jelezzuk, hogy erdemes a csomagolason megnezni a valos datumot.
+    private fun estimatedSuffix(item: PantryItem): String =
+        if (item.expiryEstimated) " (becsült – nézd meg a csomagoláson)" else ""
 
     private fun daysLeftLabel(expiry: LocalDate): String {
         val daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), expiry)

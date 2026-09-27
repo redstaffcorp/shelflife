@@ -44,8 +44,10 @@ class PantryItemStore(context: Context) {
                 expiry = LocalDate.parse(obj.getString("expiry")),
                 recordedAt = LocalDate.parse(obj.getString("recordedAt")),
                 quantity = if (obj.has("quantity") && !obj.isNull("quantity")) obj.getInt("quantity") else null,
+                quantityUnit = if (obj.has("quantityUnit") && !obj.isNull("quantityUnit")) obj.getString("quantityUnit") else ProductStore.DEFAULT_UNIT,
                 enteredManually = obj.optBoolean("enteredManually", false),
                 ambiguousDayMonth = obj.optBoolean("ambiguousDayMonth", false),
+                expiryEstimated = obj.optBoolean("expiryEstimated", false),
                 notifiedForExpiry = if (obj.has("notifiedForExpiry") && !obj.isNull("notifiedForExpiry")) {
                     LocalDate.parse(obj.getString("notifiedForExpiry"))
                 } else null
@@ -63,8 +65,10 @@ class PantryItemStore(context: Context) {
         obj.put("expiry", item.expiry.toString())
         obj.put("recordedAt", item.recordedAt.toString())
         obj.put("quantity", item.quantity ?: JSONObject.NULL)
+        obj.put("quantityUnit", item.quantityUnit)
         obj.put("enteredManually", item.enteredManually)
         obj.put("ambiguousDayMonth", item.ambiguousDayMonth)
+        obj.put("expiryEstimated", item.expiryEstimated)
         obj.put("notifiedForExpiry", item.notifiedForExpiry?.toString() ?: JSONObject.NULL)
         return obj
     }
