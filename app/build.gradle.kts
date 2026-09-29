@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -21,8 +22,11 @@ android {
 
     buildTypes {
         release {
+            // R8: kodzsugoritas, obfuszkalas es eroforras-szukites. Az
+            // alapertelmezett Android keep-szabalyokat az uj DSL automatikusan
+            // hozzaadja; a sajat szabalyok: src/main/keepRules/*.keep
             optimization {
-                enable = false
+                enable = true
             }
         }
     }
@@ -35,6 +39,12 @@ android {
     }
 }
 
+// Room: a sema JSON-ba exportalva (app/schemas), hogy kesobbi
+// verzioknal a migraciok tesztelhetok legyenek. Ezt a mappat commitold!
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
@@ -45,6 +55,13 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // Helyi adatbazis (a korabbi SharedPreferences+JSON helyett)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     // Pilot: kamera + on-device ML Kit -- 100% offline, nincs halozati hivas
     implementation(libs.androidx.camera.core)

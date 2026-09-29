@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Adaptiv app-ikon. A foreground a teljes (108dp-s, nem atlatszo) ikonkep,
+    a lathato 72dp-s resz a kozepe; a background csak parallax-animacional
+    latszhatna ki. A monochrome reteg az Android 13+ "temas ikonokhoz" kell.
+    Forras: app/src/main/ic_launcher-playstore.png (512x512, Play Console-hoz).
+-->
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
     <background android:drawable="@drawable/ic_launcher_background" />
     <foreground android:drawable="@drawable/ic_launcher_foreground" />
-    <monochrome android:drawable="@drawable/ic_launcher_foreground" />
+    <monochrome android:drawable="@mipmap/ic_launcher_monochrome" />
 </adaptive-icon>

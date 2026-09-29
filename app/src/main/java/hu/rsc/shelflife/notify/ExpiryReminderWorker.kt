@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import hu.rsc.shelflife.data.NotificationSettingsStore
-import hu.rsc.shelflife.data.PantryItemStore
+import hu.rsc.shelflife.data.PantryRepository
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -17,8 +17,7 @@ import java.time.temporal.ChronoUnit
  *
  * Tudatosan NEM foreground service es NEM exact alarm: a WorkManager
  * altal ajanlott, akkumulator-barat, "deferrable periodic work" mintat
- * kovetjuk, ami nem igenyel se SCHEDULE_EXACT_ALARM specialis engedelyt,
- * se folyamatosan futo szolgaltatast.
+ * kovetjuk.
  */
 class ExpiryReminderWorker(
     context: Context,
@@ -30,8 +29,8 @@ class ExpiryReminderWorker(
         if (!settings.enabled) return Result.success()
         if (!NotificationHelper.hasPermission(applicationContext)) return Result.success()
 
-        val store = PantryItemStore(applicationContext)
-        val items = store.loadAll()
+        val repository = PantryRepository.get(applicationContext)
+        val items = repository.getActiveItems()
         if (items.isEmpty()) return Result.success()
 
         val today = LocalDate.now()
@@ -39,16 +38,13 @@ class ExpiryReminderWorker(
 
         val due = items.filter { item ->
             val daysLeft = ChronoUnit.DAYS.between(today, item.expiry)
-            daysLeft <= threshold && item.notifiedForExpiry != item.expiry
+            val snoozed = item.snoozedUntil?.isAfter(today) == true
+            daysLeft <= threshold && item.notifiedForExpiry != item.expiry && !snoozed
         }
 
         if (due.isNotEmpty()) {
             NotificationHelper.notifyExpiring(applicationContext, due)
-            val dueIds = due.map { it.id }.toSet()
-            val updated = items.map { item ->
-                if (item.id in dueIds) item.copy(notifiedForExpiry = item.expiry) else item
-            }
-            store.saveAll(updated)
+            repository.markNotified(due)
         }
 
         return Result.success()

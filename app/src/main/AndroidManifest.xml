@@ -45,6 +45,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Az ertesites akciogombjai ("Elfogyott", "Holnap szolj"). Csak az
+             app sajat PendingIntent-jei hivjak, ezert nem exportalt. -->
+        <receiver
+            android:name=".notify.NotificationActionReceiver"
+            android:exported="false" />
     </application>
 
 </manifest>

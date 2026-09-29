@@ -21,16 +21,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import hu.rsc.shelflife.data.NotificationSettingsStore
+import hu.rsc.shelflife.data.OnboardingStore
 import hu.rsc.shelflife.notify.NotificationHelper
 import hu.rsc.shelflife.notify.ReminderScheduler
-import hu.rsc.shelflife.ui.ScannerScreen
+import hu.rsc.shelflife.ui.PantryScreen
+import hu.rsc.shelflife.ui.onboarding.OnboardingScreen
 import hu.rsc.shelflife.ui.theme.ShelfLifeTheme
 
 class MainActivity : ComponentActivity() {
@@ -52,8 +56,20 @@ class MainActivity : ComponentActivity() {
         setContent {
             ShelfLifeTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    CameraPermissionGate {
-                        ScannerScreen()
+                    val context = LocalContext.current
+                    val onboardingStore = remember { OnboardingStore(context) }
+                    // Elso inditaskor bemutato (a kamera-engedely kerese elott),
+                    // kesobb a menubol ujra megnyithato.
+                    var showOnboarding by rememberSaveable { mutableStateOf(!onboardingStore.completed) }
+                    if (showOnboarding) {
+                        OnboardingScreen(onFinish = {
+                            onboardingStore.completed = true
+                            showOnboarding = false
+                        })
+                    } else {
+                        CameraPermissionGate {
+                            PantryScreen(onShowOnboarding = { showOnboarding = true })
+                        }
                     }
                 }
             }
@@ -62,13 +78,13 @@ class MainActivity : ComponentActivity() {
 }
 
 /**
- * Pilot: a kamera-engedelyt kerjuk be. A kamera / OCR / lejarati datum
+ * A kamera-engedelyt kerjuk be. A kamera / OCR / lejarati datum
  * felismeres tovabbra is 100%-ban a telefonon, halozat nelkul tortenik.
  * Az app csak az opcionalis, ingyenes Open Food Facts termeknev-
  * lekerdezeshez hasznal internetet, es annak hianyaban is tokeletesen
  * mukodik (kezi termeknev-bevitel mindig elerheto). A lejarati
- * ertesitesekhez szukseges kulon engedelykeres a ScannerScreen
- * beallitasai kozott, kontextusban tortenik (lasd
+ * ertesitesekhez szukseges kulon engedelykeres az ertesitesi
+ * beallitasok kozott, kontextusban tortenik (lasd
  * NotificationSettingsDialog), nem itt az app indulasakor.
  */
 @Composable
@@ -96,10 +112,10 @@ private fun CameraPermissionGate(content: @Composable () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text("A pilothoz kamera-hozzaferes kell a vonalkod es a lejarati datum beolvasasahoz.")
+            Text(stringResource(R.string.camera_permission_rationale))
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = { launcher.launch(Manifest.permission.CAMERA) }) {
-                Text("Kamera engedelyezese")
+                Text(stringResource(R.string.camera_permission_grant))
             }
         }
     }

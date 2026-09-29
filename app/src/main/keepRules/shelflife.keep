@@ -1,0 +1,12 @@
+# ShelfLife sajat R8 keep-szabalyok (az uj optimization DSL automatikusan beolvassa).
+#
+# A hasznalt konyvtarak (Room, WorkManager, CameraX, ML Kit, Compose) sajat
+# consumer-szabalyokat hoznak, ezert itt csak a projekt-specifikus dolgok vannak.
+
+# Olvashato stack trace-ek a Play Console-ban (a mapping.txt-vel visszafejtheto).
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
+
+# A WorkManager a Worker-t reflexioval peldanyositja (a WorkManager consumer
+# szabalyai ezt fedik, ez csak biztositek).
+-keep class hu.rsc.shelflife.notify.ExpiryReminderWorker { <init>(...); }
