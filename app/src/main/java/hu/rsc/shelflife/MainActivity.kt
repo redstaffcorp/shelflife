@@ -35,6 +35,7 @@ import hu.rsc.shelflife.notify.NotificationHelper
 import hu.rsc.shelflife.notify.ReminderScheduler
 import hu.rsc.shelflife.ui.PantryScreen
 import hu.rsc.shelflife.ui.onboarding.OnboardingScreen
+import hu.rsc.shelflife.ui.stats.StatsScreen
 import hu.rsc.shelflife.ui.theme.ShelfLifeTheme
 
 class MainActivity : ComponentActivity() {
@@ -61,6 +62,7 @@ class MainActivity : ComponentActivity() {
                     // Elso inditaskor bemutato (a kamera-engedely kerese elott),
                     // kesobb a menubol ujra megnyithato.
                     var showOnboarding by rememberSaveable { mutableStateOf(!onboardingStore.completed) }
+                    var showStats by rememberSaveable { mutableStateOf(false) }
                     if (showOnboarding) {
                         OnboardingScreen(onFinish = {
                             onboardingStore.completed = true
@@ -68,7 +70,14 @@ class MainActivity : ComponentActivity() {
                         })
                     } else {
                         CameraPermissionGate {
-                            PantryScreen(onShowOnboarding = { showOnboarding = true })
+                            if (showStats) {
+                                StatsScreen(onBack = { showStats = false })
+                            } else {
+                                PantryScreen(
+                                    onShowOnboarding = { showOnboarding = true },
+                                    onShowStats = { showStats = true }
+                                )
+                            }
                         }
                     }
                 }

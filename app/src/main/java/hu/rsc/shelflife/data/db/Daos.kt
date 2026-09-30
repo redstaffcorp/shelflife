@@ -19,6 +19,10 @@ interface PantryItemDao {
     @Query("SELECT * FROM pantry_items WHERE status = 'ACTIVE'")
     suspend fun getActive(): List<PantryItem>
 
+    /** Lezart (elfogyott / kidobott) tetelek -- a statisztikahoz. */
+    @Query("SELECT * FROM pantry_items WHERE status != 'ACTIVE'")
+    fun observeFinished(): Flow<List<PantryItem>>
+
     @Query("SELECT * FROM pantry_items WHERE id = :id")
     suspend fun getById(id: Long): PantryItem?
 

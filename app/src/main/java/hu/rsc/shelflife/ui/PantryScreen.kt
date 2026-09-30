@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PhotoCamera
@@ -86,6 +87,7 @@ import kotlinx.coroutines.flow.first
 @Composable
 fun PantryScreen(
     onShowOnboarding: () -> Unit = {},
+    onShowStats: () -> Unit = {},
     vm: PantryViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -180,6 +182,9 @@ fun PantryScreen(
                             if (searchActive) Icons.Filled.Close else Icons.Filled.Search,
                             contentDescription = stringResource(R.string.cd_search)
                         )
+                    }
+                    IconButton(onClick = onShowStats) {
+                        Icon(Icons.Filled.EmojiEvents, contentDescription = stringResource(R.string.cd_stats))
                     }
                     IconButton(onClick = { showNotificationSettings = true }) {
                         Icon(Icons.Filled.Notifications, contentDescription = stringResource(R.string.cd_notification_settings))

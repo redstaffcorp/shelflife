@@ -208,4 +208,36 @@
     <string name="onboarding_notify_text">Naponta egyszer ellenőrizzük a listát. Az értesítésből egy koppintással jelezheted, hogy elfogyott, vagy kérhetsz emlékeztetőt holnapra. Később a harang ikonnal állíthatod.</string>
     <string name="onboarding_notify_enable">Értesítések bekapcsolása</string>
     <string name="onboarding_notify_enabled">Értesítések bekapcsolva</string>
+
+    <!-- Statisztika (megmentett ételek). Hangnem: pozitív, soha nem szemrehányó. -->
+    <string name="stats_title">Megmentett ételek</string>
+    <string name="cd_stats">Statisztika</string>
+    <string name="cd_back">Vissza</string>
+    <string name="stats_period_30">Utolsó 30 nap</string>
+    <string name="stats_period_all">Összesen</string>
+    <string name="stats_percent">%1$d%%</string>
+    <string name="stats_rate_caption">az ételeidből elfogyott, nem a kukában végezte</string>
+    <string name="stats_hero_no_period_data">Ebben az időszakban még nincs lezárt tétel – nézd meg az „Összesen” nézetet!</string>
+    <string name="stats_hero_perfect">Tökéletes! Minden elfogyott, semmi nem ment kárba.</string>
+    <string name="stats_hero_excellent">Kiváló! Szinte semmi nem megy kárba nálad.</string>
+    <string name="stats_hero_good">Szép munka – jó úton jársz!</string>
+    <string name="stats_hero_every_item_counts">Minden megmentett falat számít – már %1$d tétel van mögötted.</string>
+    <string name="stats_improvement">+%1$d százalékpont az előző 30 naphoz képest</string>
+    <string name="stats_streak_days">%1$d napja nem ment kárba semmi</string>
+    <string name="stats_streak_never">Eddig egyetlen tétel sem ment kárba</string>
+    <string name="stats_tile_saved">elfogyott</string>
+    <string name="stats_tile_rescued">az utolsó pillanatban megmentve</string>
+    <string name="stats_tile_wasted">nem sikerült megmenteni</string>
+    <string name="stats_rescued_explainer">„Az utolsó pillanatban megmentve”: a lejárat előtti utolsó %1$d napban vagy később fogyott el – ezek nagy eséllyel a kukában végezték volna.</string>
+    <string name="stats_expiring_soon">%1$d tétel lejár a következő %2$d napban – most még megmentheted őket.</string>
+    <string name="stats_expiring_soon_action">Megnézem</string>
+    <string name="stats_chart_title">Havonta</string>
+    <string name="stats_legend_saved">elfogyott</string>
+    <string name="stats_legend_wasted">nem sikerült</string>
+    <string name="stats_chart_readout">%1$s: %2$d elfogyott · %3$d nem sikerült</string>
+    <string name="stats_tip_title">Tipp: ezek gyakran megmaradnak</string>
+    <string name="stats_tip_item">• %1$s (%2$d×, utolsó 90 nap)</string>
+    <string name="stats_tip_text">Érdemes lehet kisebb kiszerelést venni, vagy időben a fagyasztóba tenni őket.</string>
+    <string name="stats_empty_title">Itt fogod látni, mennyi ételt mentesz meg</string>
+    <string name="stats_empty_text">Ha valami elfogyott, húzd balra a listában (vagy nyomd meg az „Elfogyott” gombot). Minden ilyen tétel ide kerül.</string>
 </resources>

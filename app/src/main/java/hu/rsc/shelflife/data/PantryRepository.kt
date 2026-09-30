@@ -45,6 +45,12 @@ class PantryRepository private constructor(private val appContext: Context) {
         emitAll(itemDao.observeActive())
     }
 
+    /** Lezart (elfogyott / kidobott) tetelek, a statisztika-kepernyohoz. */
+    val finishedItems: Flow<List<PantryItem>> = flow {
+        ensureReady()
+        emitAll(itemDao.observeFinished())
+    }
+
     /** A kamraban levo (aktiv) tetelek. */
     suspend fun getActiveItems(): List<PantryItem> {
         ensureReady()
