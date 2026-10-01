@@ -1,243 +1,292 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Default (fallback) language: English. Used for every device language that has
+    no own folder (values-hu, values-de, values-fr).
+    When adding a string: add it here AND in every values-xx/strings.xml.
+-->
 <resources>
     <string name="app_name" translatable="false">ShelfLife</string>
-    <string name="app_subtitle">Kamra és lejárat-követés</string>
+    <string name="app_subtitle">Pantry and expiry tracker</string>
 
-    <!-- Engedélyek -->
-    <string name="camera_permission_rationale">A vonalkód és a lejárati dátum beolvasásához kamera-hozzáférés kell. A kép a telefonon marad, sehová nem kerül feltöltésre.</string>
-    <string name="camera_permission_grant">Kamera engedélyezése</string>
+    <!-- Permissions -->
+    <string name="camera_permission_rationale">Camera access is needed to scan barcodes and expiry dates. Images stay on your phone and are never uploaded.</string>
+    <string name="camera_permission_grant">Allow camera</string>
 
-    <!-- Általános műveletek -->
-    <string name="action_cancel">Mégse</string>
-    <string name="action_save">Mentés</string>
-    <string name="action_delete">Törlés</string>
-    <string name="action_done">Kész</string>
+    <!-- Common actions -->
+    <string name="action_cancel">Cancel</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_done">Done</string>
     <string name="action_ok">OK</string>
-    <string name="action_copy">Másolás</string>
-    <string name="action_modify">Módosítás</string>
-    <string name="action_swap">Csere</string>
-    <string name="action_open_settings">Beállítások megnyitása</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_modify">Change</string>
+    <string name="action_swap">Swap</string>
+    <string name="action_open_settings">Open settings</string>
 
-    <!-- Főképernyő -->
-    <string name="cd_notification_settings">Értesítési beállítások</string>
-    <string name="action_start_scan">Termék beolvasása</string>
-    <string name="action_finish_session">Kész – lezárás</string>
-    <string name="cd_manual_add">Kézi felvitel</string>
-    <string name="scan_idle_hint">Új termékek felvételéhez nyomd meg a „Termék beolvasása” gombot – a kamera csak akkor kapcsol be.</string>
-    <string name="items_header">Felvett tételek (%1$d)</string>
-    <string name="sort_expiry">Lejárat</string>
-    <string name="sort_recorded">Felvitel</string>
-    <string name="filter_estimated">Becsült dátum: %1$d – pontosítandó</string>
+    <!-- Main screen -->
+    <string name="cd_notification_settings">Notification settings</string>
+    <string name="action_start_scan">Scan products</string>
+    <string name="action_finish_session">Done – finish</string>
+    <string name="cd_manual_add">Add manually</string>
+    <string name="scan_idle_hint">To add new products, tap “Scan products” – the camera only turns on then.</string>
+    <string name="items_header">Items (%1$d)</string>
+    <string name="sort_expiry">Expiry</string>
+    <string name="sort_recorded">Added</string>
+    <string name="filter_estimated">Estimated date: %1$d – to check</string>
 
-    <!-- Rögzítési kör (kamera) -->
-    <string name="scan_hint_barcode">Mutasd a vonalkódot a kamerának</string>
-    <string name="scan_hint_resolving">Termék keresése…</string>
-    <string name="scan_hint_ask_name">Ismeretlen termék – add meg a nevét</string>
-    <string name="scan_hint_date">„%1$s” – tartsd a lejárati dátumot a keretben</string>
-    <string name="cd_ocr_debug">OCR diagnosztika</string>
-    <string name="cd_torch_on">Lámpa bekapcsolása</string>
-    <string name="cd_torch_off">Lámpa kikapcsolása</string>
-    <string name="estimate_week">~1 hét</string>
-    <string name="estimate_month">~1 hónap</string>
-    <string name="estimate_year">~1 év</string>
-    <string name="action_later">Később</string>
-    <string name="action_type_date">Dátum beírása</string>
+    <!-- Scanning session (camera) -->
+    <string name="scan_hint_barcode">Point the camera at the barcode</string>
+    <string name="scan_hint_resolving">Looking up product…</string>
+    <string name="scan_hint_ask_name">Unknown product – enter its name</string>
+    <string name="scan_hint_date">“%1$s” – hold the expiry date inside the frame</string>
+    <string name="cd_ocr_debug">OCR diagnostics</string>
+    <string name="cd_torch_on">Turn on flashlight</string>
+    <string name="cd_torch_off">Turn off flashlight</string>
+    <string name="estimate_week">~1 week</string>
+    <string name="estimate_month">~1 month</string>
+    <string name="estimate_year">~1 year</string>
+    <string name="action_later">Later</string>
+    <string name="action_type_date">Type date</string>
 
-    <!-- OCR diagnosztika (fejlesztői) -->
-    <string name="ocr_log_copied">OCR log vágólapra másolva (%1$d sor)</string>
-    <string name="ocr_debug_status">Log: %1$d sor</string>
-    <string name="ocr_debug_hit">találat: %1$s</string>
-    <string name="ocr_debug_no_hit">nincs találat</string>
+    <!-- OCR diagnostics (developer) -->
+    <string name="ocr_log_copied">OCR log copied to clipboard (%1$d lines)</string>
+    <string name="ocr_debug_status">Log: %1$d lines</string>
+    <string name="ocr_debug_hit">match: %1$s</string>
+    <string name="ocr_debug_no_hit">no match</string>
 
-    <!-- Mennyiség, mértékegység -->
-    <string name="quantity_optional">Mennyiség (opcionális)</string>
-    <string name="cd_quantity_decrease">Mennyiség csökkentése</string>
-    <string name="cd_quantity_increase">Mennyiség növelése</string>
-    <string name="cd_choose_unit">Mértékegység választása</string>
-    <string name="unit_title">Mértékegység</string>
-    <string name="unit_other">Egyéb…</string>
-    <!-- Az alapértelmezett mértékegység; a quantity_units első eleme legyen. -->
-    <string name="unit_default">darab</string>
+    <!-- Quantity, unit -->
+    <string name="quantity_optional">Quantity (optional)</string>
+    <string name="cd_quantity_decrease">Decrease quantity</string>
+    <string name="cd_quantity_increase">Increase quantity</string>
+    <string name="cd_choose_unit">Choose unit</string>
+    <string name="unit_title">Unit</string>
+    <string name="unit_other">Other…</string>
+    <!-- The default unit; must be the first item of quantity_units. -->
+    <string name="unit_default">pcs</string>
     <string-array name="quantity_units">
-        <item>darab</item>
-        <item>csomag</item>
-        <item>doboz</item>
+        <item>pcs</item>
+        <item>pack</item>
+        <item>box</item>
         <item>kg</item>
-        <item>dkg</item>
         <item>g</item>
         <item>l</item>
-        <item>dl</item>
         <item>ml</item>
-        <item>üveg</item>
-        <item>zacskó</item>
+        <item>jar</item>
+        <item>bag</item>
+        <item>can</item>
+        <item>bottle</item>
     </string-array>
 
-    <!-- Tételkártya -->
-    <string name="expiry_overdue">Lejárt</string>
-    <string name="expiry_today">Ma jár le</string>
-    <string name="expiry_tomorrow">Holnap jár le</string>
-    <string name="expiry_in_days">%1$d nap múlva jár le</string>
-    <string name="item_new_latest">ÚJ – most rögzítve</string>
-    <string name="item_new_session">ÚJ – ebben a körben rögzítve</string>
-    <string name="item_estimated_hint">Becsült dátum – koppints a pontosításhoz</string>
-    <string name="item_recorded">Rögzítve: %1$s</string>
-    <string name="item_manual">kézi</string>
-    <string name="item_quantity">Mennyiség: %1$d %2$s</string>
-    <string name="item_ambiguous_day_month">Nap/hónap sorrend bizonytalan</string>
+    <!-- Item card -->
+    <string name="expiry_overdue">Expired</string>
+    <string name="expiry_today">Expires today</string>
+    <string name="expiry_tomorrow">Expires tomorrow</string>
+    <plurals name="expiry_in_days">
+        <item quantity="one">Expires in %1$d day</item>
+        <item quantity="other">Expires in %1$d days</item>
+    </plurals>
+    <string name="item_new_latest">NEW – just added</string>
+    <string name="item_new_session">NEW – added in this session</string>
+    <string name="item_estimated_hint">Estimated date – tap to set the real one</string>
+    <string name="item_recorded">Added: %1$s</string>
+    <string name="item_manual">manual</string>
+    <string name="item_quantity">Quantity: %1$d %2$s</string>
+    <string name="item_ambiguous_day_month">Day/month order uncertain</string>
 
-    <!-- Új termék (ismeretlen vonalkód) -->
-    <string name="new_product_title">Új termék</string>
-    <string name="new_product_barcode">Vonalkód: %1$s</string>
-    <string name="lookup_searching_off">Keresés az Open Food Facts adatbázisban…</string>
-    <string name="lookup_searching_upc">Nincs találat – próba a UPCitemdb-n…</string>
-    <string name="lookup_offline">Nincs internetkapcsolat – add meg kézzel.</string>
-    <string name="lookup_found">Automatikusan kitöltve (%1$s) – ellenőrizd, és javítsd, ha kell.</string>
-    <string name="lookup_not_found">Egyik online adatbázisban sem található – add meg kézzel.</string>
-    <string name="product_name_label">Termék neve</string>
-    <string name="product_name_label_with_list">Termék neve (vagy válassz a listából)</string>
-    <string name="cd_known_products">Meglévő termékek</string>
+    <!-- New product (unknown barcode) -->
+    <string name="new_product_title">New product</string>
+    <string name="new_product_barcode">Barcode: %1$s</string>
+    <string name="lookup_searching_off">Searching Open Food Facts…</string>
+    <string name="lookup_searching_upc">No match – trying UPCitemdb…</string>
+    <string name="lookup_offline">No internet connection – enter it manually.</string>
+    <string name="lookup_found">Filled in automatically (%1$s) – check it and correct it if needed.</string>
+    <string name="lookup_not_found">Not found in any online database – enter it manually.</string>
+    <string name="product_name_label">Product name</string>
+    <string name="product_name_label_with_list">Product name (or pick from the list)</string>
+    <string name="cd_known_products">Known products</string>
 
-    <!-- Kézi felvitel / szerkesztés -->
-    <string name="edit_title_new">Új tétel kézi felvitele</string>
-    <string name="edit_title_edit">Tétel szerkesztése</string>
-    <string name="edit_expiry">Lejárat: %1$s</string>
-    <string name="edit_estimated_checkbox">Becsült dátum (később pontosítandó)</string>
+    <!-- Manual add / edit -->
+    <string name="edit_title_new">Add item manually</string>
+    <string name="edit_title_edit">Edit item</string>
+    <string name="edit_expiry">Expiry: %1$s</string>
+    <string name="edit_estimated_checkbox">Estimated date (check it later)</string>
 
-    <!-- Gyors dátumbevitel -->
-    <string name="quick_date_title">Lejárati dátum</string>
-    <string name="quick_date_label">Nap, hónap (év)</string>
-    <string name="quick_date_placeholder">pl. 2510 vagy 251026</string>
-    <string name="quick_date_overdue">%1$s – már lejárt!</string>
-    <string name="quick_date_today">%1$s – ma</string>
-    <string name="quick_date_in_days">%1$s – %2$d nap múlva</string>
-    <string name="quick_date_invalid">Nem értelmezhető dátum</string>
-    <string name="quick_date_hint">Évszám nélkül a legközelebbi ilyen dátumot veszi.</string>
-    <string name="quick_date_calendar">Naptárból</string>
+    <!-- Quick date entry (day-month order) -->
+    <string name="quick_date_title">Expiry date</string>
+    <string name="quick_date_label">Day, month (year)</string>
+    <string name="quick_date_placeholder">e.g. 2510 or 251026</string>
+    <string name="quick_date_overdue">%1$s – already expired!</string>
+    <string name="quick_date_today">%1$s – today</string>
+    <plurals name="quick_date_in_days">
+        <item quantity="one">%1$s – in %2$d day</item>
+        <item quantity="other">%1$s – in %2$d days</item>
+    </plurals>
+    <string name="quick_date_invalid">Not a valid date</string>
+    <string name="quick_date_hint">Without a year, the next such date is used.</string>
+    <string name="quick_date_calendar">From calendar</string>
 
-    <!-- Értesítési beállítások -->
-    <string name="notif_settings_title">Lejárati értesítések</string>
-    <string name="notif_settings_description">Az app szólhat, mielőtt egy kamrában rögzített termék lejár. A háttérben, naponta egyszer ellenőrzi a listát – nincs folyamatosan futó szolgáltatás, és nem használja a kamerát, csak a már elmentett lejárati dátumokat.</string>
-    <string name="notif_settings_enable">Értesítés bekapcsolása</string>
-    <string name="notif_permission_missing">Az értesítési engedély nincs megadva, így az app nem tud szólni. Engedélyezd a rendszerbeállításokban, ha szeretnél lejárat előtti emlékeztetőt kapni.</string>
-    <string name="notif_days_before_question">Hány nappal a lejárat előtt szóljon?</string>
-    <string name="notif_days_same_day">aznap</string>
-    <string name="notif_days_n">%1$d nap</string>
-    <string name="cd_decrease">Csökkentés</string>
-    <string name="cd_increase">Növelés</string>
+    <!-- Notification settings -->
+    <string name="notif_settings_title">Expiry notifications</string>
+    <string name="notif_settings_description">The app can remind you before a product in your pantry expires. It checks the list once a day in the background – no service running all the time, no camera, only the expiry dates you have saved.</string>
+    <string name="notif_settings_enable">Turn on notifications</string>
+    <string name="notif_permission_missing">Notification permission is not granted, so the app cannot remind you. Allow it in system settings if you want reminders before products expire.</string>
+    <string name="notif_days_before_question">How many days before expiry?</string>
+    <string name="notif_days_same_day">same day</string>
+    <plurals name="notif_days_n">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <string name="notif_refine_title">Weekly reminder about estimated dates</string>
+    <string name="notif_refine_description">Once a week, if some items only have an estimated “~” date, it reminds you to check the real one on the package.</string>
+    <string name="cd_decrease">Decrease</string>
+    <string name="cd_increase">Increase</string>
 
-    <!-- Rendszerértesítések -->
-    <string name="notification_channel_name">Lejárati emlékeztetők</string>
-    <string name="notification_channel_description">Értesítés, amikor egy kamrában rögzített termék lejárata közeleg.</string>
-    <string name="notification_single_title">Hamarosan lejár: %1$s</string>
-    <string name="notification_multi_title">%1$d termék lejárata közeleg</string>
-    <string name="notification_multi_text">Koppints a részletekért</string>
+    <!-- System notifications -->
+    <string name="notification_channel_name">Expiry reminders</string>
+    <string name="notification_channel_description">Notifies you when a product in your pantry is about to expire.</string>
+    <string name="notification_single_title">Expiring soon: %1$s</string>
+    <string name="notification_multi_title">%1$d products expiring soon</string>
+    <string name="notification_multi_text">Tap for details</string>
     <string name="notification_line">%1$s — %2$s</string>
-    <string name="notification_estimated">%1$s (becsült – nézd meg a csomagoláson)</string>
+    <string name="notification_estimated">%1$s (estimated – check the package)</string>
+    <string name="refine_channel_name">Date check reminder</string>
+    <string name="refine_channel_description">Weekly reminder about items with an estimated expiry date.</string>
+    <plurals name="refine_notification_title">
+        <item quantity="one">%1$d item only has an estimated date</item>
+        <item quantity="other">%1$d items only have an estimated date</item>
+    </plurals>
+    <string name="refine_notification_text">Check the real date on the package – a few taps, and we’ll remind you right on time.</string>
 
-    <!-- Helyek -->
-    <string name="location_fridge">Hűtő</string>
-    <string name="location_freezer">Fagyasztó</string>
-    <string name="location_pantry">Kamra</string>
+    <!-- Locations -->
+    <string name="location_fridge">Fridge</string>
+    <string name="location_freezer">Freezer</string>
+    <string name="location_pantry">Pantry</string>
 
-    <!-- Elhasználás, visszavonás -->
-    <string name="swipe_consumed">Elfogyott</string>
-    <string name="swipe_wasted">Kidobtam</string>
+    <!-- Used up, undo -->
+    <string name="swipe_consumed">Used up</string>
+    <string name="swipe_wasted">Thrown away</string>
     <string name="action_minus_one">−1</string>
-    <string name="action_undo">Visszavonás</string>
-    <string name="undo_consumed">Elfogyott: %1$s</string>
-    <string name="undo_wasted">Kidobva: %1$s</string>
-    <string name="undo_deleted">Törölve: %1$s</string>
-    <string name="undo_consumed_one">%1$s: −1 (maradt %2$d %3$s)</string>
-    <string name="undo_quick_added">Felvéve: %1$s (becsült lejárat)</string>
+    <string name="action_undo">Undo</string>
+    <string name="undo_consumed">Used up: %1$s</string>
+    <string name="undo_wasted">Thrown away: %1$s</string>
+    <string name="undo_deleted">Deleted: %1$s</string>
+    <string name="undo_consumed_one">%1$s: −1 (%2$d %3$s left)</string>
+    <string name="undo_quick_added">Added: %1$s (estimated expiry)</string>
 
-    <!-- Keresés, menü -->
-    <string name="cd_search">Keresés</string>
-    <string name="search_placeholder">Keresés név szerint</string>
-    <string name="cd_more">Továbbiak</string>
+    <!-- Search, menu -->
+    <string name="cd_search">Search</string>
+    <string name="search_placeholder">Search by name</string>
+    <string name="cd_more">More</string>
 
-    <!-- Vonalkód nélküli gyorsrács -->
-    <string name="action_no_barcode">Vonalkód nélkül</string>
-    <string name="quick_add_title">Gyors felvitel</string>
-    <string name="quick_add_hint">Vonalkód nélküli termékek egy koppintással. A lejárat becsült – a listában később pontosíthatod.</string>
-    <string name="quick_add_other">Egyéb (kézi felvitel)</string>
-    <string name="quick_bread">Kenyér</string>
-    <string name="quick_pastry">Péksütemény</string>
-    <string name="quick_eggs">Tojás</string>
-    <string name="quick_meat">Hús</string>
-    <string name="quick_poultry">Csirke</string>
-    <string name="quick_fish">Hal</string>
-    <string name="quick_cold_cuts">Felvágott (pult)</string>
-    <string name="quick_cheese_deli">Sajt (pult)</string>
-    <string name="quick_vegetables">Zöldség</string>
-    <string name="quick_salad">Saláta</string>
-    <string name="quick_fruit">Gyümölcs</string>
-    <string name="quick_leftovers">Maradék étel</string>
+    <!-- Quick grid (no barcode) -->
+    <string name="action_no_barcode">No barcode</string>
+    <string name="quick_add_title">Quick add</string>
+    <string name="quick_add_hint">Products without a barcode in one tap. The expiry is estimated – you can correct it later in the list.</string>
+    <string name="quick_add_other">Other (add manually)</string>
+    <string name="quick_add_location_auto">Each goes to its usual place – or choose a location.</string>
+    <string name="quick_add_location_chosen">The estimated expiry follows the chosen location.</string>
+    <string name="quick_tile_today">today</string>
+    <plurals name="quick_tile_days">
+        <item quantity="one">~%1$d day</item>
+        <item quantity="other">~%1$d days</item>
+    </plurals>
+    <plurals name="quick_tile_months">
+        <item quantity="one">~%1$d month</item>
+        <item quantity="other">~%1$d months</item>
+    </plurals>
+    <string name="quick_bread">Bread</string>
+    <string name="quick_pastry">Pastries</string>
+    <string name="quick_eggs">Eggs</string>
+    <string name="quick_meat">Meat</string>
+    <string name="quick_poultry">Chicken</string>
+    <string name="quick_fish">Fish</string>
+    <string name="quick_cold_cuts">Cold cuts (deli)</string>
+    <string name="quick_cheese_deli">Cheese (deli)</string>
+    <string name="quick_vegetables">Vegetables</string>
+    <string name="quick_salad">Salad</string>
+    <string name="quick_fruit">Fruit</string>
+    <string name="quick_leftovers">Leftovers</string>
 
-    <!-- Visszajelzés -->
-    <!-- A visszajelzések címzettje. Üresen hagyva a levelezőapp kéri be. -->
+    <!-- Feedback -->
+    <!-- Recipient of feedback e-mails. If empty, the mail app asks for it. -->
     <string name="feedback_email" translatable="false"></string>
-    <string name="action_feedback">Visszajelzés küldése</string>
-    <string name="feedback_subject">ShelfLife visszajelzés (v%1$s)</string>
-    <string name="feedback_body">\n\n\n---\nApp verzió: %1$s\nTelefon: %2$s\nAndroid: %3$s</string>
-    <string name="feedback_no_email_app">Nem található levelezőalkalmazás.</string>
+    <string name="action_feedback">Send feedback</string>
+    <string name="action_ad_privacy_options">Ad privacy settings</string>
+    <!-- Natív hirdetés címkéje (kötelező jelölés) -->
+    <string name="ad_label">Ad</string>
+    <string name="feedback_subject">ShelfLife feedback (v%1$s)</string>
+    <string name="feedback_body">\n\n\n---\nApp version: %1$s\nPhone: %2$s\nAndroid: %3$s</string>
+    <string name="feedback_no_email_app">No e-mail app found.</string>
 
-    <!-- Értesítés-akciók -->
-    <string name="notification_action_consumed">Elfogyott</string>
-    <string name="notification_action_snooze">Holnap szólj</string>
+    <!-- Notification actions -->
+    <string name="notification_action_consumed">Used up</string>
+    <string name="notification_action_snooze">Remind me tomorrow</string>
 
-    <!-- Bemutató (onboarding) -->
-    <string name="action_show_onboarding">Hogyan működik?</string>
-    <string name="onboarding_skip">Kihagyás</string>
-    <string name="onboarding_next">Tovább</string>
-    <string name="onboarding_start">Kezdjük</string>
-    <string name="onboarding_welcome_title">Ne dobj ki több ételt</string>
-    <string name="onboarding_welcome_text">A ShelfLife figyeli, mi mikor jár le a hűtődben és a kamrádban – és időben szól. Fiók és felhő nélkül, minden adat a telefonodon marad.</string>
-    <string name="onboarding_scan_title">Beolvasás másodpercek alatt</string>
-    <string name="onboarding_scan_text">Nyomd meg a „Termék beolvasása” gombot, mutasd a vonalkódot, majd tartsd a lejárati dátumot a keretbe. Ha a kamera nem boldogul vele: „~1 hét”, „Később” vagy írd be számokkal (pl. 2510 = okt. 25.). Kör elején válaszd ki: hűtő, fagyasztó vagy kamra.</string>
-    <string name="onboarding_scan_sample_date">MINŐSÉGÉT MEGŐRZI: 25.10.2026</string>
-    <string name="onboarding_quick_title">Vonalkód nélkül is</string>
-    <string name="onboarding_quick_text">Kenyér, tojás, zöldség? A + gombbal egy koppintás. Ilyenkor a lejárat becsült (~ jel) – a listában bármikor pontosíthatod.</string>
-    <string name="onboarding_quick_sample_status">~ 3 nap múlva jár le · becsült</string>
-    <string name="onboarding_swipe_title">Elfogyott vagy kidobtad?</string>
-    <string name="onboarding_swipe_text">Húzd a tételt balra, ha elfogyott, jobbra, ha ki kellett dobni. Több darabnál a „−1” gomb eggyel csökkenti a mennyiséget. Tévedtél? Lent a „Visszavonás” mindent visszacsinál.</string>
-    <string name="onboarding_swipe_sample_name">Joghurt</string>
-    <string name="onboarding_swipe_sample_status">2 nap múlva jár le · 4 darab</string>
-    <string name="onboarding_swipe_legend_left">← balra: elfogyott</string>
-    <string name="onboarding_swipe_legend_right">jobbra: kidobtam →</string>
-    <string name="onboarding_notify_title">Szólunk, mielőtt lejár</string>
-    <string name="onboarding_notify_text">Naponta egyszer ellenőrizzük a listát. Az értesítésből egy koppintással jelezheted, hogy elfogyott, vagy kérhetsz emlékeztetőt holnapra. Később a harang ikonnal állíthatod.</string>
-    <string name="onboarding_notify_enable">Értesítések bekapcsolása</string>
-    <string name="onboarding_notify_enabled">Értesítések bekapcsolva</string>
+    <!-- Onboarding -->
+    <string name="action_show_onboarding">How does it work?</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_start">Let’s start</string>
+    <string name="onboarding_welcome_title">Stop throwing food away</string>
+    <string name="onboarding_welcome_text">ShelfLife keeps track of what expires when in your fridge and pantry – and reminds you in time. No sign-up and no servers of our own: we never see your list. Your phone’s own backup keeps it safe, so it isn’t lost when you switch phones.</string>
+    <string name="onboarding_scan_title">Scanned in seconds</string>
+    <string name="onboarding_scan_text">Tap “Scan products”, show the barcode, then hold the expiry date inside the frame. If the camera can’t read it: “~1 week”, “Later”, or type it in digits (e.g. 2510 = 25 Oct). At the start, choose fridge, freezer or pantry.</string>
+    <string name="onboarding_scan_sample_date">BEST BEFORE: 25.10.2026</string>
+    <string name="onboarding_quick_title">Without a barcode, too</string>
+    <string name="onboarding_quick_text">Bread, eggs, vegetables? One tap with the + button. The expiry is then estimated (~ sign) – you can correct it in the list any time.</string>
+    <string name="onboarding_quick_sample_status">~ Expires in 3 days · estimated</string>
+    <string name="onboarding_swipe_title">Used up or thrown away?</string>
+    <string name="onboarding_swipe_text">Swipe an item left if it’s used up, right if you had to throw it away. For several pieces, “−1” lowers the quantity by one. Made a mistake? “Undo” at the bottom reverts everything.</string>
+    <string name="onboarding_swipe_sample_name">Yogurt</string>
+    <string name="onboarding_swipe_sample_status">Expires in 2 days · 4 pcs</string>
+    <string name="onboarding_swipe_legend_left">← left: used up</string>
+    <string name="onboarding_swipe_legend_right">right: thrown away →</string>
+    <string name="onboarding_notify_title">We remind you before it expires</string>
+    <string name="onboarding_notify_text">We check the list once a day. From the notification you can mark an item as used up with one tap, or ask for a reminder tomorrow. You can change this later with the bell icon.</string>
+    <string name="onboarding_notify_enable">Turn on notifications</string>
+    <string name="onboarding_notify_enabled">Notifications are on</string>
 
-    <!-- Statisztika (megmentett ételek). Hangnem: pozitív, soha nem szemrehányó. -->
-    <string name="stats_title">Megmentett ételek</string>
-    <string name="cd_stats">Statisztika</string>
-    <string name="cd_back">Vissza</string>
-    <string name="stats_period_30">Utolsó 30 nap</string>
-    <string name="stats_period_all">Összesen</string>
+    <!-- Statistics (food saved). Tone: positive, never blaming. -->
+    <string name="stats_title">Food saved</string>
+    <string name="cd_stats">Statistics</string>
+    <string name="cd_back">Back</string>
+    <string name="stats_period_30">Last 30 days</string>
+    <string name="stats_period_all">All time</string>
     <string name="stats_percent">%1$d%%</string>
-    <string name="stats_rate_caption">az ételeidből elfogyott, nem a kukában végezte</string>
-    <string name="stats_hero_no_period_data">Ebben az időszakban még nincs lezárt tétel – nézd meg az „Összesen” nézetet!</string>
-    <string name="stats_hero_perfect">Tökéletes! Minden elfogyott, semmi nem ment kárba.</string>
-    <string name="stats_hero_excellent">Kiváló! Szinte semmi nem megy kárba nálad.</string>
-    <string name="stats_hero_good">Szép munka – jó úton jársz!</string>
-    <string name="stats_hero_every_item_counts">Minden megmentett falat számít – már %1$d tétel van mögötted.</string>
-    <string name="stats_improvement">+%1$d százalékpont az előző 30 naphoz képest</string>
-    <string name="stats_streak_days">%1$d napja nem ment kárba semmi</string>
-    <string name="stats_streak_never">Eddig egyetlen tétel sem ment kárba</string>
-    <string name="stats_tile_saved">elfogyott</string>
-    <string name="stats_tile_rescued">az utolsó pillanatban megmentve</string>
-    <string name="stats_tile_wasted">nem sikerült megmenteni</string>
-    <string name="stats_rescued_explainer">„Az utolsó pillanatban megmentve”: a lejárat előtti utolsó %1$d napban vagy később fogyott el – ezek nagy eséllyel a kukában végezték volna.</string>
-    <string name="stats_expiring_soon">%1$d tétel lejár a következő %2$d napban – most még megmentheted őket.</string>
-    <string name="stats_expiring_soon_action">Megnézem</string>
-    <string name="stats_chart_title">Havonta</string>
-    <string name="stats_legend_saved">elfogyott</string>
-    <string name="stats_legend_wasted">nem sikerült</string>
-    <string name="stats_chart_readout">%1$s: %2$d elfogyott · %3$d nem sikerült</string>
-    <string name="stats_tip_title">Tipp: ezek gyakran megmaradnak</string>
-    <string name="stats_tip_item">• %1$s (%2$d×, utolsó 90 nap)</string>
-    <string name="stats_tip_text">Érdemes lehet kisebb kiszerelést venni, vagy időben a fagyasztóba tenni őket.</string>
-    <string name="stats_empty_title">Itt fogod látni, mennyi ételt mentesz meg</string>
-    <string name="stats_empty_text">Ha valami elfogyott, húzd balra a listában (vagy nyomd meg az „Elfogyott” gombot). Minden ilyen tétel ide kerül.</string>
+    <string name="stats_rate_caption">of your food was eaten, not thrown away</string>
+    <string name="stats_hero_no_period_data">No finished items in this period yet – take a look at “All time”!</string>
+    <string name="stats_hero_perfect">Perfect! Everything was eaten, nothing went to waste.</string>
+    <string name="stats_hero_excellent">Excellent! Almost nothing goes to waste at your place.</string>
+    <string name="stats_hero_good">Nice work – you’re on the right track!</string>
+    <plurals name="stats_hero_every_item_counts">
+        <item quantity="one">Every bite saved counts – %1$d item so far.</item>
+        <item quantity="other">Every bite saved counts – %1$d items so far.</item>
+    </plurals>
+    <plurals name="stats_improvement">
+        <item quantity="one">+%1$d percentage point compared to the previous 30 days</item>
+        <item quantity="other">+%1$d percentage points compared to the previous 30 days</item>
+    </plurals>
+    <plurals name="stats_streak_days">
+        <item quantity="one">Nothing wasted for %1$d day</item>
+        <item quantity="other">Nothing wasted for %1$d days</item>
+    </plurals>
+    <string name="stats_streak_never">Not a single item wasted so far</string>
+    <string name="stats_tile_saved">used up</string>
+    <string name="stats_tile_rescued">saved at the last minute</string>
+    <string name="stats_tile_wasted">couldn’t be saved</string>
+    <string name="stats_rescued_explainer">“Saved at the last minute”: used up in the last %1$d days before expiry or later – these would most likely have ended up in the bin.</string>
+    <plurals name="stats_expiring_soon">
+        <item quantity="one">%1$d item expires in the next %2$d days – you can still save it.</item>
+        <item quantity="other">%1$d items expire in the next %2$d days – you can still save them.</item>
+    </plurals>
+    <string name="stats_expiring_soon_action">Show me</string>
+    <string name="stats_chart_title">By month</string>
+    <string name="stats_legend_saved">used up</string>
+    <string name="stats_legend_wasted">not saved</string>
+    <string name="stats_chart_readout">%1$s: %2$d used up · %3$d not saved</string>
+    <string name="stats_tip_title">Tip: these often get left over</string>
+    <string name="stats_tip_item">• %1$s (%2$d×, last 90 days)</string>
+    <string name="stats_tip_text">Consider buying smaller packs, or freezing them in time.</string>
+    <string name="stats_empty_title">Here you’ll see how much food you save</string>
+    <string name="stats_empty_text">When something is used up, swipe it left in the list (or tap “Used up”). Every such item shows up here.</string>
 </resources>

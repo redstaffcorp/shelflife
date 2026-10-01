@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import hu.rsc.shelflife.R
+import hu.rsc.shelflife.data.FoodCategory
 import hu.rsc.shelflife.data.ItemStatus
 import hu.rsc.shelflife.data.KnownProduct
 import hu.rsc.shelflife.data.PantryItem
@@ -30,11 +31,6 @@ private const val BARCODE_COOLDOWN_MS = 1500L
 
 // Ennyi egymas utani egyezo vonalkod-olvasas kell az elfogadashoz.
 private const val BARCODE_SIGHTINGS_NEEDED = 2
-
-// "Kesobb" gombnal hasznalt fix becsult lejarat (ma + ennyi nap). Tudatosan NEM
-// a termek korabbi rogzitesebol szamoljuk: a lejarat a gyartasbol kovetkezik,
-// nem a vasarlas/rogzites napjabol. A tetel mindig "becsult" jelolest kap.
-const val DEFAULT_ESTIMATE_DAYS = 7L
 
 // Kezi felvitelnel es a naptarban a kiindulo lejarat: ma + ennyi nap.
 const val DEFAULT_MANUAL_EXPIRY_DAYS = 3L
@@ -80,11 +76,13 @@ sealed interface UndoAction {
     data class Remove(val itemId: Long) : UndoAction
 }
 
-/** Vonalkod nelkuli gyorsracs egy csempeje (lasd QuickAddDialog). */
+/**
+ * Vonalkod nelkuli gyorsracs egy csempeje (lasd QuickAddDialog). A becsult
+ * lejarat a kategoriabol es a valasztott helybol jon (lasd FoodCategory).
+ */
 data class QuickProduct(
     val nameRes: Int,
-    val estimateDays: Long,
-    val location: StorageLocation,
+    val category: FoodCategory,
     val quantity: Int = 1
 )
 
@@ -463,21 +461,23 @@ class PantryViewModel(application: Application) : AndroidViewModel(application) 
 
     /**
      * Egy koppintasos felvitel becsult lejarattal (mindig "becsult" jelolessel,
-     * kesobb pontosithato). `name`: a csempe lokalizalt neve.
+     * kesobb pontosithato). `name`: a csempe lokalizalt neve. `location`: a
+     * dialogusban valasztott hely, null = a kategoria szokasos helye.
      */
-    fun addQuickProduct(product: QuickProduct, name: String) {
+    fun addQuickProduct(product: QuickProduct, name: String, location: StorageLocation?) {
+        val target = location ?: product.category.homeLocation
         val item = PantryItem(
             id = nextId(),
             barcode = null,
             productName = name,
-            expiry = LocalDate.now().plusDays(product.estimateDays),
+            expiry = LocalDate.now().plusDays(product.category.estimateDays(target).toLong()),
             recordedAt = LocalDate.now(),
             quantity = product.quantity,
             quantityUnit = defaultUnit,
             enteredManually = true,
             ambiguousDayMonth = false,
             expiryEstimated = true,
-            location = product.location
+            location = target
         )
         onItemAdded(item.id)
         viewModelScope.launch {

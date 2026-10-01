@@ -75,6 +75,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import hu.rsc.shelflife.R
+import hu.rsc.shelflife.data.ShelfLifeDefaults
 import hu.rsc.shelflife.scanner.OcrDebugInfo
 import hu.rsc.shelflife.scanner.ScannerAnalyzer
 import hu.rsc.shelflife.ui.components.LocationChips
@@ -262,9 +263,14 @@ fun ColumnScope.ScanSessionPanel(
             TextButton(onClick = { vm.cancelCurrentProduct() }) {
                 Text(stringResource(R.string.action_cancel))
             }
-            // Soha ne akadjon el a rogzites egy olvashatatlan datumon: fix becsult
-            // datummal mentjuk, "becsult" jelolessel, kesobb pontosithato.
-            TextButton(onClick = { finish(LocalDate.now().plusDays(DEFAULT_ESTIMATE_DAYS), estimated = true) }) {
+            // Soha ne akadjon el a rogzites egy olvashatatlan datumon: a kor helyehez
+            // illo ovatos becsult datummal mentjuk ("becsult" jelolessel, kesobb
+            // pontosithato). Tudatosan NEM a termek korabbi rogzitesebol szamoljuk:
+            // a lejarat a gyartasbol kovetkezik, nem a vasarlas napjabol.
+            TextButton(onClick = {
+                val days = ShelfLifeDefaults.laterEstimateDays(vm.sessionLocation).toLong()
+                finish(LocalDate.now().plusDays(days), estimated = true)
+            }) {
                 Text(stringResource(R.string.action_later))
             }
             OutlinedButton(onClick = { showQuickDate = true }) {

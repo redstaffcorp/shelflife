@@ -18,6 +18,13 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // AdMob: EGYELORE a Google hivatalos TESZT azonositoi. Eles kiadas
+        // elott ezt a 3 erteket kell a sajat AdMob-azonositokra cserelni
+        // (app ID: ~ jellel, hirdetesi egysegek: / jellel).
+        manifestPlaceholders["admobAppId"] = "ca-app-pub-3940256099942544~3347511713"
+        buildConfigField("String", "ADMOB_BANNER_ID", "\"ca-app-pub-3940256099942544/9214589741\"")
+        buildConfigField("String", "ADMOB_NATIVE_ID", "\"ca-app-pub-3940256099942544/2247696110\"")
     }
 
     buildTypes {
@@ -36,6 +43,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -74,6 +82,11 @@ dependencies {
     // Lejarati ertesitesek: WorkManager -- naponkenti hatterellenorzes,
     // NINCS foreground service, NINCS exact alarm.
     implementation(libs.androidx.work.runtime.ktx)
+
+    // Reklam: AdMob (banner a lista aljan + nativ a statisztikan) es a
+    // hozzajarulas-kezeles (UMP, EGT-ben kotelezo).
+    implementation(libs.play.services.ads)
+    implementation(libs.ump)
 
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))

@@ -1,6 +1,7 @@
 package hu.rsc.shelflife
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,6 +19,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import hu.rsc.shelflife.ads.AdsManager
 import hu.rsc.shelflife.data.NotificationSettingsStore
 import hu.rsc.shelflife.data.OnboardingStore
 import hu.rsc.shelflife.notify.NotificationHelper
@@ -39,9 +42,16 @@ import hu.rsc.shelflife.ui.stats.StatsScreen
 import hu.rsc.shelflife.ui.theme.ShelfLifeTheme
 
 class MainActivity : ComponentActivity() {
+
+    // Fuggoben levo "nyisd meg a becsult datumu teteleket" keres (a heti
+    // pontositas-emlekeztetobol). A PantryScreen a teljesites utan torli.
+    private var showEstimatedPending by mutableStateOf(false)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // Csak friss inditasnal -- forgataskor (savedInstanceState != null) ne nyissuk ujra.
+        if (savedInstanceState == null) handleIntent(intent)
 
         // A lejarati ertesitesekhez a csatornat mindig letre kell hozni
         // (API 26+ kotelezo), es ha a felhasznalo korabban mar bekapcsolta
@@ -54,6 +64,12 @@ class MainActivity : ComponentActivity() {
             ReminderScheduler.schedule(this)
         }
 
+        // Reklam-hozzajarulas (UMP) + AdMob inditas. Az elso inditaskor nem
+        // az onboarding fole dobjuk, hanem annak vegen (lent, onFinish).
+        if (OnboardingStore(this).completed) {
+            AdsManager.gatherConsent(this)
+        }
+
         setContent {
             ShelfLifeTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
@@ -63,10 +79,16 @@ class MainActivity : ComponentActivity() {
                     // kesobb a menubol ujra megnyithato.
                     var showOnboarding by rememberSaveable { mutableStateOf(!onboardingStore.completed) }
                     var showStats by rememberSaveable { mutableStateOf(false) }
+                    // Ertesitesbol: a fo lista a "Becsult datum" szurovel.
+                    LaunchedEffect(showEstimatedPending) {
+                        if (showEstimatedPending) showStats = false
+                    }
                     if (showOnboarding) {
                         OnboardingScreen(onFinish = {
+                            val firstRun = !onboardingStore.completed
                             onboardingStore.completed = true
                             showOnboarding = false
+                            if (firstRun) AdsManager.gatherConsent(this@MainActivity)
                         })
                     } else {
                         CameraPermissionGate {
@@ -75,13 +97,29 @@ class MainActivity : ComponentActivity() {
                             } else {
                                 PantryScreen(
                                     onShowOnboarding = { showOnboarding = true },
-                                    onShowStats = { showStats = true }
+                                    onShowStats = { showStats = true },
+                                    showEstimatedPending = showEstimatedPending,
+                                    onShowEstimatedHandled = { showEstimatedPending = false }
                                 )
                             }
                         }
                     }
                 }
             }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        if (intent?.getBooleanExtra(NotificationHelper.EXTRA_SHOW_ESTIMATED, false) == true) {
+            showEstimatedPending = true
+            // Ne ismetlodjon pl. egy kesobbi ujraletrehozaskor.
+            intent.removeExtra(NotificationHelper.EXTRA_SHOW_ESTIMATED)
         }
     }
 }

@@ -35,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -58,6 +59,7 @@ fun NotificationSettingsDialog(
     val context = LocalContext.current
     var enabled by remember { mutableStateOf(settingsStore.enabled) }
     var daysBefore by remember { mutableIntStateOf(settingsStore.daysBefore) }
+    var refineEnabled by remember { mutableStateOf(settingsStore.refineReminderEnabled) }
     var showPermissionHint by remember { mutableStateOf(false) }
 
     // Ha kozben (a rendszerbeallitasokban) visszavontak az engedelyt, ezt itt
@@ -162,7 +164,7 @@ fun NotificationSettingsDialog(
                         text = if (daysBefore == 0) {
                             stringResource(R.string.notif_days_same_day)
                         } else {
-                            stringResource(R.string.notif_days_n, daysBefore)
+                            pluralStringResource(R.plurals.notif_days_n, daysBefore, daysBefore)
                         },
                         style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center,
@@ -173,6 +175,32 @@ fun NotificationSettingsDialog(
                     OutlinedIconButton(onClick = { changeDays(daysBefore + 1) }) {
                         Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.cd_increase))
                     }
+                }
+
+                // Heti pontositas-emlekezteto (ugyanaz a napi hatterellenorzes kuldi,
+                // ezert csak bekapcsolt lejarati ertesitessel mukodik).
+                Spacer(modifier = Modifier.height(20.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column(modifier = Modifier.weight(1f).padding(end = 12.dp)) {
+                        Text(stringResource(R.string.notif_refine_title), style = MaterialTheme.typography.bodyMedium)
+                        Text(
+                            stringResource(R.string.notif_refine_description),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Switch(
+                        checked = refineEnabled,
+                        enabled = enabled,
+                        onCheckedChange = { checked ->
+                            refineEnabled = checked
+                            settingsStore.refineReminderEnabled = checked
+                        }
+                    )
                 }
             }
         },

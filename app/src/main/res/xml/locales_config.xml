@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Android 13+ alkalmazasonkenti nyelvvalasztas (Beallitasok > Alkalmazasok >
+    ShelfLife > Nyelv). Az elso elem az alapertelmezett (fallback) nyelv.
+    Uj nyelvnel: values-xx/strings.xml + ide egy <locale>.
+-->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="en" />
+    <locale android:name="hu" />
+    <locale android:name="de" />
+    <locale android:name="fr" />
+</locale-config>

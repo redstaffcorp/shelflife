@@ -1,13 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-   Sample backup rules file; uncomment and customize as necessary.
-   See https://developer.android.com/guide/topics/data/autobackup
-   for details.
-   Note: This file is ignored for devices older than API 31
-   See https://developer.android.com/about/versions/12/backup-restore
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Automatikus biztonsagi mentes Android 11 (API 30) es korabbi rendszereken.
+   (Android 12+ eseten a data_extraction_rules.xml ervenyes.)
+
+   Tudatos dontes: a kamra tartalmat ENGEDJUK a felhasznalo SAJAT Google-fiokjanak
+   rendszerszintu mentesebe kerulni, mert igy telefoncserenel / ujratelepitesnel
+   nem vesz el a lista. Sajat szerverunk nincs, mi nem latjuk az adatokat.
+   Az ertelmezes a szovegekben is ez: "nincs fiok, nincs sajat szerver",
+   NEM az, hogy "semmi nem hagyja el a telefont".
+
+   A Room WAL-modban fut, ezert a -wal es -shm fajlokat is mentjuk, kulonben
+   a legutobbi irasok hianyozhatnanak a visszaallitott adatbazisbol.
 -->
 <full-backup-content>
-    <!--
-   <include domain="sharedpref" path="."/>
-   <exclude domain="sharedpref" path="device.xml"/>
--->
+    <include domain="database" path="shelflife.db" />
+    <include domain="database" path="shelflife.db-wal" />
+    <include domain="database" path="shelflife.db-shm" />
+    <include domain="sharedpref" path="." />
 </full-backup-content>

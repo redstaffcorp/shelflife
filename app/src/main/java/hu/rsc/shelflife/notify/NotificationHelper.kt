@@ -28,6 +28,10 @@ import hu.rsc.shelflife.ui.expiryLabel
 object NotificationHelper {
 
     const val CHANNEL_ID = "expiry_reminders"
+    const val REFINE_CHANNEL_ID = "refine_reminders"
+    /** MainActivity extra: nyitaskor a "Becsult datum" szuro legyen bekapcsolva. */
+    const val EXTRA_SHOW_ESTIMATED = "hu.rsc.shelflife.SHOW_ESTIMATED"
+    private const val REFINE_NOTIFICATION_ID = 9100
     private const val GROUP_KEY = "hu.rsc.shelflife.EXPIRY"
     private const val SUMMARY_NOTIFICATION_ID = 9000
 
@@ -39,8 +43,17 @@ object NotificationHelper {
         ).apply {
             description = context.getString(R.string.notification_channel_description)
         }
+        // Kulon csatorna, hogy a felhasznalo a rendszerben kulon is lenemithassa.
+        val refineChannel = NotificationChannel(
+            REFINE_CHANNEL_ID,
+            context.getString(R.string.refine_channel_name),
+            NotificationManager.IMPORTANCE_DEFAULT
+        ).apply {
+            description = context.getString(R.string.refine_channel_description)
+        }
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         manager.createNotificationChannel(channel)
+        manager.createNotificationChannel(refineChannel)
     }
 
     fun hasPermission(context: Context): Boolean {
@@ -97,6 +110,37 @@ object NotificationHelper {
                 .build()
             manager.notify(SUMMARY_NOTIFICATION_ID, summary)
         }
+    }
+
+    /**
+     * Heti emlekezteto: `count` tetel lejarata csak becsult. Koppintasra az app
+     * a "Becsult datum" szurovel nyilik, igy rogton a pontositando tetelek latszanak.
+     */
+    fun notifyRefine(context: Context, count: Int) {
+        if (count <= 0 || !hasPermission(context)) return
+        // Frissites utan a worker hamarabb futhat, mint hogy az app megnyilna es
+        // letrehozna az uj csatornat -- csatorna nelkul az ertesites elveszne.
+        ensureChannel(context)
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra(EXTRA_SHOW_ESTIMATED, true)
+        }
+        val pending = PendingIntent.getActivity(
+            context,
+            REFINE_NOTIFICATION_ID,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val title = context.resources.getQuantityString(R.plurals.refine_notification_title, count, count)
+        val notification = NotificationCompat.Builder(context, REFINE_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(title)
+            .setContentText(context.getString(R.string.refine_notification_text))
+            .setStyle(NotificationCompat.BigTextStyle().bigText(context.getString(R.string.refine_notification_text)))
+            .setAutoCancel(true)
+            .setContentIntent(pending)
+            .build()
+        NotificationManagerCompat.from(context).notify(REFINE_NOTIFICATION_ID, notification)
     }
 
     fun cancel(context: Context, itemId: Long) {

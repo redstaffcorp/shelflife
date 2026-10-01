@@ -96,7 +96,8 @@ class PantryRepository private constructor(private val appContext: Context) {
 
     // -- Termekek (vonalkod-cache + ismert termekek) --
 
-    private val collator: Collator = Collator.getInstance(Locale.forLanguageTag("hu"))
+    // Az aktualis nyelv abc-rendje (getter: az app nyelve futas kozben valtozhat).
+    private val collator: Collator get() = Collator.getInstance(Locale.getDefault())
 
     val knownProducts: Flow<List<KnownProduct>> = flow {
         ensureReady()

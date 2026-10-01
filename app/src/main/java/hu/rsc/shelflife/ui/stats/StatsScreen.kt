@@ -47,6 +47,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -56,6 +58,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hu.rsc.shelflife.R
+import hu.rsc.shelflife.ads.NativeAdCard
 import hu.rsc.shelflife.data.MonthBar
 import hu.rsc.shelflife.data.StatsPeriod
 import hu.rsc.shelflife.data.WasteStats
@@ -133,6 +136,7 @@ fun StatsScreen(
             ExpiringSoonCard(s.expiringSoon, onBack)
             MonthlyChart(s.months)
             if (s.frequentlyWasted.isNotEmpty()) TipCard(s)
+            NativeAdCard()
             Spacer(Modifier.height(16.dp))
         }
     }
@@ -146,7 +150,7 @@ private fun HeroCard(s: WasteStats) {
         s.wasted == 0 -> stringResource(R.string.stats_hero_perfect)
         rate >= 90 -> stringResource(R.string.stats_hero_excellent, rate)
         rate >= 75 -> stringResource(R.string.stats_hero_good, rate)
-        else -> stringResource(R.string.stats_hero_every_item_counts, s.saved)
+        else -> pluralStringResource(R.plurals.stats_hero_every_item_counts, s.saved, s.saved)
     }
     Surface(
         color = MaterialTheme.colorScheme.primaryContainer,
@@ -174,14 +178,14 @@ private fun HeroCard(s: WasteStats) {
             }
             Text(headline, style = MaterialTheme.typography.titleMedium)
             s.improvementPoints?.let {
-                Text(stringResource(R.string.stats_improvement, it), style = MaterialTheme.typography.bodyMedium)
+                Text(pluralStringResource(R.plurals.stats_improvement, it, it), style = MaterialTheme.typography.bodyMedium)
             }
             val streak = s.daysSinceLastWaste
             when {
                 streak == null && s.saved > 0 ->
                     Text(stringResource(R.string.stats_streak_never), style = MaterialTheme.typography.bodyMedium)
                 streak != null && streak >= 3 ->
-                    Text(stringResource(R.string.stats_streak_days, streak.toInt()), style = MaterialTheme.typography.bodyMedium)
+                    Text(pluralStringResource(R.plurals.stats_streak_days, streak.toInt(), streak.toInt()), style = MaterialTheme.typography.bodyMedium)
             }
         }
     }
@@ -216,7 +220,7 @@ private fun ExpiringSoonCard(count: Int, onGoToList: () -> Unit) {
             Icon(Icons.Filled.Schedule, contentDescription = null)
             Spacer(Modifier.width(12.dp))
             Text(
-                stringResource(R.string.stats_expiring_soon, count, WasteStats.EXPIRING_SOON_DAYS.toInt()),
+                pluralStringResource(R.plurals.stats_expiring_soon, count, count, WasteStats.EXPIRING_SOON_DAYS.toInt()),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.weight(1f)
             )
@@ -238,8 +242,9 @@ private fun MonthlyChart(months: List<MonthBar>) {
     val wastedColor = if (dark) Color(0xFF8A7458) else Color(0xFFB8A07A)
     val maxTotal = (months.maxOfOrNull { it.saved + it.wasted } ?: 0).coerceAtLeast(1)
     var selected by rememberSaveable { mutableStateOf(months.lastIndex) }
-    val locale = remember { Locale.forLanguageTag("hu") }
-    val longMonth = remember { DateTimeFormatter.ofPattern("LLLL", locale) }
+    // Az app aktualis nyelve (nem fixen magyar).
+    val locale: Locale = LocalConfiguration.current.locales[0]
+    val longMonth = remember(locale) { DateTimeFormatter.ofPattern("LLLL", locale) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),

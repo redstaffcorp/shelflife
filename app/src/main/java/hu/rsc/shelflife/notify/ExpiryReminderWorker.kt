@@ -15,6 +15,8 @@ import java.time.temporal.ChronoUnit
  * kuld, es megjegyzi, hogy erre a lejarati datumra mar tortent ertesites
  * (igy nem spammel naponta ugyanarra a tetelre).
  *
+ * Ugyanez a futas kuldi a heti pontositas-emlekeztetot is (becsult datumok).
+ *
  * Tudatosan NEM foreground service es NEM exact alarm: a WorkManager
  * altal ajanlott, akkumulator-barat, "deferrable periodic work" mintat
  * kovetjuk.
@@ -45,6 +47,15 @@ class ExpiryReminderWorker(
         if (due.isNotEmpty()) {
             NotificationHelper.notifyExpiring(applicationContext, due)
             repository.markNotified(due)
+        }
+
+        // Heti pontositas-emlekezteto a becsult datumu tetelekrol (lasd RefineReminderPolicy).
+        if (settings.refineReminderEnabled) {
+            val toRefine = RefineReminderPolicy.itemsToRefine(items, today)
+            if (RefineReminderPolicy.shouldSend(toRefine.size, settings.lastRefineReminderEpochDay, today)) {
+                NotificationHelper.notifyRefine(applicationContext, toRefine.size)
+                settings.lastRefineReminderEpochDay = today.toEpochDay()
+            }
         }
 
         return Result.success()

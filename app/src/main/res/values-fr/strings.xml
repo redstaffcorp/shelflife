@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Textes en français. Langue par défaut (repli) : anglais, values/strings.xml. -->
+<resources>
+    <string name="app_subtitle">Garde-manger et dates de péremption</string>
+
+    <!-- Autorisations -->
+    <string name="camera_permission_rationale">L’accès à la caméra est nécessaire pour lire le code-barres et la date de péremption. Les images restent sur ton téléphone et ne sont jamais envoyées.</string>
+    <string name="camera_permission_grant">Autoriser la caméra</string>
+
+    <!-- Actions générales -->
+    <string name="action_cancel">Annuler</string>
+    <string name="action_save">Enregistrer</string>
+    <string name="action_delete">Supprimer</string>
+    <string name="action_done">Terminé</string>
+    <string name="action_ok">OK</string>
+    <string name="action_copy">Copier</string>
+    <string name="action_modify">Modifier</string>
+    <string name="action_swap">Inverser</string>
+    <string name="action_open_settings">Ouvrir les paramètres</string>
+
+    <!-- Écran principal -->
+    <string name="cd_notification_settings">Paramètres des notifications</string>
+    <string name="action_start_scan">Scanner des produits</string>
+    <string name="action_finish_session">Terminé – clôturer</string>
+    <string name="cd_manual_add">Ajouter manuellement</string>
+    <string name="scan_idle_hint">Pour ajouter de nouveaux produits, appuie sur « Scanner des produits » – la caméra ne s’allume qu’à ce moment-là.</string>
+    <string name="items_header">Articles enregistrés (%1$d)</string>
+    <string name="sort_expiry">Péremption</string>
+    <string name="sort_recorded">Ajout</string>
+    <string name="filter_estimated">Date estimée : %1$d – à vérifier</string>
+
+    <!-- Session de scan (caméra) -->
+    <string name="scan_hint_barcode">Montre le code-barres à la caméra</string>
+    <string name="scan_hint_resolving">Recherche du produit…</string>
+    <string name="scan_hint_ask_name">Produit inconnu – saisis son nom</string>
+    <string name="scan_hint_date">« %1$s » – place la date de péremption dans le cadre</string>
+    <string name="cd_ocr_debug">Diagnostic OCR</string>
+    <string name="cd_torch_on">Allumer la lampe</string>
+    <string name="cd_torch_off">Éteindre la lampe</string>
+    <string name="estimate_week">~1 semaine</string>
+    <string name="estimate_month">~1 mois</string>
+    <string name="estimate_year">~1 an</string>
+    <string name="action_later">Plus tard</string>
+    <string name="action_type_date">Saisir la date</string>
+
+    <!-- Diagnostic OCR (développeur) -->
+    <string name="ocr_log_copied">Journal OCR copié dans le presse-papiers (%1$d lignes)</string>
+    <string name="ocr_debug_status">Journal : %1$d lignes</string>
+    <string name="ocr_debug_hit">trouvé : %1$s</string>
+    <string name="ocr_debug_no_hit">aucun résultat</string>
+
+    <!-- Quantité, unité -->
+    <string name="quantity_optional">Quantité (facultatif)</string>
+    <string name="cd_quantity_decrease">Diminuer la quantité</string>
+    <string name="cd_quantity_increase">Augmenter la quantité</string>
+    <string name="cd_choose_unit">Choisir l’unité</string>
+    <string name="unit_title">Unité</string>
+    <string name="unit_other">Autre…</string>
+    <!-- Unité par défaut ; doit être le premier élément de quantity_units. -->
+    <string name="unit_default">pièce</string>
+    <string-array name="quantity_units">
+        <item>pièce</item>
+        <item>paquet</item>
+        <item>boîte</item>
+        <item>kg</item>
+        <item>g</item>
+        <item>l</item>
+        <item>cl</item>
+        <item>ml</item>
+        <item>bocal</item>
+        <item>sachet</item>
+        <item>bouteille</item>
+    </string-array>
+
+    <!-- Carte d’article -->
+    <string name="expiry_overdue">Périmé</string>
+    <string name="expiry_today">Périme aujourd’hui</string>
+    <string name="expiry_tomorrow">Périme demain</string>
+    <plurals name="expiry_in_days">
+        <item quantity="one">Périme dans %1$d jour</item>
+        <item quantity="other">Périme dans %1$d jours</item>
+    </plurals>
+    <string name="item_new_latest">NOUVEAU – à l’instant</string>
+    <string name="item_new_session">NOUVEAU – ajouté pendant cette session</string>
+    <string name="item_estimated_hint">Date estimée – touche pour la corriger</string>
+    <string name="item_recorded">Ajouté : %1$s</string>
+    <string name="item_manual">manuel</string>
+    <string name="item_quantity">Quantité : %1$d %2$s</string>
+    <string name="item_ambiguous_day_month">Ordre jour/mois incertain</string>
+
+    <!-- Nouveau produit (code-barres inconnu) -->
+    <string name="new_product_title">Nouveau produit</string>
+    <string name="new_product_barcode">Code-barres : %1$s</string>
+    <string name="lookup_searching_off">Recherche dans Open Food Facts…</string>
+    <string name="lookup_searching_upc">Aucun résultat – essai avec UPCitemdb…</string>
+    <string name="lookup_offline">Pas de connexion Internet – saisis-le manuellement.</string>
+    <string name="lookup_found">Rempli automatiquement (%1$s) – vérifie et corrige si besoin.</string>
+    <string name="lookup_not_found">Introuvable dans les bases en ligne – saisis-le manuellement.</string>
+    <string name="product_name_label">Nom du produit</string>
+    <string name="product_name_label_with_list">Nom du produit (ou choisis dans la liste)</string>
+    <string name="cd_known_products">Produits connus</string>
+
+    <!-- Ajout manuel / modification -->
+    <string name="edit_title_new">Ajouter un article manuellement</string>
+    <string name="edit_title_edit">Modifier l’article</string>
+    <string name="edit_expiry">Péremption : %1$s</string>
+    <string name="edit_estimated_checkbox">Date estimée (à vérifier plus tard)</string>
+
+    <!-- Saisie rapide de la date (jour-mois) -->
+    <string name="quick_date_title">Date de péremption</string>
+    <string name="quick_date_label">Jour, mois (année)</string>
+    <string name="quick_date_placeholder">ex. 2510 ou 251026</string>
+    <string name="quick_date_overdue">%1$s – déjà périmé !</string>
+    <string name="quick_date_today">%1$s – aujourd’hui</string>
+    <plurals name="quick_date_in_days">
+        <item quantity="one">%1$s – dans %2$d jour</item>
+        <item quantity="other">%1$s – dans %2$d jours</item>
+    </plurals>
+    <string name="quick_date_invalid">Date non valide</string>
+    <string name="quick_date_hint">Sans année, la prochaine date correspondante est utilisée.</string>
+    <string name="quick_date_calendar">Depuis le calendrier</string>
+
+    <!-- Paramètres des notifications -->
+    <string name="notif_settings_title">Notifications de péremption</string>
+    <string name="notif_settings_description">L’appli peut te prévenir avant qu’un produit enregistré ne périme. Elle vérifie la liste une fois par jour en arrière-plan – aucun service permanent, pas de caméra, uniquement les dates que tu as enregistrées.</string>
+    <string name="notif_settings_enable">Activer les notifications</string>
+    <string name="notif_permission_missing">L’autorisation de notification n’est pas accordée, l’appli ne peut donc pas te prévenir. Autorise-la dans les paramètres du système si tu veux des rappels avant la péremption.</string>
+    <string name="notif_days_before_question">Combien de jours avant la péremption ?</string>
+    <string name="notif_days_same_day">le jour même</string>
+    <plurals name="notif_days_n">
+        <item quantity="one">%1$d jour</item>
+        <item quantity="other">%1$d jours</item>
+    </plurals>
+    <string name="notif_refine_title">Rappel hebdomadaire des dates estimées</string>
+    <string name="notif_refine_description">Une fois par semaine, si des articles n’ont qu’une date estimée « ~ », pour que tu relèves la vraie date sur l’emballage.</string>
+    <string name="cd_decrease">Diminuer</string>
+    <string name="cd_increase">Augmenter</string>
+
+    <!-- Notifications système -->
+    <string name="notification_channel_name">Rappels de péremption</string>
+    <string name="notification_channel_description">Te prévient quand un produit enregistré va bientôt périmer.</string>
+    <string name="notification_single_title">Bientôt périmé : %1$s</string>
+    <string name="notification_multi_title">%1$d produits vont bientôt périmer</string>
+    <string name="notification_multi_text">Touche pour voir le détail</string>
+    <string name="notification_line">%1$s — %2$s</string>
+    <string name="notification_estimated">%1$s (estimée – vérifie sur l’emballage)</string>
+    <string name="refine_channel_name">Rappel de vérification des dates</string>
+    <string name="refine_channel_description">Rappel hebdomadaire des articles à date de péremption estimée.</string>
+    <plurals name="refine_notification_title">
+        <item quantity="one">%1$d article n’a qu’une date estimée</item>
+        <item quantity="other">%1$d articles n’ont qu’une date estimée</item>
+    </plurals>
+    <string name="refine_notification_text">Regarde la vraie date sur l’emballage – quelques touches, et on te prévient pile à temps.</string>
+
+    <!-- Emplacements -->
+    <string name="location_fridge">Frigo</string>
+    <string name="location_freezer">Congélateur</string>
+    <string name="location_pantry">Placard</string>
+
+    <!-- Consommé, annulation -->
+    <string name="swipe_consumed">Consommé</string>
+    <string name="swipe_wasted">Jeté</string>
+    <string name="action_minus_one">−1</string>
+    <string name="action_undo">Annuler</string>
+    <string name="undo_consumed">Consommé : %1$s</string>
+    <string name="undo_wasted">Jeté : %1$s</string>
+    <string name="undo_deleted">Supprimé : %1$s</string>
+    <string name="undo_consumed_one">%1$s : −1 (reste %2$d %3$s)</string>
+    <string name="undo_quick_added">Ajouté : %1$s (péremption estimée)</string>
+
+    <!-- Recherche, menu -->
+    <string name="cd_search">Rechercher</string>
+    <string name="search_placeholder">Rechercher par nom</string>
+    <string name="cd_more">Plus</string>
+
+    <!-- Grille rapide (sans code-barres) -->
+    <string name="action_no_barcode">Sans code-barres</string>
+    <string name="quick_add_title">Ajout rapide</string>
+    <string name="quick_add_hint">Les produits sans code-barres en une touche. La péremption est estimée – tu pourras la corriger plus tard dans la liste.</string>
+    <string name="quick_add_other">Autre (ajout manuel)</string>
+    <string name="quick_add_location_auto">Chaque produit va à sa place habituelle – ou choisis un emplacement.</string>
+    <string name="quick_add_location_chosen">La péremption estimée s’adapte à l’emplacement choisi.</string>
+    <string name="quick_tile_today">auj.</string>
+    <plurals name="quick_tile_days">
+        <item quantity="one">~%1$d jour</item>
+        <item quantity="other">~%1$d jours</item>
+    </plurals>
+    <plurals name="quick_tile_months">
+        <item quantity="one">~%1$d mois</item>
+        <item quantity="other">~%1$d mois</item>
+    </plurals>
+    <string name="quick_bread">Pain</string>
+    <string name="quick_pastry">Viennoiseries</string>
+    <string name="quick_eggs">Œufs</string>
+    <string name="quick_meat">Viande</string>
+    <string name="quick_poultry">Poulet</string>
+    <string name="quick_fish">Poisson</string>
+    <string name="quick_cold_cuts">Charcuterie (coupe)</string>
+    <string name="quick_cheese_deli">Fromage (coupe)</string>
+    <string name="quick_vegetables">Légumes</string>
+    <string name="quick_salad">Salade</string>
+    <string name="quick_fruit">Fruits</string>
+    <string name="quick_leftovers">Restes</string>
+
+    <!-- Retour d’expérience -->
+    <string name="action_feedback">Envoyer un avis</string>
+    <string name="action_ad_privacy_options">Paramètres de confidentialité des annonces</string>
+    <!-- Natív hirdetés címkéje (kötelező jelölés) -->
+    <string name="ad_label">Annonce</string>
+    <string name="feedback_subject">Avis sur ShelfLife (v%1$s)</string>
+    <string name="feedback_body">\n\n\n---\nVersion de l’appli : %1$s\nTéléphone : %2$s\nAndroid : %3$s</string>
+    <string name="feedback_no_email_app">Aucune application de messagerie trouvée.</string>
+
+    <!-- Actions des notifications -->
+    <string name="notification_action_consumed">Consommé</string>
+    <string name="notification_action_snooze">Rappel demain</string>
+
+    <!-- Présentation -->
+    <string name="action_show_onboarding">Comment ça marche ?</string>
+    <string name="onboarding_skip">Passer</string>
+    <string name="onboarding_next">Suivant</string>
+    <string name="onboarding_start">C’est parti</string>
+    <string name="onboarding_welcome_title">Ne jette plus de nourriture</string>
+    <string name="onboarding_welcome_text">ShelfLife suit ce qui périme et quand, dans ton frigo et ton placard – et te prévient à temps. Sans inscription et sans serveur à nous : nous ne voyons jamais ta liste. La sauvegarde de ton téléphone la conserve, pour ne pas la perdre en changeant de téléphone.</string>
+    <string name="onboarding_scan_title">Enregistré en quelques secondes</string>
+    <string name="onboarding_scan_text">Appuie sur « Scanner des produits », montre le code-barres, puis place la date de péremption dans le cadre. Si la caméra n’y arrive pas : « ~1 semaine », « Plus tard », ou saisis-la en chiffres (ex. 2510 = 25 oct.). Au début, choisis : frigo, congélateur ou placard.</string>
+    <string name="onboarding_scan_sample_date">À CONSOMMER DE PRÉFÉRENCE AVANT : 25.10.2026</string>
+    <string name="onboarding_quick_title">Même sans code-barres</string>
+    <string name="onboarding_quick_text">Pain, œufs, légumes ? Une touche sur le bouton +. La péremption est alors estimée (signe ~) – tu peux la corriger dans la liste à tout moment.</string>
+    <string name="onboarding_quick_sample_status">~ Périme dans 3 jours · estimée</string>
+    <string name="onboarding_swipe_title">Consommé ou jeté ?</string>
+    <string name="onboarding_swipe_text">Fais glisser un article vers la gauche s’il est consommé, vers la droite s’il a fallu le jeter. Pour plusieurs pièces, « −1 » diminue la quantité d’une unité. Une erreur ? « Annuler » en bas remet tout en place.</string>
+    <string name="onboarding_swipe_sample_name">Yaourt</string>
+    <string name="onboarding_swipe_sample_status">Périme dans 2 jours · 4 pièces</string>
+    <string name="onboarding_swipe_legend_left">← gauche : consommé</string>
+    <string name="onboarding_swipe_legend_right">droite : jeté →</string>
+    <string name="onboarding_notify_title">On te prévient avant la péremption</string>
+    <string name="onboarding_notify_text">Nous vérifions la liste une fois par jour. Depuis la notification, tu peux indiquer en une touche que c’est consommé, ou demander un rappel pour demain. Tu pourras modifier cela plus tard avec l’icône de cloche.</string>
+    <string name="onboarding_notify_enable">Activer les notifications</string>
+    <string name="onboarding_notify_enabled">Notifications activées</string>
+
+    <!-- Statistiques (aliments sauvés). Ton : positif, jamais culpabilisant. -->
+    <string name="stats_title">Aliments sauvés</string>
+    <string name="cd_stats">Statistiques</string>
+    <string name="cd_back">Retour</string>
+    <string name="stats_period_30">30 derniers jours</string>
+    <string name="stats_period_all">Au total</string>
+    <string name="stats_percent">%1$d %%</string>
+    <string name="stats_rate_caption">de tes aliments ont été consommés, pas jetés</string>
+    <string name="stats_hero_no_period_data">Aucun article clôturé sur cette période – jette un œil à « Au total » !</string>
+    <string name="stats_hero_perfect">Parfait ! Tout a été consommé, rien n’a été gaspillé.</string>
+    <string name="stats_hero_excellent">Excellent ! Chez toi, presque rien n’est gaspillé.</string>
+    <string name="stats_hero_good">Beau travail – tu es sur la bonne voie !</string>
+    <plurals name="stats_hero_every_item_counts">
+        <item quantity="one">Chaque bouchée sauvée compte – déjà %1$d article.</item>
+        <item quantity="other">Chaque bouchée sauvée compte – déjà %1$d articles.</item>
+    </plurals>
+    <plurals name="stats_improvement">
+        <item quantity="one">+%1$d point par rapport aux 30 jours précédents</item>
+        <item quantity="other">+%1$d points par rapport aux 30 jours précédents</item>
+    </plurals>
+    <plurals name="stats_streak_days">
+        <item quantity="one">Rien de gaspillé depuis %1$d jour</item>
+        <item quantity="other">Rien de gaspillé depuis %1$d jours</item>
+    </plurals>
+    <string name="stats_streak_never">Aucun article gaspillé jusqu’ici</string>
+    <string name="stats_tile_saved">consommés</string>
+    <string name="stats_tile_rescued">sauvés à la dernière minute</string>
+    <string name="stats_tile_wasted">n’ont pas pu être sauvés</string>
+    <string name="stats_rescued_explainer">« Sauvés à la dernière minute » : consommés dans les %1$d derniers jours avant la péremption ou après – ils auraient très probablement fini à la poubelle.</string>
+    <plurals name="stats_expiring_soon">
+        <item quantity="one">%1$d article périme dans les %2$d prochains jours – tu peux encore le sauver.</item>
+        <item quantity="other">%1$d articles périment dans les %2$d prochains jours – tu peux encore les sauver.</item>
+    </plurals>
+    <string name="stats_expiring_soon_action">Voir</string>
+    <string name="stats_chart_title">Par mois</string>
+    <string name="stats_legend_saved">consommés</string>
+    <string name="stats_legend_wasted">non sauvés</string>
+    <string name="stats_chart_readout">%1$s : %2$d consommés · %3$d non sauvés</string>
+    <string name="stats_tip_title">Astuce : ceux-ci restent souvent</string>
+    <string name="stats_tip_item">• %1$s (%2$d×, 90 derniers jours)</string>
+    <string name="stats_tip_text">Pense à acheter un format plus petit, ou à les congeler à temps.</string>
+    <string name="stats_empty_title">Ici, tu verras combien d’aliments tu sauves</string>
+    <string name="stats_empty_text">Quand quelque chose est consommé, fais-le glisser vers la gauche dans la liste (ou appuie sur « Consommé »). Chaque article de ce type apparaît ici.</string>
+</resources>

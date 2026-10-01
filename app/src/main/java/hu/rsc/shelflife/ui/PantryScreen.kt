@@ -1,5 +1,6 @@
 package hu.rsc.shelflife.ui
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -63,6 +64,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hu.rsc.shelflife.R
+import hu.rsc.shelflife.ads.AdsManager
+import hu.rsc.shelflife.ads.AnchoredBannerAd
 import hu.rsc.shelflife.data.NotificationSettingsStore
 import hu.rsc.shelflife.data.PantryItem
 import hu.rsc.shelflife.data.StorageLocation
@@ -88,9 +91,12 @@ import kotlinx.coroutines.flow.first
 fun PantryScreen(
     onShowOnboarding: () -> Unit = {},
     onShowStats: () -> Unit = {},
+    showEstimatedPending: Boolean = false,
+    onShowEstimatedHandled: () -> Unit = {},
     vm: PantryViewModel = viewModel()
 ) {
     val context = LocalContext.current
+    val activity = LocalActivity.current
     val haptic = LocalHapticFeedback.current
     val items by vm.items.collectAsStateWithLifecycle()
     val knownProducts by vm.knownProducts.collectAsStateWithLifecycle()
@@ -110,6 +116,15 @@ fun PantryScreen(
     var sortMode by rememberSaveable { mutableStateOf(ItemSortMode.BY_EXPIRY) }
     // "Becsult" szuro: csak a meg pontositando (becsult lejaratu) tetelek.
     var showOnlyEstimated by rememberSaveable { mutableStateOf(false) }
+    // A heti pontositas-emlekezteto ertesitesebol nyitva: rogton a becsult tetelek.
+    LaunchedEffect(showEstimatedPending) {
+        if (showEstimatedPending) {
+            showOnlyEstimated = true
+            locationFilter = null
+            searchActive = false
+            onShowEstimatedHandled()
+        }
+    }
     val sortedItems by remember {
         derivedStateOf {
             filterAndSort(items, sortMode, showOnlyEstimated, locationFilter, if (searchActive) query else "")
@@ -161,6 +176,10 @@ fun PantryScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
+        // Reklam csak a lista nezetben: rogzitesi kor (kamera) alatt soha.
+        bottomBar = {
+            if (!vm.cameraSessionActive) AnchoredBannerAd()
+        },
         topBar = {
             TopAppBar(
                 title = {
@@ -207,6 +226,15 @@ fun PantryScreen(
                                 sendFeedback(context)
                             }
                         )
+                        if (AdsManager.privacyOptionsRequired && activity != null) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.action_ad_privacy_options)) },
+                                onClick = {
+                                    menuOpen = false
+                                    AdsManager.showPrivacyOptions(activity)
+                                }
+                            )
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -394,9 +422,14 @@ fun PantryScreen(
         if (showQuickAdd) {
             val resources = context.resources
             QuickAddDialog(
-                onPick = { product ->
+                // Fagyasztos rogzitesi korben a gyorsracs is a fagyasztot ajanlja; egyebkent
+                // minden csempe a sajat szokasos helyere kerul (kenyer -> kamra).
+                initialLocation = StorageLocation.FREEZER.takeIf {
+                    vm.cameraSessionActive && vm.sessionLocation == StorageLocation.FREEZER
+                },
+                onPick = { product, location ->
                     showQuickAdd = false
-                    vm.addQuickProduct(product, resources.getString(product.nameRes))
+                    vm.addQuickProduct(product, resources.getString(product.nameRes), location)
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 },
                 onOther = {

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Deutsche Texte. Standardsprache (Fallback) ist Englisch: values/strings.xml. -->
+<resources>
+    <string name="app_subtitle">Vorräte und Haltbarkeit im Blick</string>
+
+    <!-- Berechtigungen -->
+    <string name="camera_permission_rationale">Zum Scannen von Barcode und Haltbarkeitsdatum wird die Kamera benötigt. Die Bilder bleiben auf deinem Handy und werden nirgendwohin hochgeladen.</string>
+    <string name="camera_permission_grant">Kamera erlauben</string>
+
+    <!-- Allgemeine Aktionen -->
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_save">Speichern</string>
+    <string name="action_delete">Löschen</string>
+    <string name="action_done">Fertig</string>
+    <string name="action_ok">OK</string>
+    <string name="action_copy">Kopieren</string>
+    <string name="action_modify">Ändern</string>
+    <string name="action_swap">Tauschen</string>
+    <string name="action_open_settings">Einstellungen öffnen</string>
+
+    <!-- Hauptbildschirm -->
+    <string name="cd_notification_settings">Benachrichtigungseinstellungen</string>
+    <string name="action_start_scan">Produkte scannen</string>
+    <string name="action_finish_session">Fertig – beenden</string>
+    <string name="cd_manual_add">Manuell hinzufügen</string>
+    <string name="scan_idle_hint">Um neue Produkte zu erfassen, tippe auf „Produkte scannen“ – erst dann wird die Kamera eingeschaltet.</string>
+    <string name="items_header">Erfasste Artikel (%1$d)</string>
+    <string name="sort_expiry">Ablauf</string>
+    <string name="sort_recorded">Erfasst</string>
+    <string name="filter_estimated">Geschätztes Datum: %1$d – zu prüfen</string>
+
+    <!-- Erfassungsrunde (Kamera) -->
+    <string name="scan_hint_barcode">Halte den Barcode vor die Kamera</string>
+    <string name="scan_hint_resolving">Produkt wird gesucht…</string>
+    <string name="scan_hint_ask_name">Unbekanntes Produkt – gib den Namen ein</string>
+    <string name="scan_hint_date">„%1$s“ – halte das Haltbarkeitsdatum in den Rahmen</string>
+    <string name="cd_ocr_debug">OCR-Diagnose</string>
+    <string name="cd_torch_on">Taschenlampe einschalten</string>
+    <string name="cd_torch_off">Taschenlampe ausschalten</string>
+    <string name="estimate_week">~1 Woche</string>
+    <string name="estimate_month">~1 Monat</string>
+    <string name="estimate_year">~1 Jahr</string>
+    <string name="action_later">Später</string>
+    <string name="action_type_date">Datum eingeben</string>
+
+    <!-- OCR-Diagnose (Entwickler) -->
+    <string name="ocr_log_copied">OCR-Log in die Zwischenablage kopiert (%1$d Zeilen)</string>
+    <string name="ocr_debug_status">Log: %1$d Zeilen</string>
+    <string name="ocr_debug_hit">Treffer: %1$s</string>
+    <string name="ocr_debug_no_hit">kein Treffer</string>
+
+    <!-- Menge, Einheit -->
+    <string name="quantity_optional">Menge (optional)</string>
+    <string name="cd_quantity_decrease">Menge verringern</string>
+    <string name="cd_quantity_increase">Menge erhöhen</string>
+    <string name="cd_choose_unit">Einheit wählen</string>
+    <string name="unit_title">Einheit</string>
+    <string name="unit_other">Andere…</string>
+    <!-- Standardeinheit; muss das erste Element von quantity_units sein. -->
+    <string name="unit_default">Stück</string>
+    <string-array name="quantity_units">
+        <item>Stück</item>
+        <item>Packung</item>
+        <item>Schachtel</item>
+        <item>kg</item>
+        <item>g</item>
+        <item>l</item>
+        <item>ml</item>
+        <item>Glas</item>
+        <item>Beutel</item>
+        <item>Dose</item>
+        <item>Flasche</item>
+    </string-array>
+
+    <!-- Artikelkarte -->
+    <string name="expiry_overdue">Abgelaufen</string>
+    <string name="expiry_today">Läuft heute ab</string>
+    <string name="expiry_tomorrow">Läuft morgen ab</string>
+    <plurals name="expiry_in_days">
+        <item quantity="one">Läuft in %1$d Tag ab</item>
+        <item quantity="other">Läuft in %1$d Tagen ab</item>
+    </plurals>
+    <string name="item_new_latest">NEU – gerade erfasst</string>
+    <string name="item_new_session">NEU – in dieser Runde erfasst</string>
+    <string name="item_estimated_hint">Geschätztes Datum – tippen zum Korrigieren</string>
+    <string name="item_recorded">Erfasst: %1$s</string>
+    <string name="item_manual">manuell</string>
+    <string name="item_quantity">Menge: %1$d %2$s</string>
+    <string name="item_ambiguous_day_month">Reihenfolge Tag/Monat unsicher</string>
+
+    <!-- Neues Produkt (unbekannter Barcode) -->
+    <string name="new_product_title">Neues Produkt</string>
+    <string name="new_product_barcode">Barcode: %1$s</string>
+    <string name="lookup_searching_off">Suche in Open Food Facts…</string>
+    <string name="lookup_searching_upc">Kein Treffer – Versuch mit UPCitemdb…</string>
+    <string name="lookup_offline">Keine Internetverbindung – bitte manuell eingeben.</string>
+    <string name="lookup_found">Automatisch ausgefüllt (%1$s) – bitte prüfen und bei Bedarf korrigieren.</string>
+    <string name="lookup_not_found">In keiner Online-Datenbank gefunden – bitte manuell eingeben.</string>
+    <string name="product_name_label">Produktname</string>
+    <string name="product_name_label_with_list">Produktname (oder aus der Liste wählen)</string>
+    <string name="cd_known_products">Bekannte Produkte</string>
+
+    <!-- Manuell hinzufügen / bearbeiten -->
+    <string name="edit_title_new">Artikel manuell hinzufügen</string>
+    <string name="edit_title_edit">Artikel bearbeiten</string>
+    <string name="edit_expiry">Ablauf: %1$s</string>
+    <string name="edit_estimated_checkbox">Geschätztes Datum (später prüfen)</string>
+
+    <!-- Schnelle Datumseingabe (Tag-Monat) -->
+    <string name="quick_date_title">Haltbarkeitsdatum</string>
+    <string name="quick_date_label">Tag, Monat (Jahr)</string>
+    <string name="quick_date_placeholder">z. B. 2510 oder 251026</string>
+    <string name="quick_date_overdue">%1$s – bereits abgelaufen!</string>
+    <string name="quick_date_today">%1$s – heute</string>
+    <plurals name="quick_date_in_days">
+        <item quantity="one">%1$s – in %2$d Tag</item>
+        <item quantity="other">%1$s – in %2$d Tagen</item>
+    </plurals>
+    <string name="quick_date_invalid">Kein gültiges Datum</string>
+    <string name="quick_date_hint">Ohne Jahr wird das nächste passende Datum verwendet.</string>
+    <string name="quick_date_calendar">Aus dem Kalender</string>
+
+    <!-- Benachrichtigungseinstellungen -->
+    <string name="notif_settings_title">Ablauf-Benachrichtigungen</string>
+    <string name="notif_settings_description">Die App kann dich erinnern, bevor ein erfasstes Produkt abläuft. Sie prüft die Liste einmal täglich im Hintergrund – kein dauerhaft laufender Dienst, keine Kamera, nur die gespeicherten Haltbarkeitsdaten.</string>
+    <string name="notif_settings_enable">Benachrichtigungen einschalten</string>
+    <string name="notif_permission_missing">Die Benachrichtigungsberechtigung fehlt, daher kann die App dich nicht erinnern. Erlaube sie in den Systemeinstellungen, wenn du vor dem Ablauf erinnert werden möchtest.</string>
+    <string name="notif_days_before_question">Wie viele Tage vor dem Ablauf?</string>
+    <string name="notif_days_same_day">am selben Tag</string>
+    <plurals name="notif_days_n">
+        <item quantity="one">%1$d Tag</item>
+        <item quantity="other">%1$d Tage</item>
+    </plurals>
+    <string name="notif_refine_title">Wöchentliche Erinnerung an geschätzte Daten</string>
+    <string name="notif_refine_description">Einmal pro Woche, wenn Artikel nur ein geschätztes „~“-Datum haben, damit du das echte Datum auf der Verpackung nachtragen kannst.</string>
+    <string name="cd_decrease">Verringern</string>
+    <string name="cd_increase">Erhöhen</string>
+
+    <!-- Systembenachrichtigungen -->
+    <string name="notification_channel_name">Ablauf-Erinnerungen</string>
+    <string name="notification_channel_description">Benachrichtigt dich, wenn ein erfasstes Produkt bald abläuft.</string>
+    <string name="notification_single_title">Läuft bald ab: %1$s</string>
+    <string name="notification_multi_title">%1$d Produkte laufen bald ab</string>
+    <string name="notification_multi_text">Für Details tippen</string>
+    <string name="notification_line">%1$s — %2$s</string>
+    <string name="notification_estimated">%1$s (geschätzt – auf der Verpackung prüfen)</string>
+    <string name="refine_channel_name">Erinnerung zum Datum-Prüfen</string>
+    <string name="refine_channel_description">Wöchentliche Erinnerung an Artikel mit geschätztem Haltbarkeitsdatum.</string>
+    <plurals name="refine_notification_title">
+        <item quantity="one">%1$d Artikel hat nur ein geschätztes Datum</item>
+        <item quantity="other">%1$d Artikel haben nur ein geschätztes Datum</item>
+    </plurals>
+    <string name="refine_notification_text">Schau auf der Verpackung nach dem echten Datum – ein paar Fingertipps, und wir erinnern dich genau rechtzeitig.</string>
+
+    <!-- Orte -->
+    <string name="location_fridge">Kühlschrank</string>
+    <string name="location_freezer">Gefrierfach</string>
+    <string name="location_pantry">Vorratsschrank</string>
+
+    <!-- Aufgebraucht, rückgängig -->
+    <string name="swipe_consumed">Aufgebraucht</string>
+    <string name="swipe_wasted">Weggeworfen</string>
+    <string name="action_minus_one">−1</string>
+    <string name="action_undo">Rückgängig</string>
+    <string name="undo_consumed">Aufgebraucht: %1$s</string>
+    <string name="undo_wasted">Weggeworfen: %1$s</string>
+    <string name="undo_deleted">Gelöscht: %1$s</string>
+    <string name="undo_consumed_one">%1$s: −1 (noch %2$d %3$s)</string>
+    <string name="undo_quick_added">Hinzugefügt: %1$s (geschätzter Ablauf)</string>
+
+    <!-- Suche, Menü -->
+    <string name="cd_search">Suchen</string>
+    <string name="search_placeholder">Nach Namen suchen</string>
+    <string name="cd_more">Mehr</string>
+
+    <!-- Schnellraster (ohne Barcode) -->
+    <string name="action_no_barcode">Ohne Barcode</string>
+    <string name="quick_add_title">Schnell hinzufügen</string>
+    <string name="quick_add_hint">Produkte ohne Barcode mit einem Tipp. Das Ablaufdatum ist geschätzt – du kannst es später in der Liste korrigieren.</string>
+    <string name="quick_add_other">Andere (manuell hinzufügen)</string>
+    <string name="quick_add_location_auto">Alles kommt an seinen üblichen Platz – oder wähle einen Ort.</string>
+    <string name="quick_add_location_chosen">Der geschätzte Ablauf richtet sich nach dem gewählten Ort.</string>
+    <string name="quick_tile_today">heute</string>
+    <plurals name="quick_tile_days">
+        <item quantity="one">~%1$d Tag</item>
+        <item quantity="other">~%1$d Tage</item>
+    </plurals>
+    <plurals name="quick_tile_months">
+        <item quantity="one">~%1$d Monat</item>
+        <item quantity="other">~%1$d Monate</item>
+    </plurals>
+    <string name="quick_bread">Brot</string>
+    <string name="quick_pastry">Gebäck</string>
+    <string name="quick_eggs">Eier</string>
+    <string name="quick_meat">Fleisch</string>
+    <string name="quick_poultry">Hähnchen</string>
+    <string name="quick_fish">Fisch</string>
+    <string name="quick_cold_cuts">Aufschnitt (Theke)</string>
+    <string name="quick_cheese_deli">Käse (Theke)</string>
+    <string name="quick_vegetables">Gemüse</string>
+    <string name="quick_salad">Salat</string>
+    <string name="quick_fruit">Obst</string>
+    <string name="quick_leftovers">Reste</string>
+
+    <!-- Feedback -->
+    <string name="action_feedback">Feedback senden</string>
+    <string name="action_ad_privacy_options">Datenschutzeinstellungen für Werbung</string>
+    <!-- Natív hirdetés címkéje (kötelező jelölés) -->
+    <string name="ad_label">Anzeige</string>
+    <string name="feedback_subject">ShelfLife-Feedback (v%1$s)</string>
+    <string name="feedback_body">\n\n\n---\nApp-Version: %1$s\nTelefon: %2$s\nAndroid: %3$s</string>
+    <string name="feedback_no_email_app">Keine E-Mail-App gefunden.</string>
+
+    <!-- Benachrichtigungsaktionen -->
+    <string name="notification_action_consumed">Aufgebraucht</string>
+    <string name="notification_action_snooze">Morgen erinnern</string>
+
+    <!-- Einführung -->
+    <string name="action_show_onboarding">Wie funktioniert es?</string>
+    <string name="onboarding_skip">Überspringen</string>
+    <string name="onboarding_next">Weiter</string>
+    <string name="onboarding_start">Los geht’s</string>
+    <string name="onboarding_welcome_title">Nie mehr Essen wegwerfen</string>
+    <string name="onboarding_welcome_text">ShelfLife behält im Blick, was in Kühlschrank und Vorratsschrank wann abläuft – und erinnert dich rechtzeitig. Ohne Registrierung und ohne eigene Server: Wir sehen deine Liste nie. Das Backup deines Handys bewahrt sie auf, damit sie beim Handywechsel nicht verloren geht.</string>
+    <string name="onboarding_scan_title">In Sekunden erfasst</string>
+    <string name="onboarding_scan_text">Tippe auf „Produkte scannen“, zeige den Barcode und halte dann das Haltbarkeitsdatum in den Rahmen. Wenn die Kamera es nicht lesen kann: „~1 Woche“, „Später“ oder als Ziffern eingeben (z. B. 2510 = 25. Okt.). Wähle zu Beginn: Kühlschrank, Gefrierfach oder Vorratsschrank.</string>
+    <string name="onboarding_scan_sample_date">MINDESTENS HALTBAR BIS: 25.10.2026</string>
+    <string name="onboarding_quick_title">Auch ohne Barcode</string>
+    <string name="onboarding_quick_text">Brot, Eier, Gemüse? Ein Tipp auf die +-Taste. Das Ablaufdatum ist dann geschätzt (~-Zeichen) – du kannst es jederzeit in der Liste korrigieren.</string>
+    <string name="onboarding_quick_sample_status">~ Läuft in 3 Tagen ab · geschätzt</string>
+    <string name="onboarding_swipe_title">Aufgebraucht oder weggeworfen?</string>
+    <string name="onboarding_swipe_text">Wische einen Artikel nach links, wenn er aufgebraucht ist, nach rechts, wenn du ihn wegwerfen musstest. Bei mehreren Stück verringert „−1“ die Menge um eins. Vertan? „Rückgängig“ unten macht alles wieder rückgängig.</string>
+    <string name="onboarding_swipe_sample_name">Joghurt</string>
+    <string name="onboarding_swipe_sample_status">Läuft in 2 Tagen ab · 4 Stück</string>
+    <string name="onboarding_swipe_legend_left">← links: aufgebraucht</string>
+    <string name="onboarding_swipe_legend_right">rechts: weggeworfen →</string>
+    <string name="onboarding_notify_title">Wir erinnern dich vor dem Ablauf</string>
+    <string name="onboarding_notify_text">Wir prüfen die Liste einmal täglich. In der Benachrichtigung kannst du mit einem Tipp „aufgebraucht“ melden oder dich morgen erneut erinnern lassen. Später kannst du das über das Glockensymbol ändern.</string>
+    <string name="onboarding_notify_enable">Benachrichtigungen einschalten</string>
+    <string name="onboarding_notify_enabled">Benachrichtigungen sind an</string>
+
+    <!-- Statistik (gerettete Lebensmittel). Ton: positiv, nie vorwurfsvoll. -->
+    <string name="stats_title">Gerettete Lebensmittel</string>
+    <string name="cd_stats">Statistik</string>
+    <string name="cd_back">Zurück</string>
+    <string name="stats_period_30">Letzte 30 Tage</string>
+    <string name="stats_period_all">Gesamt</string>
+    <string name="stats_percent">%1$d %%</string>
+    <string name="stats_rate_caption">deiner Lebensmittel wurden gegessen, nicht weggeworfen</string>
+    <string name="stats_hero_no_period_data">In diesem Zeitraum gibt es noch keine abgeschlossenen Artikel – schau dir „Gesamt“ an!</string>
+    <string name="stats_hero_perfect">Perfekt! Alles wurde aufgebraucht, nichts landete im Müll.</string>
+    <string name="stats_hero_excellent">Ausgezeichnet! Bei dir wird fast nichts verschwendet.</string>
+    <string name="stats_hero_good">Gute Arbeit – du bist auf dem richtigen Weg!</string>
+    <plurals name="stats_hero_every_item_counts">
+        <item quantity="one">Jeder gerettete Bissen zählt – schon %1$d Artikel.</item>
+        <item quantity="other">Jeder gerettete Bissen zählt – schon %1$d Artikel.</item>
+    </plurals>
+    <plurals name="stats_improvement">
+        <item quantity="one">+%1$d Prozentpunkt gegenüber den vorherigen 30 Tagen</item>
+        <item quantity="other">+%1$d Prozentpunkte gegenüber den vorherigen 30 Tagen</item>
+    </plurals>
+    <plurals name="stats_streak_days">
+        <item quantity="one">Seit %1$d Tag nichts verschwendet</item>
+        <item quantity="other">Seit %1$d Tagen nichts verschwendet</item>
+    </plurals>
+    <string name="stats_streak_never">Bisher wurde kein einziger Artikel verschwendet</string>
+    <string name="stats_tile_saved">aufgebraucht</string>
+    <string name="stats_tile_rescued">in letzter Minute gerettet</string>
+    <string name="stats_tile_wasted">nicht mehr zu retten</string>
+    <string name="stats_rescued_explainer">„In letzter Minute gerettet“: in den letzten %1$d Tagen vor dem Ablauf oder später aufgebraucht – diese wären sehr wahrscheinlich im Müll gelandet.</string>
+    <plurals name="stats_expiring_soon">
+        <item quantity="one">%1$d Artikel läuft in den nächsten %2$d Tagen ab – jetzt kannst du ihn noch retten.</item>
+        <item quantity="other">%1$d Artikel laufen in den nächsten %2$d Tagen ab – jetzt kannst du sie noch retten.</item>
+    </plurals>
+    <string name="stats_expiring_soon_action">Ansehen</string>
+    <string name="stats_chart_title">Pro Monat</string>
+    <string name="stats_legend_saved">aufgebraucht</string>
+    <string name="stats_legend_wasted">nicht gerettet</string>
+    <string name="stats_chart_readout">%1$s: %2$d aufgebraucht · %3$d nicht gerettet</string>
+    <string name="stats_tip_title">Tipp: Diese bleiben oft übrig</string>
+    <string name="stats_tip_item">• %1$s (%2$d×, letzte 90 Tage)</string>
+    <string name="stats_tip_text">Vielleicht lohnt sich eine kleinere Packung – oder rechtzeitig einfrieren.</string>
+    <string name="stats_empty_title">Hier siehst du, wie viele Lebensmittel du rettest</string>
+    <string name="stats_empty_text">Wenn etwas aufgebraucht ist, wische es in der Liste nach links (oder tippe auf „Aufgebraucht“). Jeder solche Artikel erscheint hier.</string>
+</resources>

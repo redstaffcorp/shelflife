@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -80,7 +81,7 @@ fun QuickDateDialog(
                             when {
                                 days < 0 -> stringResource(R.string.quick_date_overdue, formatted)
                                 days == 0L -> stringResource(R.string.quick_date_today, formatted)
-                                else -> stringResource(R.string.quick_date_in_days, formatted, days.toInt())
+                                else -> pluralStringResource(R.plurals.quick_date_in_days, days.toInt(), formatted, days.toInt())
                             },
                             style = MaterialTheme.typography.bodyLarge,
                             color = if (days < 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
