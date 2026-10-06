@@ -2,6 +2,7 @@ package hu.rsc.shelflife.ads
 
 import android.content.Context
 import android.graphics.Typeface
+import android.util.Log
 import android.graphics.drawable.GradientDrawable
 import android.text.TextUtils
 import android.view.Gravity
@@ -48,6 +49,7 @@ fun NativeAdCard(modifier: Modifier = Modifier) {
         var disposed = false
         val loader = AdLoader.Builder(context, BuildConfig.ADMOB_NATIVE_ID)
             .forNativeAd { ad ->
+                Log.d(AdsManager.TAG, "Native ad loaded")
                 if (disposed) {
                     ad.destroy()
                 } else {
@@ -56,7 +58,9 @@ fun NativeAdCard(modifier: Modifier = Modifier) {
                 }
             }
             .withAdListener(object : AdListener() {
-                override fun onAdFailedToLoad(error: LoadAdError) = Unit
+                override fun onAdFailedToLoad(error: LoadAdError) {
+                    Log.w(AdsManager.TAG, "Native ad FAILED ${error.code}: ${error.message}")
+                }
             })
             .withNativeAdOptions(
                 NativeAdOptions.Builder()

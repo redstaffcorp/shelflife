@@ -14,14 +14,14 @@ android {
         applicationId = "hu.rsc.shelflife"
         minSdk = 26
         targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // AdMob: EGYELORE a Google hivatalos TESZT azonositoi. Eles kiadas
-        // elott ezt a 3 erteket kell a sajat AdMob-azonositokra cserelni
-        // (app ID: ~ jellel, hirdetesi egysegek: / jellel).
+        // AdMob: alapertelmezesben (debug) a Google hivatalos TESZT azonositoi,
+        // hogy fejlesztes kozben ne a sajat egysegeken legyen megjelenes/kattintas.
+        // A sajat (eles) azonositok a release buildTypes-ban vannak.
         manifestPlaceholders["admobAppId"] = "ca-app-pub-3940256099942544~3347511713"
         buildConfigField("String", "ADMOB_BANNER_ID", "\"ca-app-pub-3940256099942544/9214589741\"")
         buildConfigField("String", "ADMOB_NATIVE_ID", "\"ca-app-pub-3940256099942544/2247696110\"")
@@ -29,6 +29,11 @@ android {
 
     buildTypes {
         release {
+            // AdMob: SAJAT eles azonositok (csak release build).
+            manifestPlaceholders["admobAppId"] = "ca-app-pub-6858754562565967~9687495703"
+            buildConfigField("String", "ADMOB_BANNER_ID", "\"ca-app-pub-6858754562565967/8486094672\"")
+            buildConfigField("String", "ADMOB_NATIVE_ID", "\"ca-app-pub-6858754562565967/5859931332\"")
+
             // R8: kodzsugoritas, obfuszkalas es eroforras-szukites. Az
             // alapertelmezett Android keep-szabalyokat az uj DSL automatikusan
             // hozzaadja; a sajat szabalyok: src/main/keepRules/*.keep

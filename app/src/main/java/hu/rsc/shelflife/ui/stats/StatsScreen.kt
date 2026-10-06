@@ -119,6 +119,7 @@ fun StatsScreen(
             if (!s.hasAnyHistory) {
                 EmptyStats()
                 ExpiringSoonCard(s.expiringSoon, onBack)
+                NativeAdCard()
                 return@Column
             }
 

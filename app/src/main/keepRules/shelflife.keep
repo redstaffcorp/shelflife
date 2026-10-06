@@ -10,3 +10,11 @@
 # A WorkManager a Worker-t reflexioval peldanyositja (a WorkManager consumer
 # szabalyai ezt fedik, ez csak biztositek).
 -keep class hu.rsc.shelflife.notify.ExpiryReminderWorker { <init>(...); }
+
+# ML Kit (vonalkod + szovegfelismeres): az R8 full mode szetoptimalizalja a
+# belso komponens-regisztraciot (firebase-components factory-k), es release
+# buildben a BarcodeScanning.getClient() null komponenst kap -> NPE a
+# ScannerAnalyzer konstruktoraban (Play belso teszt, 2026-10-04).
+-keep class com.google.mlkit.** { *; }
+-keep class com.google.android.gms.internal.mlkit_vision_** { *; }
+-keep class com.google.firebase.components.** { *; }

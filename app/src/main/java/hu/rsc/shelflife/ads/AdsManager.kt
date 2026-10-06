@@ -2,10 +2,12 @@ package hu.rsc.shelflife.ads
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.google.android.gms.ads.MobileAds
+import hu.rsc.shelflife.BuildConfig
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
@@ -25,6 +27,8 @@ import java.util.concurrent.atomic.AtomicBoolean
  * A reklam semmit nem kap a lista tartalmabol.
  */
 object AdsManager {
+
+    const val TAG = "ShelfLifeAds"
 
     /** Igaz, ha a hozzajarulas rendben van es az SDK el lett inditva. */
     var canRequestAds by mutableStateOf(false)
@@ -47,11 +51,18 @@ object AdsManager {
             activity,
             params,
             {
-                UserMessagingPlatform.loadAndShowConsentFormIfRequired(activity) { _ ->
+                Log.d(TAG, "Consent info updated: status=${info.consentStatus}, canRequestAds=${info.canRequestAds()}")
+                UserMessagingPlatform.loadAndShowConsentFormIfRequired(activity) { formError ->
+                    if (formError != null) {
+                        Log.w(TAG, "Consent form error ${formError.errorCode}: ${formError.message}")
+                    }
                     onConsentResolved(activity, info)
                 }
             },
-            { _ -> onConsentResolved(activity, info) }
+            { error ->
+                Log.w(TAG, "Consent info update FAILED ${error.errorCode}: ${error.message}")
+                onConsentResolved(activity, info)
+            }
         )
         // Korabbi munkamenetbol mar meglevo hozzajarulas: ne varjunk a frissitesre.
         if (info.canRequestAds()) initializeSdk(activity)
@@ -68,7 +79,17 @@ object AdsManager {
     private fun onConsentResolved(activity: Activity, info: ConsentInformation) {
         privacyOptionsRequired = info.privacyOptionsRequirementStatus ==
             ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED
-        if (info.canRequestAds()) initializeSdk(activity)
+        Log.d(TAG, "Consent resolved: status=${info.consentStatus}, canRequestAds=${info.canRequestAds()}, privacyOptions=${info.privacyOptionsRequirementStatus}")
+        if (info.canRequestAds()) {
+            initializeSdk(activity)
+        } else if (BuildConfig.DEBUG) {
+            // Fejlesztes alatt (teszt-azonositokkal) a hozzajarulasi uzenet meg
+            // nincs beallitva az AdMobban, ezert a UMP hibat ad / nem engedi a
+            // reklamot. Debug buildben ettol fuggetlenul inditunk, hogy a
+            // TESZT-reklamok lathatok legyenek. Release buildben ez nem fut.
+            Log.w(TAG, "DEBUG: consent not obtained -> starting SDK anyway (test ads only)")
+            initializeSdk(activity)
+        }
     }
 
     private fun initializeSdk(context: Context) {
@@ -76,8 +97,13 @@ object AdsManager {
         val appContext = context.applicationContext
         // Az inicializalas lassu lehet: ne a fo szalon.
         CoroutineScope(Dispatchers.IO).launch {
-            MobileAds.initialize(appContext) {}
-            withContext(Dispatchers.Main) { canRequestAds = true }
+            MobileAds.initialize(appContext) { status ->
+                Log.d(TAG, "MobileAds initialized: ${status.adapterStatusMap.mapValues { it.value.initializationState }}")
+            }
+            withContext(Dispatchers.Main) {
+                canRequestAds = true
+                Log.d(TAG, "canRequestAds = true")
+            }
         }
     }
 }

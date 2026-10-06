@@ -1,5 +1,6 @@
 package hu.rsc.shelflife.ads
 
+import android.util.Log
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -51,7 +52,12 @@ fun AnchoredBannerAd(modifier: Modifier = Modifier) {
             adUnitId = BuildConfig.ADMOB_BANNER_ID
             setAdSize(adSize)
             adListener = object : AdListener() {
+                override fun onAdLoaded() {
+                    Log.d(AdsManager.TAG, "Banner loaded")
+                }
+
                 override fun onAdFailedToLoad(error: LoadAdError) {
+                    Log.w(AdsManager.TAG, "Banner FAILED ${error.code}: ${error.message}")
                     failed = true
                 }
             }
