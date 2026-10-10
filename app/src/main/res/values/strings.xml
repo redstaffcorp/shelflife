@@ -207,16 +207,10 @@
     <string name="quick_fruit">Fruit</string>
     <string name="quick_leftovers">Leftovers</string>
 
-    <!-- Feedback -->
-    <!-- Recipient of feedback e-mails. If empty, the mail app asks for it. -->
-    <string name="feedback_email" translatable="false"></string>
-    <string name="action_feedback">Send feedback</string>
+    <!-- Ads -->
     <string name="action_ad_privacy_options">Ad privacy settings</string>
     <!-- Natív hirdetés címkéje (kötelező jelölés) -->
     <string name="ad_label">Ad</string>
-    <string name="feedback_subject">ShelfLife feedback (v%1$s)</string>
-    <string name="feedback_body">\n\n\n---\nApp version: %1$s\nPhone: %2$s\nAndroid: %3$s</string>
-    <string name="feedback_no_email_app">No e-mail app found.</string>
 
     <!-- Notification actions -->
     <string name="notification_action_consumed">Used up</string>

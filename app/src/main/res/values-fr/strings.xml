@@ -202,14 +202,10 @@
     <string name="quick_fruit">Fruits</string>
     <string name="quick_leftovers">Restes</string>
 
-    <!-- Retour d’expérience -->
-    <string name="action_feedback">Envoyer un avis</string>
+    <!-- Ads -->
     <string name="action_ad_privacy_options">Paramètres de confidentialité des annonces</string>
     <!-- Natív hirdetés címkéje (kötelező jelölés) -->
     <string name="ad_label">Annonce</string>
-    <string name="feedback_subject">Avis sur ShelfLife (v%1$s)</string>
-    <string name="feedback_body">\n\n\n---\nVersion de l’appli : %1$s\nTéléphone : %2$s\nAndroid : %3$s</string>
-    <string name="feedback_no_email_app">Aucune application de messagerie trouvée.</string>
 
     <!-- Actions des notifications -->
     <string name="notification_action_consumed">Consommé</string>

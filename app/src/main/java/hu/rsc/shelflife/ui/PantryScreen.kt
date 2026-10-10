@@ -219,13 +219,6 @@ fun PantryScreen(
                                 onShowOnboarding()
                             }
                         )
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.action_feedback)) },
-                            onClick = {
-                                menuOpen = false
-                                sendFeedback(context)
-                            }
-                        )
                         if (AdsManager.privacyOptionsRequired && activity != null) {
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.action_ad_privacy_options)) },

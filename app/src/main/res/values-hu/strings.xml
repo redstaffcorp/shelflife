@@ -202,14 +202,10 @@
     <string name="quick_fruit">Gyümölcs</string>
     <string name="quick_leftovers">Maradék étel</string>
 
-    <!-- Visszajelzés -->
-    <string name="action_feedback">Visszajelzés küldése</string>
+    <!-- Ads -->
     <string name="action_ad_privacy_options">Hirdetési adatvédelmi beállítások</string>
     <!-- Natív hirdetés címkéje (kötelező jelölés) -->
     <string name="ad_label">Hirdetés</string>
-    <string name="feedback_subject">ShelfLife visszajelzés (v%1$s)</string>
-    <string name="feedback_body">\n\n\n---\nApp verzió: %1$s\nTelefon: %2$s\nAndroid: %3$s</string>
-    <string name="feedback_no_email_app">Nem található levelezőalkalmazás.</string>
 
     <!-- Értesítés-akciók -->
     <string name="notification_action_consumed">Elfogyott</string>

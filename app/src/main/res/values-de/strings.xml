@@ -202,14 +202,10 @@
     <string name="quick_fruit">Obst</string>
     <string name="quick_leftovers">Reste</string>
 
-    <!-- Feedback -->
-    <string name="action_feedback">Feedback senden</string>
+    <!-- Ads -->
     <string name="action_ad_privacy_options">Datenschutzeinstellungen für Werbung</string>
     <!-- Natív hirdetés címkéje (kötelező jelölés) -->
     <string name="ad_label">Anzeige</string>
-    <string name="feedback_subject">ShelfLife-Feedback (v%1$s)</string>
-    <string name="feedback_body">\n\n\n---\nApp-Version: %1$s\nTelefon: %2$s\nAndroid: %3$s</string>
-    <string name="feedback_no_email_app">Keine E-Mail-App gefunden.</string>
 
     <!-- Benachrichtigungsaktionen -->
     <string name="notification_action_consumed">Aufgebraucht</string>
