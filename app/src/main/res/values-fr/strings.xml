@@ -232,8 +232,10 @@
     <string name="onboarding_swipe_legend_right">droite : jeté →</string>
     <string name="onboarding_notify_title">On te prévient avant la péremption</string>
     <string name="onboarding_notify_text">Nous vérifions la liste une fois par jour. Depuis la notification, tu peux indiquer en une touche que c’est consommé, ou demander un rappel pour demain. Tu pourras modifier cela plus tard avec l’icône de cloche.</string>
-    <string name="onboarding_notify_enable">Activer les notifications</string>
-    <string name="onboarding_notify_enabled">Notifications activées</string>
+    <string name="onboarding_notify_toggle_title">Rappels de péremption</string>
+    <string name="onboarding_notify_toggle_on">Activés – recommandé. Tu peux les désactiver à tout moment avec l’icône de cloche.</string>
+    <string name="onboarding_notify_toggle_off">Désactivés – on ne te prévient pas avant la péremption.</string>
+    <string name="onboarding_notify_permission_hint">Après « C’est parti », ton téléphone demandera l’autorisation – choisis « Autoriser ».</string>
 
     <!-- Statistiques (aliments sauvés). Ton : positif, jamais culpabilisant. -->
     <string name="stats_title">Aliments sauvés</string>
@@ -278,4 +280,54 @@
     <string name="stats_tip_text">Pense à acheter un format plus petit, ou à les congeler à temps.</string>
     <string name="stats_empty_title">Ici, tu verras combien d’aliments tu sauves</string>
     <string name="stats_empty_text">Quand quelque chose est consommé, fais-le glisser vers la gauche dans la liste (ou appuie sur « Consommé »). Chaque article de ce type apparaît ici.</string>
+
+    <!-- Ertesites-teszt / diagnosztika (NotificationSettingsDialog) -->
+    <string name="notif_test_section">Tester les notifications</string>
+    <string name="notif_test_now_button">Envoyer une notification test</string>
+    <string name="notif_test_bg_button">Test en arrière-plan dans 1 minute</string>
+    <string name="notif_test_bg_scheduled">Programmé. Ferme l’app (tu peux même la balayer des apps récentes) et attends 1 à 2 minutes.</string>
+    <string name="notif_test_now_title">Notification test ShelfLife</string>
+    <string name="notif_test_now_text">Si tu vois ceci, l’autorisation et le canal de notification sont OK.</string>
+    <string name="notif_test_bg_title">Vérification en arrière-plan effectuée ✓</string>
+    <string name="notif_test_bg_text">%1$d articles actifs, dont %2$d expirent dans les %3$d jours (ou ont déjà expiré).</string>
+    <string name="notif_diag_permission">Autorisation : %1$s</string>
+    <string name="notif_diag_channel">Canal d’expiration : %1$s</string>
+    <string name="notif_diag_battery">Optimisation batterie : %1$s</string>
+    <string name="notif_diag_daily">Vérification de secours : %1$s</string>
+    <string name="notif_diag_next">Prochaine exécution : %1$s</string>
+    <string name="notif_diag_last">Dernière exécution : %1$s (%2$s)</string>
+    <string name="notif_diag_test">Test en arrière-plan : %1$s</string>
+    <string name="notif_diag_ok">OK</string>
+    <string name="notif_diag_missing">non accordée</string>
+    <string name="notif_diag_channel_off">muet / désactivé</string>
+    <string name="notif_diag_battery_on">restreinte (optimisée)</string>
+    <string name="notif_diag_battery_off">non restreinte</string>
+    <string name="notif_diag_battery_settings">Réglages d’optimisation batterie</string>
+    <string name="notif_diag_never">jamais</string>
+    <string name="notif_diag_not_scheduled">non programmée</string>
+    <string name="notif_outcome_no_permission">pas d’autorisation</string>
+    <string name="notif_outcome_disabled">désactivé</string>
+    <string name="notif_outcome_nothing_due">rien n’expirait</string>
+    <string name="notif_outcome_notified">notifié pour %1$d articles</string>
+    <string name="notif_outcome_test">test, %1$d articles expirant</string>
+
+    <!-- Napi osszesito ertesites -->
+    <plurals name="notification_summary_soon">
+        <item quantity="one">%1$d expire bientôt</item>
+        <item quantity="other">%1$d expirent bientôt</item>
+    </plurals>
+    <plurals name="notification_summary_expired">
+        <item quantity="one">%1$d déjà expiré</item>
+        <item quantity="other">%1$d déjà expirés</item>
+    </plurals>
+    <string name="notification_summary_both">%1$s, %2$s</string>
+    <string name="notification_more">…et %1$d de plus</string>
+    <string name="notif_diag_alarm">Réveil du matin : %1$s</string>
+    <string name="notif_diag_runs">Dernières exécutions :</string>
+    <string name="notif_trigger_alarm">réveil du matin</string>
+    <string name="notif_trigger_worker">secours</string>
+    <string name="notif_trigger_test">test</string>
+    <string name="notif_outcome_too_early">trop tôt, attend le matin</string>
+    <string name="notif_outcome_already_today">déjà notifié aujourd’hui</string>
+    <string name="notif_diag_not_set">non défini</string>
 </resources>

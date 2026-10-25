@@ -15,15 +15,15 @@ import hu.rsc.shelflife.MainActivity
 import hu.rsc.shelflife.R
 import hu.rsc.shelflife.data.PantryItem
 import hu.rsc.shelflife.ui.expiryLabel
+import java.time.LocalDate
 
 /**
- * Lejarati ertesitesek letrehozasa es kikuldese. Nincs foreground service
- * es nincs exact alarm -- a WorkManager (lasd ReminderScheduler) egy
- * kb. naponkenti hatterellenorzest futtat, ez a helper csak a tenyleges
- * NotificationManager-hivasokert felelos.
+ * Lejarati ertesitesek letrehozasa es kikuldese. Az utemezes a
+ * ReminderScheduler dolga (reggeli ebresztes + tartalek WorkManager), a
+ * dontes az ExpiryCheck-e; ez a helper csak a NotificationManager-hivasokert felel.
  *
- * Minden tetel kulon ertesitest kap ket akcioval ("Elfogyott", "Holnap
- * szolj"), tobb tetelnel egy csoportba (Android bundle) osszefogva.
+ * Naponta EGY osszesito ertesites (notifyDailySummary). Egyetlen tetelnel
+ * ket akciogombbal ("Elfogyott", "Holnap szolj").
  */
 object NotificationHelper {
 
@@ -32,8 +32,9 @@ object NotificationHelper {
     /** MainActivity extra: nyitaskor a "Becsult datum" szuro legyen bekapcsolva. */
     const val EXTRA_SHOW_ESTIMATED = "hu.rsc.shelflife.SHOW_ESTIMATED"
     private const val REFINE_NOTIFICATION_ID = 9100
-    private const val GROUP_KEY = "hu.rsc.shelflife.EXPIRY"
-    private const val SUMMARY_NOTIFICATION_ID = 9000
+    private const val DAILY_NOTIFICATION_ID = 9000
+    private const val MAX_SUMMARY_LINES = 6
+    private const val TEST_NOTIFICATION_ID = 9200
 
     fun ensureChannel(context: Context) {
         val channel = NotificationChannel(
@@ -67,13 +68,20 @@ object NotificationHelper {
     /** Egy teteles ertesites azonositoja (az akciok is ezzel zarjak be). */
     fun notificationIdFor(itemId: Long): Int = itemId.hashCode()
 
-    fun notifyExpiring(context: Context, items: List<PantryItem>) {
+    /**
+     * Napi osszesito: EGY ertesites az osszes lejaro / mar lejart tetelrol
+     * (mindig ugyanazzal az azonositoval, igy a tegnapit felulirja).
+     * Egyetlen tetelnel a tetel neve a cim, es ott vannak az akciogombok
+     * ("Elfogyott", "Holnap szolj"); tobbnel InboxStyle lista.
+     */
+    fun notifyDailySummary(context: Context, items: List<PantryItem>, today: LocalDate) {
         if (items.isEmpty() || !hasPermission(context)) return
+        ensureChannel(context)
         val manager = NotificationManagerCompat.from(context)
-        val grouped = items.size > 1
 
-        items.forEach { item ->
-            val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+        if (items.size == 1) {
+            val item = items.first()
+            val notification = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(context.getString(R.string.notification_single_title, item.productName))
                 .setContentText(statusText(context, item))
@@ -89,27 +97,39 @@ object NotificationHelper {
                     context.getString(R.string.notification_action_snooze),
                     actionIntent(context, NotificationActionReceiver.ACTION_SNOOZE, item.id)
                 )
-            if (grouped) builder.setGroup(GROUP_KEY)
-            manager.notify(notificationIdFor(item.id), builder.build())
+                .build()
+            manager.notify(DAILY_NOTIFICATION_ID, notification)
+            return
         }
 
-        if (grouped) {
-            val style = NotificationCompat.InboxStyle()
-            items.forEach {
-                style.addLine(context.getString(R.string.notification_line, it.productName, statusText(context, it)))
-            }
-            val summary = NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_notification)
-                .setContentTitle(context.getString(R.string.notification_multi_title, items.size))
-                .setContentText(context.getString(R.string.notification_multi_text))
-                .setStyle(style)
-                .setGroup(GROUP_KEY)
-                .setGroupSummary(true)
-                .setAutoCancel(true)
-                .setContentIntent(openAppIntent(context))
-                .build()
-            manager.notify(SUMMARY_NOTIFICATION_ID, summary)
+        val expired = items.count { it.expiry.isBefore(today) }
+        val soon = items.size - expired
+        val summaryText = when {
+            expired == 0 -> context.resources.getQuantityString(R.plurals.notification_summary_soon, soon, soon)
+            soon == 0 -> context.resources.getQuantityString(R.plurals.notification_summary_expired, expired, expired)
+            else -> context.getString(
+                R.string.notification_summary_both,
+                context.resources.getQuantityString(R.plurals.notification_summary_expired, expired, expired),
+                context.resources.getQuantityString(R.plurals.notification_summary_soon, soon, soon)
+            )
         }
+        val style = NotificationCompat.InboxStyle().setSummaryText(summaryText)
+        items.take(MAX_SUMMARY_LINES).forEach {
+            style.addLine(context.getString(R.string.notification_line, it.productName, statusText(context, it)))
+        }
+        if (items.size > MAX_SUMMARY_LINES) {
+            style.addLine(context.getString(R.string.notification_more, items.size - MAX_SUMMARY_LINES))
+        }
+        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(context.getString(R.string.notification_multi_title, items.size))
+            .setContentText(summaryText)
+            .setStyle(style)
+            .setNumber(items.size)
+            .setAutoCancel(true)
+            .setContentIntent(openAppIntent(context))
+            .build()
+        manager.notify(DAILY_NOTIFICATION_ID, notification)
     }
 
     /**
@@ -143,8 +163,42 @@ object NotificationHelper {
         NotificationManagerCompat.from(context).notify(REFINE_NOTIFICATION_ID, notification)
     }
 
+    /** Teszt: azonnali ertesites a lejarati csatornan (engedely + csatorna ellenorzese). */
+    fun notifyTestNow(context: Context): Boolean {
+        if (!hasPermission(context)) return false
+        ensureChannel(context)
+        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(context.getString(R.string.notif_test_now_title))
+            .setContentText(context.getString(R.string.notif_test_now_text))
+            .setAutoCancel(true)
+            .setContentIntent(openAppIntent(context))
+            .build()
+        NotificationManagerCompat.from(context).notify(TEST_NOTIFICATION_ID, notification)
+        return true
+    }
+
+    /** Teszt: a hatter-teszt futas eredmenye (mindig kimegy, ha van engedely). */
+    fun notifyTestResult(context: Context, activeCount: Int, dueCount: Int, daysBefore: Int) {
+        if (!hasPermission(context)) return
+        val text = context.getString(R.string.notif_test_bg_text, activeCount, dueCount, daysBefore)
+        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(context.getString(R.string.notif_test_bg_title))
+            .setContentText(text)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(text))
+            .setAutoCancel(true)
+            .setContentIntent(openAppIntent(context))
+            .build()
+        NotificationManagerCompat.from(context).notify(TEST_NOTIFICATION_ID, notification)
+    }
+
+    /** Az akciogombok utan: a napi ertesites eltuntetese. */
     fun cancel(context: Context, itemId: Long) {
-        NotificationManagerCompat.from(context).cancel(notificationIdFor(itemId))
+        val manager = NotificationManagerCompat.from(context)
+        manager.cancel(DAILY_NOTIFICATION_ID)
+        // Regebbi verziobol itt maradt, tetelenkenti ertesites.
+        manager.cancel(notificationIdFor(itemId))
     }
 
     private fun openAppIntent(context: Context): PendingIntent {

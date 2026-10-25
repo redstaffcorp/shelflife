@@ -1,0 +1,44 @@
+=== Short description (max. 80 characters) ===
+Scan groceries by barcode, save expiry dates, get reminded before they expire
+
+=== Full description (en-US) ===
+ShelfLife is a food pantry list focused on best-before and use-by dates. You record what you bought, the app shows what expires next, sorted by date, and sends you a notification in time before it expires.
+
+HOW IT WORKS
+1. Tap "Scan products" and choose where the products go: fridge, freezer or pantry.
+2. Hold the barcode up to the camera. The product name is looked up in the open databases Open Food Facts and UPCitemdb (internet connection required). If nothing is found, you type the name once – the next time you scan it, the app already knows the product.
+3. Hold the printed expiry date inside the frame. Text recognition runs directly on the device; camera images are not uploaded.
+4. If the date can't be read, type it as digits (e.g. 2510 = 25 October), pick it from the calendar, set an estimate ("~1 week", "~1 month", "~1 year") or add it "Later".
+
+FEATURES
+• Barcode scanning with automatic product lookup
+• Expiry date recognition with the camera
+• Quick date entry as digits (day-month-year order)
+• Add products without a barcode (e.g. bread, eggs, fruit, vegetables, meat, deli cheese and cold cuts, leftovers) with one tap – with an estimated expiry date
+• Estimated dates are marked with "~" in the list and can be replaced with the real date at any time; a filter shows all items still to be checked
+• Quantity and unit (pcs, pack, kg, l, can, bottle, etc.)
+• Sort the list by expiry or by date added, filter by location, search by name
+• Color coding: expired, expiring soon, still good
+• Swipe left = used up, swipe right = thrown away, "−1" reduces the quantity; every action can be undone
+• Add, edit and delete items manually
+
+REMINDERS
+• Notification an adjustable number of days before expiry (or on the same day)
+• Right from the notification: "Used up" or "Remind me tomorrow"
+• Optional weekly reminder about items that only have an estimated date
+• The check runs once a day in the background – no permanently running service
+
+STATISTICS
+The "Food saved" statistics show what share of your recorded food was used up and what share was thrown away – for the last 30 days and overall.
+
+DATA AND PRIVACY
+• No account or registration needed
+• Your list is stored only on your device; we run no servers of our own and never see your data. Android device backup can save the list to your own Google account so it isn't lost when you change phones.
+• For the product lookup only the scanned barcode is sent, never your list. Ads (Google AdMob) receive nothing from your list; in the EU your consent is requested first.
+• Permissions: camera (scanning barcodes and dates), notifications (expiry reminders), internet (product lookup and ads)
+
+COST
+ShelfLife is completely free, with no in-app purchases and no subscription. The app is funded by ads: a banner at the bottom of the list and one ad on the statistics screen. No ads are shown while scanning.
+
+Languages: English, German, French, Hungarian.
+Note: dates are read in European day-month order.

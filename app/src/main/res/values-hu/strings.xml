@@ -232,8 +232,10 @@
     <string name="onboarding_swipe_legend_right">jobbra: kidobtam →</string>
     <string name="onboarding_notify_title">Szólunk, mielőtt lejár</string>
     <string name="onboarding_notify_text">Naponta egyszer ellenőrizzük a listát. Az értesítésből egy koppintással jelezheted, hogy elfogyott, vagy kérhetsz emlékeztetőt holnapra. Később a harang ikonnal állíthatod.</string>
-    <string name="onboarding_notify_enable">Értesítések bekapcsolása</string>
-    <string name="onboarding_notify_enabled">Értesítések bekapcsolva</string>
+    <string name="onboarding_notify_toggle_title">Lejárati értesítések</string>
+    <string name="onboarding_notify_toggle_on">Bekapcsolva – ajánlott. Bármikor kikapcsolhatod a harang ikonnal.</string>
+    <string name="onboarding_notify_toggle_off">Kikapcsolva – nem szólunk, mielőtt valami lejár.</string>
+    <string name="onboarding_notify_permission_hint">A „Kezdjük” gomb után a telefon engedélyt kér – válaszd az „Engedélyezés” lehetőséget.</string>
 
     <!-- Statisztika (megmentett ételek). Hangnem: pozitív, soha nem szemrehányó. -->
     <string name="stats_title">Megmentett ételek</string>
@@ -278,4 +280,54 @@
     <string name="stats_tip_text">Érdemes lehet kisebb kiszerelést venni, vagy időben a fagyasztóba tenni őket.</string>
     <string name="stats_empty_title">Itt fogod látni, mennyi ételt mentesz meg</string>
     <string name="stats_empty_text">Ha valami elfogyott, húzd balra a listában (vagy nyomd meg az „Elfogyott” gombot). Minden ilyen tétel ide kerül.</string>
+
+    <!-- Ertesites-teszt / diagnosztika (NotificationSettingsDialog) -->
+    <string name="notif_test_section">Értesítés tesztelése</string>
+    <string name="notif_test_now_button">Teszt értesítés most</string>
+    <string name="notif_test_bg_button">Háttér-teszt 1 perc múlva</string>
+    <string name="notif_test_bg_scheduled">Beütemezve. Zárd be az appot (akár húzd ki a legutóbbi appok közül), és várj 1–2 percet.</string>
+    <string name="notif_test_now_title">ShelfLife teszt értesítés</string>
+    <string name="notif_test_now_text">Ha ezt látod, az engedély és az értesítési csatorna rendben van.</string>
+    <string name="notif_test_bg_title">Háttérellenőrzés lefutott ✓</string>
+    <string name="notif_test_bg_text">%1$d aktív tétel, ebből %2$d lejár %3$d napon belül (vagy már lejárt).</string>
+    <string name="notif_diag_permission">Engedély: %1$s</string>
+    <string name="notif_diag_channel">Lejárati csatorna: %1$s</string>
+    <string name="notif_diag_battery">Akkukímélés: %1$s</string>
+    <string name="notif_diag_daily">Tartalék napi ellenőrzés: %1$s</string>
+    <string name="notif_diag_next">Következő futás: %1$s</string>
+    <string name="notif_diag_last">Utolsó futás: %1$s (%2$s)</string>
+    <string name="notif_diag_test">Háttér-teszt: %1$s</string>
+    <string name="notif_diag_ok">rendben</string>
+    <string name="notif_diag_missing">nincs megadva</string>
+    <string name="notif_diag_channel_off">némítva / kikapcsolva</string>
+    <string name="notif_diag_battery_on">korlátozva (optimalizált)</string>
+    <string name="notif_diag_battery_off">nincs korlátozva</string>
+    <string name="notif_diag_battery_settings">Akkukímélés beállítása</string>
+    <string name="notif_diag_never">még soha</string>
+    <string name="notif_diag_not_scheduled">nincs ütemezve</string>
+    <string name="notif_outcome_no_permission">nem volt engedély</string>
+    <string name="notif_outcome_disabled">ki volt kapcsolva</string>
+    <string name="notif_outcome_nothing_due">nem volt lejáró tétel</string>
+    <string name="notif_outcome_notified">%1$d tételről értesített</string>
+    <string name="notif_outcome_test">teszt, %1$d lejáró tétel</string>
+
+    <!-- Napi osszesito ertesites -->
+    <plurals name="notification_summary_soon">
+        <item quantity="one">%1$d hamarosan lejár</item>
+        <item quantity="other">%1$d hamarosan lejár</item>
+    </plurals>
+    <plurals name="notification_summary_expired">
+        <item quantity="one">%1$d már lejárt</item>
+        <item quantity="other">%1$d már lejárt</item>
+    </plurals>
+    <string name="notification_summary_both">%1$s, %2$s</string>
+    <string name="notification_more">…és még %1$d tétel</string>
+    <string name="notif_diag_alarm">Reggeli ébresztés: %1$s</string>
+    <string name="notif_diag_runs">Utolsó futások:</string>
+    <string name="notif_trigger_alarm">reggeli ébresztés</string>
+    <string name="notif_trigger_worker">tartalék</string>
+    <string name="notif_trigger_test">teszt</string>
+    <string name="notif_outcome_too_early">túl korán, a reggelire vár</string>
+    <string name="notif_outcome_already_today">ma már szólt</string>
+    <string name="notif_diag_not_set">nincs beállítva</string>
 </resources>

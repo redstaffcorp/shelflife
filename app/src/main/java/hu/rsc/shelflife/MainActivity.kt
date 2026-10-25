@@ -55,10 +55,10 @@ class MainActivity : ComponentActivity() {
 
         // A lejarati ertesitesekhez a csatornat mindig letre kell hozni
         // (API 26+ kotelezo), es ha a felhasznalo korabban mar bekapcsolta
-        // az emlekeztetot, minden indulaskor ujra-ellenorizzuk/utemezzuk a
-        // WorkManager periodikus feladatat -- olcso, idempotens hivas,
-        // biztositja, hogy egy ujratelepites vagy WorkManager-reset utan is
-        // fusson tovabb.
+        // az emlekeztetot, minden indulaskor ujraelesitjuk a reggeli
+        // ebresztest (mindig a kovetkezo 9 orara, tehat nem csuszik el az
+        // appnyitashoz) es a tartalek WorkManager-feladatot (KEEP) -- olcso,
+        // idempotens hivas (lasd ReminderScheduler).
         NotificationHelper.ensureChannel(this)
         if (NotificationSettingsStore(this).enabled) {
             ReminderScheduler.schedule(this)

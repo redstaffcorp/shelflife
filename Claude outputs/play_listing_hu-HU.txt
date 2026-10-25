@@ -1,0 +1,44 @@
+=== Rövid leírás (max. 80 karakter) ===
+Élelmiszerek rögzítése vonalkóddal, lejárati dátum, emlékeztető a lejárat előtt
+
+=== Teljes leírás (hu-HU) ===
+A ShelfLife élelmiszer-készletnyilvántartó alkalmazás, amely a minőségmegőrzési és fogyaszthatósági időre összpontosít. Rögzíted, amit vásároltál, az app lejárat szerint rendezve mutatja, mi jár le legközelebb, és értesítéssel időben szól a lejárat előtt.
+
+ÍGY MŰKÖDIK
+1. Koppints a „Termékek beolvasása” gombra, és válaszd ki, hová kerülnek a termékek: hűtő, fagyasztó vagy kamra.
+2. Tartsd a vonalkódot a kamera elé. Az app a termék nevét az Open Food Facts és a UPCitemdb nyílt adatbázisban keresi meg (internetkapcsolat szükséges). Ha nincs találat, a nevet egyszer kell beírnod – a következő beolvasáskor az app már ismeri a terméket.
+3. Tartsd a keretbe a nyomtatott lejárati dátumot. A szövegfelismerés közvetlenül a készüléken fut, a kameraképek nem kerülnek feltöltésre.
+4. Ha a dátum nem olvasható, beírhatod számjegyekkel (pl. 2510 = október 25.), kiválaszthatod naptárból, megadhatsz becslést („~1 hét”, „~1 hónap”, „~1 év”), vagy „Később” pótolhatod.
+
+FUNKCIÓK
+• Vonalkód-beolvasás automatikus termékkereséssel
+• A lejárati dátum felismerése a kamerával
+• Gyors dátumbevitel számjegyekkel (nap-hónap-év sorrend)
+• Vonalkód nélküli termékek (pl. kenyér, tojás, gyümölcs, zöldség, hús, pultos sajt és felvágott, maradék) felvétele egy koppintással, becsült lejárati dátummal
+• A becsült dátumokat „~” jelöli a listában, és bármikor kicserélhetők a valódi dátumra; egy szűrő megmutatja az összes ellenőrizendő tételt
+• Mennyiség és mértékegység (darab, csomag, kg, l, doboz, üveg stb.)
+• Lista rendezése lejárat vagy rögzítés szerint, szűrés hely szerint, keresés név alapján
+• Színjelölés: lejárt, hamarosan lejár, még jó
+• Balra húzás = elfogyott, jobbra húzás = kidobtam, a „−1” eggyel csökkenti a mennyiséget; minden művelet visszavonható
+• Tételek kézi felvétele, szerkesztése és törlése
+
+EMLÉKEZTETŐK
+• Értesítés a lejárat előtt beállítható számú nappal (vagy aznap)
+• Közvetlenül az értesítésből: „Elfogyott” vagy „Holnap szólj”
+• Opcionálisan heti emlékeztető azokról a tételekről, amelyeknek csak becsült dátumuk van
+• Az ellenőrzés naponta egyszer fut a háttérben – nincs folyamatosan futó szolgáltatás
+
+STATISZTIKA
+A „Megmentett élelmiszer” statisztika megmutatja, a rögzített élelmiszereid mekkora része fogyott el és mekkora került a kukába – az utolsó 30 napra és összesen.
+
+ADATOK ÉS ADATVÉDELEM
+• Nem kell fiók és regisztráció
+• A listád csak a készülékeden tárolódik; nincs saját szerverünk, az adataidat nem látjuk. Az Android eszközmentés a saját Google-fiókodba mentheti a listát, így telefoncserénél sem vész el.
+• A termékkereséshez csak a beolvasott vonalkód kerül továbbításra, a listád nem. A reklám (Google AdMob) nem kap semmit a listád tartalmából; az EU-ban előtte a hozzájárulásodat kérjük.
+• Engedélyek: kamera (vonalkód és dátum beolvasása), értesítések (lejárati emlékeztetők), internet (termékkeresés és reklám)
+
+KÖLTSÉG
+A ShelfLife teljesen ingyenes, nincs benne alkalmazáson belüli vásárlás és előfizetés. Az appot reklám tartja fenn: egy sáv a lista alján és egy hirdetés a statisztika-képernyőn. Beolvasás közben nem jelenik meg reklám.
+
+Nyelvek: magyar, angol, német, francia.
+Megjegyzés: a dátumokat az app európai, nap-hónap sorrendben értelmezi.

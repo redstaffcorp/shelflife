@@ -1,7 +1,10 @@
 package hu.rsc.shelflife.ui.dialogs
 
 import android.Manifest
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.os.PowerManager
 import android.os.Build
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -14,6 +17,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.runtime.collectAsState
+import androidx.core.app.NotificationManagerCompat
+import androidx.work.WorkInfo
+import hu.rsc.shelflife.notify.ExpiryCheck
+import java.text.DateFormat
+import java.util.Date
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
@@ -39,6 +52,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import hu.rsc.shelflife.BuildConfig
 import hu.rsc.shelflife.R
 import hu.rsc.shelflife.data.NotificationSettingsStore
 import hu.rsc.shelflife.notify.NotificationHelper
@@ -62,12 +76,14 @@ fun NotificationSettingsDialog(
     var refineEnabled by remember { mutableStateOf(settingsStore.refineReminderEnabled) }
     var showPermissionHint by remember { mutableStateOf(false) }
 
-    // Ha kozben (a rendszerbeallitasokban) visszavontak az engedelyt, ezt itt
-    // vegyuk eszre, es ne mutassunk "bekapcsolva" allapotot ertesites nelkul.
+    // Ha a funkcio be van kapcsolva, de nincs rendszer-engedely (pl. kesobb
+    // visszavontak), ne mutassunk "bekapcsolva" allapotot ertesites nelkul --
+    // de a mentett beallitast nem irjuk felul: ha az engedely visszakerul,
+    // az ertesitesek maguktol ujra mennek.
     LaunchedEffect(Unit) {
         if (enabled && !NotificationHelper.hasPermission(context)) {
             enabled = false
-            settingsStore.enabled = false
+            showPermissionHint = true
         }
     }
 
@@ -116,7 +132,7 @@ fun NotificationSettingsDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.notif_settings_title)) },
         text = {
-            Column {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 Text(
                     stringResource(R.string.notif_settings_description),
                     style = MaterialTheme.typography.bodySmall,
@@ -202,10 +218,162 @@ fun NotificationSettingsDialog(
                         }
                     )
                 }
+
+                // Teszt/diagnosztika csak debug buildben (az eles verzioban rejtve).
+                if (BuildConfig.DEBUG) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    NotificationTestSection(settingsStore)
+                }
             }
         },
         confirmButton = {
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_done)) }
         }
     )
+}
+
+/**
+ * Ertesites-teszt es diagnosztika -- CSAK debug buildben jelenik meg
+ * (BuildConfig.DEBUG), az eles verzioban rejtve. Alapbol osszecsukva.
+ *  - "Teszt most": azonnali ertesites -> engedely + csatorna rendben van-e.
+ *  - "Hatter-teszt 1 perc mulva": ugyanaz az ExpiryCheck fut, mint naponta, csak
+ *    teszt-modban (a "ma mar szoltunk" es a "Holnap szolj" jelzot figyelmen
+ *    kivul hagyja, es mindig kuld egy osszegzo ertesitest).
+ *  - Futasnaplo: mi inditotta (reggeli ebresztes / tartalek / teszt) es mi lett. Bezart appal ez mutatja meg, hogy a gyartoi
+ *    akkukimelo (MIUI, One UI) engedi-e a hatterfuttatast.
+ */
+@Composable
+private fun NotificationTestSection(settingsStore: NotificationSettingsStore) {
+    val context = LocalContext.current
+    var expanded by remember { mutableStateOf(false) }
+    var info by remember { mutableStateOf<String?>(null) }
+
+    TextButton(onClick = { expanded = !expanded }) {
+        Text(stringResource(R.string.notif_test_section) + if (expanded) "  ▴" else "  ▾")
+    }
+    if (!expanded) return
+
+    val dailyWork by remember { ReminderScheduler.dailyWorkInfo(context) }.collectAsState(initial = null)
+    val testWork by remember { ReminderScheduler.testWorkInfo(context) }.collectAsState(initial = null)
+
+    HorizontalDivider()
+    Spacer(modifier = Modifier.height(8.dp))
+
+    val ok = stringResource(R.string.notif_diag_ok)
+    val small = MaterialTheme.typography.bodySmall
+    val dim = MaterialTheme.colorScheme.onSurfaceVariant
+    val err = MaterialTheme.colorScheme.error
+
+    // Az utolso futas adatait a teszt-futas allapotvaltozasakor ujraolvassuk.
+    val runLog = remember(testWork?.state) { settingsStore.runLog }
+    val nextAlarm = remember(testWork?.state) { settingsStore.nextAlarmMillis }
+
+    val permissionOk = NotificationHelper.hasPermission(context)
+    val channelOk = isExpiryChannelOn(context)
+    val batteryRestricted = isBatteryRestricted(context)
+
+    @Composable
+    fun line(text: String, bad: Boolean = false) {
+        Text(text, style = small, color = if (bad) err else dim)
+    }
+
+    line(
+        stringResource(R.string.notif_diag_permission, if (permissionOk) ok else stringResource(R.string.notif_diag_missing)),
+        bad = !permissionOk
+    )
+    line(
+        stringResource(R.string.notif_diag_channel, if (channelOk) ok else stringResource(R.string.notif_diag_channel_off)),
+        bad = !channelOk
+    )
+    line(
+        stringResource(
+            R.string.notif_diag_battery,
+            stringResource(if (batteryRestricted) R.string.notif_diag_battery_on else R.string.notif_diag_battery_off)
+        ),
+        bad = batteryRestricted
+    )
+    line(
+        stringResource(R.string.notif_diag_alarm, nextAlarm?.let { formatTime(it) } ?: stringResource(R.string.notif_diag_not_set)),
+        bad = nextAlarm == null || nextAlarm < System.currentTimeMillis()
+    )
+    val daily = dailyWork
+    line(
+        stringResource(R.string.notif_diag_daily, daily?.state?.name ?: stringResource(R.string.notif_diag_not_scheduled)),
+        bad = daily == null || daily.state.isFinished
+    )
+    if (daily != null && daily.state == WorkInfo.State.ENQUEUED && daily.nextScheduleTimeMillis != Long.MAX_VALUE) {
+        line(stringResource(R.string.notif_diag_next, formatTime(daily.nextScheduleTimeMillis)))
+    }
+    if (runLog.isEmpty()) {
+        line(stringResource(R.string.notif_diag_last, stringResource(R.string.notif_diag_never), "–"))
+    } else {
+        line(stringResource(R.string.notif_diag_runs))
+        runLog.forEach { entry ->
+            line(
+                "• " + formatTime(entry.millis) + " · " + triggerLabel(context, entry.trigger) +
+                    " · " + outcomeLabel(context, entry.outcome, entry.count)
+            )
+        }
+    }
+    testWork?.let { line(stringResource(R.string.notif_diag_test, it.state.name)) }
+
+    Spacer(modifier = Modifier.height(8.dp))
+    OutlinedButton(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = {
+            info = if (NotificationHelper.notifyTestNow(context)) null
+            else context.getString(R.string.notif_permission_missing)
+        }
+    ) { Text(stringResource(R.string.notif_test_now_button)) }
+    OutlinedButton(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = {
+            ReminderScheduler.scheduleTestRun(context, delayMinutes = 1)
+            info = context.getString(R.string.notif_test_bg_scheduled)
+        }
+    ) { Text(stringResource(R.string.notif_test_bg_button)) }
+    if (batteryRestricted) {
+        TextButton(onClick = {
+            runCatching {
+                context.startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
+            }
+        }) { Text(stringResource(R.string.notif_diag_battery_settings)) }
+    }
+    info?.let {
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(it, style = small)
+    }
+}
+
+private fun isExpiryChannelOn(context: Context): Boolean {
+    if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return false
+    val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    val channel = manager.getNotificationChannel(NotificationHelper.CHANNEL_ID) ?: return false
+    return channel.importance != NotificationManager.IMPORTANCE_NONE
+}
+
+private fun isBatteryRestricted(context: Context): Boolean {
+    val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+    return !pm.isIgnoringBatteryOptimizations(context.packageName)
+}
+
+private fun formatTime(millis: Long): String =
+    DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(Date(millis))
+
+private fun triggerLabel(context: Context, trigger: String): String = when (trigger) {
+    ExpiryCheck.TRIGGER_ALARM -> context.getString(R.string.notif_trigger_alarm)
+    ExpiryCheck.TRIGGER_WORKER -> context.getString(R.string.notif_trigger_worker)
+    ExpiryCheck.TRIGGER_TEST -> context.getString(R.string.notif_trigger_test)
+    else -> trigger
+}
+
+private fun outcomeLabel(context: Context, outcome: String?, count: Int): String = when (outcome) {
+    ExpiryCheck.OUTCOME_NO_PERMISSION -> context.getString(R.string.notif_outcome_no_permission)
+    ExpiryCheck.OUTCOME_DISABLED -> context.getString(R.string.notif_outcome_disabled)
+    ExpiryCheck.OUTCOME_TOO_EARLY -> context.getString(R.string.notif_outcome_too_early)
+    ExpiryCheck.OUTCOME_ALREADY_TODAY -> context.getString(R.string.notif_outcome_already_today)
+    ExpiryCheck.OUTCOME_NOTHING_DUE -> context.getString(R.string.notif_outcome_nothing_due)
+    ExpiryCheck.OUTCOME_NOTIFIED -> context.getString(R.string.notif_outcome_notified, count)
+    ExpiryCheck.OUTCOME_TEST -> context.getString(R.string.notif_outcome_test, count)
+    else -> "–"
 }

@@ -1,0 +1,44 @@
+=== Description courte (80 caractères max.) ===
+Scannez vos courses, notez la date de péremption, soyez prévenu avant
+
+=== Description complète (fr-FR) ===
+ShelfLife est une liste de provisions alimentaires centrée sur la date limite de consommation (DLC) et la date de durabilité minimale (DDM). Vous enregistrez ce que vous avez acheté, l’application affiche, triés par date, les produits qui périment en premier et vous envoie une notification à temps avant la péremption.
+
+COMMENT ÇA MARCHE
+1. Touchez « Scanner des produits » et choisissez où ils vont : réfrigérateur, congélateur ou placard.
+2. Présentez le code-barres à la caméra. Le nom du produit est recherché dans les bases de données ouvertes Open Food Facts et UPCitemdb (connexion Internet nécessaire). Si rien n’est trouvé, vous saisissez le nom une seule fois – au prochain scan, l’application connaît déjà le produit.
+3. Placez la date imprimée dans le cadre. La reconnaissance de texte s’effectue directement sur l’appareil ; les images de la caméra ne sont pas envoyées.
+4. Si la date ne peut pas être lue, saisissez-la en chiffres (p. ex. 2510 = 25 octobre), choisissez-la dans le calendrier, indiquez une estimation (« ~1 semaine », « ~1 mois », « ~1 an ») ou complétez-la « Plus tard ».
+
+FONCTIONNALITÉS
+• Scan du code-barres avec recherche automatique du produit
+• Reconnaissance de la date de péremption avec la caméra
+• Saisie rapide de la date en chiffres (ordre jour-mois-année)
+• Ajout en un geste des produits sans code-barres (p. ex. pain, œufs, fruits, légumes, viande, fromage et charcuterie à la coupe, restes) – avec une date de péremption estimée
+• Les dates estimées sont signalées par « ~ » dans la liste et peuvent être remplacées à tout moment par la vraie date ; un filtre affiche tous les articles à vérifier
+• Quantité et unité (pièce, paquet, kg, l, boîte, bouteille, etc.)
+• Tri de la liste par date de péremption ou par date d’ajout, filtre par emplacement, recherche par nom
+• Code couleur : périmé, bientôt périmé, encore bon
+• Glisser vers la gauche = consommé, vers la droite = jeté, « −1 » réduit la quantité ; chaque action peut être annulée
+• Ajout, modification et suppression manuels des articles
+
+RAPPELS
+• Notification un nombre de jours réglable avant la péremption (ou le jour même)
+• Directement depuis la notification : « Consommé » ou « Rappel demain »
+• En option, un rappel hebdomadaire pour les articles qui n’ont qu’une date estimée
+• La vérification a lieu une fois par jour en arrière-plan – aucun service ne tourne en permanence
+
+STATISTIQUES
+Les statistiques « Aliments sauvés » montrent la part de vos aliments enregistrés qui a été consommée et celle qui a été jetée – sur les 30 derniers jours et au total.
+
+DONNÉES ET CONFIDENTIALITÉ
+• Aucun compte ni inscription nécessaire
+• Votre liste est enregistrée uniquement sur votre appareil ; nous n’avons pas de serveur et ne voyons jamais vos données. La sauvegarde Android peut enregistrer la liste dans votre propre compte Google afin qu’elle ne soit pas perdue en cas de changement de téléphone.
+• Pour la recherche de produit, seul le code-barres scanné est transmis, jamais votre liste. La publicité (Google AdMob) ne reçoit rien du contenu de votre liste ; dans l’UE, votre consentement est demandé au préalable.
+• Autorisations : caméra (scan des codes-barres et des dates), notifications (rappels de péremption), Internet (recherche de produits et publicité)
+
+COÛT
+ShelfLife est entièrement gratuite, sans achats intégrés ni abonnement. L’application est financée par la publicité : une bannière en bas de la liste et une annonce sur l’écran des statistiques. Aucune publicité n’est affichée pendant le scan.
+
+Langues : français, anglais, allemand, hongrois.
+Remarque : les dates sont lues dans l’ordre européen jour-mois.

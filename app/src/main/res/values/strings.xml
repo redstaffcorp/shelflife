@@ -237,8 +237,10 @@
     <string name="onboarding_swipe_legend_right">right: thrown away →</string>
     <string name="onboarding_notify_title">We remind you before it expires</string>
     <string name="onboarding_notify_text">We check the list once a day. From the notification you can mark an item as used up with one tap, or ask for a reminder tomorrow. You can change this later with the bell icon.</string>
-    <string name="onboarding_notify_enable">Turn on notifications</string>
-    <string name="onboarding_notify_enabled">Notifications are on</string>
+    <string name="onboarding_notify_toggle_title">Expiry reminders</string>
+    <string name="onboarding_notify_toggle_on">On – recommended. You can turn them off anytime with the bell icon.</string>
+    <string name="onboarding_notify_toggle_off">Off – you won’t be warned before products expire.</string>
+    <string name="onboarding_notify_permission_hint">After “Let’s start”, your phone will ask for permission – choose “Allow”.</string>
 
     <!-- Statistics (food saved). Tone: positive, never blaming. -->
     <string name="stats_title">Food saved</string>
@@ -283,4 +285,54 @@
     <string name="stats_tip_text">Consider buying smaller packs, or freezing them in time.</string>
     <string name="stats_empty_title">Here you’ll see how much food you save</string>
     <string name="stats_empty_text">When something is used up, swipe it left in the list (or tap “Used up”). Every such item shows up here.</string>
+
+    <!-- Ertesites-teszt / diagnosztika (NotificationSettingsDialog) -->
+    <string name="notif_test_section">Test notifications</string>
+    <string name="notif_test_now_button">Send test notification now</string>
+    <string name="notif_test_bg_button">Background test in 1 minute</string>
+    <string name="notif_test_bg_scheduled">Scheduled. Close the app (you can even swipe it away from recent apps) and wait 1–2 minutes.</string>
+    <string name="notif_test_now_title">ShelfLife test notification</string>
+    <string name="notif_test_now_text">If you can see this, the permission and the notification channel are fine.</string>
+    <string name="notif_test_bg_title">Background check ran ✓</string>
+    <string name="notif_test_bg_text">%1$d active items, %2$d of them expire within %3$d days (or already expired).</string>
+    <string name="notif_diag_permission">Permission: %1$s</string>
+    <string name="notif_diag_channel">Expiry channel: %1$s</string>
+    <string name="notif_diag_battery">Battery optimization: %1$s</string>
+    <string name="notif_diag_daily">Backup daily check: %1$s</string>
+    <string name="notif_diag_next">Next run: %1$s</string>
+    <string name="notif_diag_last">Last run: %1$s (%2$s)</string>
+    <string name="notif_diag_test">Background test: %1$s</string>
+    <string name="notif_diag_ok">OK</string>
+    <string name="notif_diag_missing">not granted</string>
+    <string name="notif_diag_channel_off">muted / turned off</string>
+    <string name="notif_diag_battery_on">restricted (optimized)</string>
+    <string name="notif_diag_battery_off">not restricted</string>
+    <string name="notif_diag_battery_settings">Battery optimization settings</string>
+    <string name="notif_diag_never">never</string>
+    <string name="notif_diag_not_scheduled">not scheduled</string>
+    <string name="notif_outcome_no_permission">no permission</string>
+    <string name="notif_outcome_disabled">turned off</string>
+    <string name="notif_outcome_nothing_due">nothing expiring</string>
+    <string name="notif_outcome_notified">notified about %1$d items</string>
+    <string name="notif_outcome_test">test, %1$d expiring items</string>
+
+    <!-- Napi osszesito ertesites -->
+    <plurals name="notification_summary_soon">
+        <item quantity="one">%1$d expiring soon</item>
+        <item quantity="other">%1$d expiring soon</item>
+    </plurals>
+    <plurals name="notification_summary_expired">
+        <item quantity="one">%1$d already expired</item>
+        <item quantity="other">%1$d already expired</item>
+    </plurals>
+    <string name="notification_summary_both">%1$s, %2$s</string>
+    <string name="notification_more">…and %1$d more</string>
+    <string name="notif_diag_alarm">Morning alarm: %1$s</string>
+    <string name="notif_diag_runs">Recent runs:</string>
+    <string name="notif_trigger_alarm">morning alarm</string>
+    <string name="notif_trigger_worker">backup</string>
+    <string name="notif_trigger_test">test</string>
+    <string name="notif_outcome_too_early">too early, waiting for the morning</string>
+    <string name="notif_outcome_already_today">already notified today</string>
+    <string name="notif_diag_not_set">not set</string>
 </resources>

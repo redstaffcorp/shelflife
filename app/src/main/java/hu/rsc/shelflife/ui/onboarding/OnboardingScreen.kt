@@ -42,8 +42,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -91,6 +91,37 @@ fun OnboardingScreen(onFinish: () -> Unit) {
     val scope = rememberCoroutineScope()
     val isLast = pagerState.currentPage == PAGE_COUNT - 1
 
+    // Lejarati ertesitesek: alapbol BE (opt-out). Az utolso oldalon a kapcsolo
+    // all, a tenyleges rendszer-engedelyt (Android 13+) a "Kezdjuk" gomb keri.
+    val context = LocalContext.current
+    val notifSettings = remember { NotificationSettingsStore(context) }
+    var remindersOn by remember { mutableStateOf(notifSettings.enabled) }
+
+    fun applyReminders(on: Boolean) {
+        notifSettings.enabled = on
+        if (on) {
+            NotificationHelper.ensureChannel(context)
+            ReminderScheduler.schedule(context)
+        } else {
+            ReminderScheduler.cancel(context)
+        }
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        // Elutasitott rendszer-engedely = a felhasznalo nem ker ertesitest.
+        applyReminders(granted)
+        onFinish()
+    }
+
+    fun finishOnboarding() {
+        if (remindersOn && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !NotificationHelper.hasPermission(context)) {
+            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            applyReminders(remindersOn)
+            onFinish()
+        }
+    }
+
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(
             modifier = Modifier
@@ -104,7 +135,9 @@ fun OnboardingScreen(onFinish: () -> Unit) {
                 horizontalArrangement = Arrangement.End
             ) {
                 if (!isLast) {
-                    TextButton(onClick = onFinish) { Text(stringResource(R.string.onboarding_skip)) }
+                    TextButton(onClick = { scope.launch { pagerState.animateScrollToPage(PAGE_COUNT - 1) } }) {
+                        Text(stringResource(R.string.onboarding_skip))
+                    }
                 } else {
                     Spacer(modifier = Modifier.height(48.dp))
                 }
@@ -135,12 +168,11 @@ fun OnboardingScreen(onFinish: () -> Unit) {
                     ) { SwipeDemoGraphic(active = pagerState.currentPage == 3) }
                     else -> OnboardingPage(
                         title = stringResource(R.string.onboarding_notify_title),
-                        text = stringResource(R.string.onboarding_notify_text)
-                    ) {
-                        NotificationGraphic()
-                        Spacer(modifier = Modifier.height(20.dp))
-                        EnableRemindersButton()
-                    }
+                        text = stringResource(R.string.onboarding_notify_text),
+                        footer = {
+                            RemindersToggleCard(checked = remindersOn, onCheckedChange = { remindersOn = it })
+                        }
+                    ) { NotificationGraphic() }
                 }
             }
 
@@ -170,7 +202,7 @@ fun OnboardingScreen(onFinish: () -> Unit) {
                     }
                 }
                 Button(onClick = {
-                    if (isLast) onFinish() else scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
+                    if (isLast) finishOnboarding() else scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
                 }) {
                     Text(stringResource(if (isLast) R.string.onboarding_start else R.string.onboarding_next))
                 }
@@ -183,6 +215,7 @@ fun OnboardingScreen(onFinish: () -> Unit) {
 private fun OnboardingPage(
     title: String,
     text: String,
+    footer: (@Composable () -> Unit)? = null,
     graphic: @Composable () -> Unit
 ) {
     // A Box kozepre igazit, ha a tartalom elfer; kis kepernyon gorgetheto.
@@ -215,6 +248,10 @@ private fun OnboardingPage(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
         )
+        if (footer != null) {
+            Spacer(modifier = Modifier.height(24.dp))
+            footer()
+        }
     }
     }
 }
@@ -507,43 +544,49 @@ private fun NotificationGraphic() {
 }
 
 /**
- * Ertesitesek bekapcsolasa kozvetlenul a bemutatobol (Android 13+ eseten a
- * rendszer engedelykero ablakaval). Kesobb a harang ikonnal allithato.
+ * Feltuno kapcsolo a bemutato utolso oldalan. Alapbol BE (opt-out); a
+ * rendszer-engedelyt (Android 13+) a "Kezdjuk" gomb keri be, lasd
+ * OnboardingScreen.finishOnboarding. Kesobb a harang ikonnal allithato.
  */
 @Composable
-private fun EnableRemindersButton() {
+private fun RemindersToggleCard(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     val context = LocalContext.current
-    val settings = remember { NotificationSettingsStore(context) }
-    var enabled by remember { mutableStateOf(settings.enabled && NotificationHelper.hasPermission(context)) }
+    val needsPermission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+        !NotificationHelper.hasPermission(context)
 
-    fun turnOn() {
-        NotificationHelper.ensureChannel(context)
-        settings.enabled = true
-        ReminderScheduler.schedule(context)
-        enabled = true
-    }
-
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-        if (granted) turnOn()
-    }
-
-    if (enabled) {
-        OutlinedButton(onClick = {}, enabled = false) {
-            Icon(Icons.Filled.Check, contentDescription = null, modifier = Modifier.size(18.dp))
-            Spacer(modifier = Modifier.width(6.dp))
-            Text(stringResource(R.string.onboarding_notify_enabled))
-        }
-    } else {
-        FilledTonalButton(onClick = {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !NotificationHelper.hasPermission(context)) {
-                launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            } else {
-                turnOn()
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = if (checked) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Filled.Notifications, contentDescription = null, modifier = Modifier.size(28.dp))
+                Spacer(modifier = Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        stringResource(R.string.onboarding_notify_toggle_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        stringResource(
+                            if (checked) R.string.onboarding_notify_toggle_on else R.string.onboarding_notify_toggle_off
+                        ),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Switch(checked = checked, onCheckedChange = onCheckedChange)
             }
-        }) {
-            Icon(Icons.Filled.Notifications, contentDescription = null, modifier = Modifier.size(18.dp))
-            Spacer(modifier = Modifier.width(6.dp))
-            Text(stringResource(R.string.onboarding_notify_enable))
+            if (checked && needsPermission) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    stringResource(R.string.onboarding_notify_permission_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
         }
     }
 }

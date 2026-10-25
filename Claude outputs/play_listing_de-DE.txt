@@ -1,0 +1,44 @@
+=== Kurzbeschreibung (max. 80 Zeichen) ===
+Lebensmittel per Barcode erfassen, Ablaufdatum speichern, vor Ablauf erinnern
+
+=== Vollständige Beschreibung (de-DE) ===
+ShelfLife ist eine Vorratsliste für Lebensmittel mit Fokus auf das Mindesthaltbarkeits- bzw. Verbrauchsdatum. Du erfasst, was du eingekauft hast, die App zeigt dir sortiert an, was als Nächstes abläuft, und erinnert dich per Benachrichtigung rechtzeitig vor dem Ablauf.
+
+SO FUNKTIONIERT DIE APP
+1. Tippe auf „Produkte scannen“ und wähle, wohin die Produkte kommen: Kühlschrank, Gefrierfach oder Vorratsschrank.
+2. Halte den Barcode vor die Kamera. Der Produktname wird in den offenen Datenbanken Open Food Facts und UPCitemdb nachgeschlagen (Internetverbindung nötig). Wird nichts gefunden, gibst du den Namen einmal selbst ein – beim nächsten Scan kennt die App das Produkt.
+3. Halte das aufgedruckte Haltbarkeitsdatum in den Rahmen. Die Texterkennung läuft direkt auf dem Gerät; die Kamerabilder werden nicht hochgeladen.
+4. Kann das Datum nicht gelesen werden, tippst du es als Ziffern ein (z. B. 2510 = 25. Oktober), wählst es im Kalender, setzt eine Schätzung („~1 Woche“, „~1 Monat“, „~1 Jahr“) oder trägst es „Später“ nach.
+
+FUNKTIONEN
+• Barcode-Scan mit automatischer Produktsuche
+• Texterkennung des Haltbarkeitsdatums mit der Kamera
+• Schnelle Datumseingabe als Ziffern (Format Tag-Monat-Jahr)
+• Produkte ohne Barcode (z. B. Brot, Eier, Obst, Gemüse, Fleisch, Käse von der Theke, Reste) mit einem Tipp hinzufügen – mit geschätztem Ablaufdatum
+• Geschätzte Daten sind in der Liste mit „~“ gekennzeichnet und lassen sich jederzeit durch das echte Datum ersetzen; ein Filter zeigt alle noch zu prüfenden Artikel
+• Menge und Einheit (Stück, Packung, kg, l, Dose, Flasche usw.)
+• Liste nach Ablaufdatum oder Erfassungsdatum sortieren, nach Ort filtern, nach Namen suchen
+• Farbliche Markierung: abgelaufen, läuft bald ab, noch haltbar
+• Nach links wischen = aufgebraucht, nach rechts wischen = weggeworfen, „−1“ verringert die Menge; jede Aktion kann rückgängig gemacht werden
+• Artikel manuell hinzufügen, bearbeiten und löschen
+
+ERINNERUNGEN
+• Benachrichtigung eine einstellbare Anzahl von Tagen vor dem Ablauf (oder am selben Tag)
+• Direkt in der Benachrichtigung: „Aufgebraucht“ oder „Morgen erinnern“
+• Optional eine wöchentliche Erinnerung an Artikel, die nur ein geschätztes Datum haben
+• Die Prüfung läuft einmal täglich im Hintergrund – kein dauerhaft laufender Dienst
+
+STATISTIK
+Die Statistik „Gerettete Lebensmittel“ zeigt, welcher Anteil deiner erfassten Lebensmittel aufgebraucht und welcher weggeworfen wurde – für die letzten 30 Tage und insgesamt.
+
+DATEN UND DATENSCHUTZ
+• Kein Konto und keine Registrierung nötig
+• Deine Liste wird nur auf deinem Gerät gespeichert; wir betreiben keine eigenen Server und sehen deine Daten nicht. Die Android-Gerätesicherung kann die Liste in dein eigenes Google-Konto sichern, damit sie beim Handywechsel erhalten bleibt.
+• Für die Produktsuche wird nur der gescannte Barcode übermittelt, nicht deine Liste. Die Werbung (Google AdMob) erhält keine Inhalte deiner Liste; in der EU wird vorher deine Einwilligung abgefragt.
+• Berechtigungen: Kamera (Barcode und Datum scannen), Benachrichtigungen (Ablauf-Erinnerungen), Internet (Produktsuche und Werbung)
+
+KOSTEN
+ShelfLife ist vollständig kostenlos, ohne In-App-Käufe und ohne Abo. Die App wird durch Werbung finanziert: ein Banner unten in der Liste und eine Anzeige auf dem Statistikbildschirm. Während des Scannens wird keine Werbung angezeigt.
+
+Sprachen: Deutsch, Englisch, Französisch, Ungarisch.
+Hinweis: Datumsangaben werden in der europäischen Reihenfolge Tag-Monat gelesen.

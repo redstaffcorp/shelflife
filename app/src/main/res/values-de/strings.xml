@@ -232,8 +232,10 @@
     <string name="onboarding_swipe_legend_right">rechts: weggeworfen →</string>
     <string name="onboarding_notify_title">Wir erinnern dich vor dem Ablauf</string>
     <string name="onboarding_notify_text">Wir prüfen die Liste einmal täglich. In der Benachrichtigung kannst du mit einem Tipp „aufgebraucht“ melden oder dich morgen erneut erinnern lassen. Später kannst du das über das Glockensymbol ändern.</string>
-    <string name="onboarding_notify_enable">Benachrichtigungen einschalten</string>
-    <string name="onboarding_notify_enabled">Benachrichtigungen sind an</string>
+    <string name="onboarding_notify_toggle_title">Ablauf-Erinnerungen</string>
+    <string name="onboarding_notify_toggle_on">An – empfohlen. Du kannst sie jederzeit über das Glockensymbol ausschalten.</string>
+    <string name="onboarding_notify_toggle_off">Aus – wir warnen dich nicht, bevor etwas abläuft.</string>
+    <string name="onboarding_notify_permission_hint">Nach „Los geht’s“ fragt dein Handy nach der Berechtigung – wähle „Zulassen“.</string>
 
     <!-- Statistik (gerettete Lebensmittel). Ton: positiv, nie vorwurfsvoll. -->
     <string name="stats_title">Gerettete Lebensmittel</string>
@@ -278,4 +280,54 @@
     <string name="stats_tip_text">Vielleicht lohnt sich eine kleinere Packung – oder rechtzeitig einfrieren.</string>
     <string name="stats_empty_title">Hier siehst du, wie viele Lebensmittel du rettest</string>
     <string name="stats_empty_text">Wenn etwas aufgebraucht ist, wische es in der Liste nach links (oder tippe auf „Aufgebraucht“). Jeder solche Artikel erscheint hier.</string>
+
+    <!-- Ertesites-teszt / diagnosztika (NotificationSettingsDialog) -->
+    <string name="notif_test_section">Benachrichtigungen testen</string>
+    <string name="notif_test_now_button">Testbenachrichtigung jetzt</string>
+    <string name="notif_test_bg_button">Hintergrundtest in 1 Minute</string>
+    <string name="notif_test_bg_scheduled">Geplant. Schließ die App (du kannst sie auch aus den letzten Apps wischen) und warte 1–2 Minuten.</string>
+    <string name="notif_test_now_title">ShelfLife-Testbenachrichtigung</string>
+    <string name="notif_test_now_text">Wenn du das siehst, sind Berechtigung und Benachrichtigungskanal in Ordnung.</string>
+    <string name="notif_test_bg_title">Hintergrundprüfung gelaufen ✓</string>
+    <string name="notif_test_bg_text">%1$d aktive Artikel, davon laufen %2$d innerhalb von %3$d Tagen ab (oder sind schon abgelaufen).</string>
+    <string name="notif_diag_permission">Berechtigung: %1$s</string>
+    <string name="notif_diag_channel">Ablauf-Kanal: %1$s</string>
+    <string name="notif_diag_battery">Akku-Optimierung: %1$s</string>
+    <string name="notif_diag_daily">Tägliche Ersatzprüfung: %1$s</string>
+    <string name="notif_diag_next">Nächster Lauf: %1$s</string>
+    <string name="notif_diag_last">Letzter Lauf: %1$s (%2$s)</string>
+    <string name="notif_diag_test">Hintergrundtest: %1$s</string>
+    <string name="notif_diag_ok">OK</string>
+    <string name="notif_diag_missing">nicht erteilt</string>
+    <string name="notif_diag_channel_off">stumm / ausgeschaltet</string>
+    <string name="notif_diag_battery_on">eingeschränkt (optimiert)</string>
+    <string name="notif_diag_battery_off">nicht eingeschränkt</string>
+    <string name="notif_diag_battery_settings">Akku-Optimierung einstellen</string>
+    <string name="notif_diag_never">noch nie</string>
+    <string name="notif_diag_not_scheduled">nicht geplant</string>
+    <string name="notif_outcome_no_permission">keine Berechtigung</string>
+    <string name="notif_outcome_disabled">ausgeschaltet</string>
+    <string name="notif_outcome_nothing_due">nichts lief ab</string>
+    <string name="notif_outcome_notified">über %1$d Artikel benachrichtigt</string>
+    <string name="notif_outcome_test">Test, %1$d ablaufende Artikel</string>
+
+    <!-- Napi osszesito ertesites -->
+    <plurals name="notification_summary_soon">
+        <item quantity="one">%1$d läuft bald ab</item>
+        <item quantity="other">%1$d laufen bald ab</item>
+    </plurals>
+    <plurals name="notification_summary_expired">
+        <item quantity="one">%1$d bereits abgelaufen</item>
+        <item quantity="other">%1$d bereits abgelaufen</item>
+    </plurals>
+    <string name="notification_summary_both">%1$s, %2$s</string>
+    <string name="notification_more">…und %1$d weitere</string>
+    <string name="notif_diag_alarm">Morgen-Wecker: %1$s</string>
+    <string name="notif_diag_runs">Letzte Läufe:</string>
+    <string name="notif_trigger_alarm">Morgen-Wecker</string>
+    <string name="notif_trigger_worker">Ersatz</string>
+    <string name="notif_trigger_test">Test</string>
+    <string name="notif_outcome_too_early">zu früh, wartet auf den Morgen</string>
+    <string name="notif_outcome_already_today">heute schon benachrichtigt</string>
+    <string name="notif_diag_not_set">nicht gesetzt</string>
 </resources>
