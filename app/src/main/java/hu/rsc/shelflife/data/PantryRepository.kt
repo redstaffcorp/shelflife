@@ -127,8 +127,31 @@ class PantryRepository private constructor(private val appContext: Context) {
         val trimmed = name.trim()
         if (trimmed.isBlank() || unit.isBlank()) return
         ensureReady()
+        val key = KnownProductEntity.keyOf(trimmed)
+        // A felbontas utani eltarthatosag megmarad (az upsert az egesz sort irja).
+        val keptDays = productDao.knownProduct(key)?.openedShelfDays
         productDao.upsertKnownProduct(
-            KnownProductEntity(nameKey = KnownProductEntity.keyOf(trimmed), name = trimmed, unit = unit.trim())
+            KnownProductEntity(nameKey = key, name = trimmed, unit = unit.trim(), openedShelfDays = keptDays)
+        )
+    }
+
+    /** A termeknel legutobb megadott "felbontas utan N nap", vagy null. */
+    suspend fun openedShelfDaysFor(name: String): Int? {
+        val key = KnownProductEntity.keyOf(name)
+        if (key.isBlank()) return null
+        ensureReady()
+        return productDao.knownProduct(key)?.openedShelfDays
+    }
+
+    suspend fun rememberOpenedShelfDays(name: String, unit: String, days: Int) {
+        val trimmed = name.trim()
+        if (trimmed.isBlank()) return
+        ensureReady()
+        val key = KnownProductEntity.keyOf(trimmed)
+        val existing = productDao.knownProduct(key)
+        productDao.upsertKnownProduct(
+            existing?.copy(openedShelfDays = days)
+                ?: KnownProductEntity(nameKey = key, name = trimmed, unit = unit.trim(), openedShelfDays = days)
         )
     }
 
@@ -146,3 +169,37 @@ class PantryRepository private constructor(private val appContext: Context) {
 /** Uj lejarati datum -> a korabbi ertesites mar nem szamit (ujra kuldheto). */
 fun PantryItem.withExpiry(newExpiry: LocalDate): PantryItem =
     if (newExpiry == expiry) this else copy(expiry = newExpiry, notifiedForExpiry = null)
+
+/** A csomagolason levo (felbontas elotti) lejarat. */
+val PantryItem.packageExpiry: LocalDate get() = expiryBeforeOpening ?: expiry
+
+val PantryItem.isOpened: Boolean get() = openedAt != null
+
+/**
+ * Felbontas: az ervenyes lejarat a csomagolason levo datum es a
+ * `openedAt + shelfDays` kozul a korabbi. Ismetelt hivas (a felbontas
+ * modositasa) mindig az eredeti csomagolasi datumbol szamol.
+ */
+fun PantryItem.opened(openedAt: LocalDate, shelfDays: Int): PantryItem {
+    val pkg = packageExpiry
+    val effective = minOf(pkg, openedAt.plusDays(shelfDays.toLong()))
+    return withExpiry(effective).copy(
+        openedAt = openedAt,
+        openedShelfDays = shelfDays,
+        expiryBeforeOpening = pkg
+    )
+}
+
+/** A felbontas visszavonasa: vissza a csomagolason levo lejarathoz. */
+fun PantryItem.unopened(): PantryItem =
+    if (!isOpened) this
+    else withExpiry(packageExpiry).copy(openedAt = null, openedShelfDays = null, expiryBeforeOpening = null)
+
+/**
+ * Darabolhato-e a mennyiseg (darab, csomag, doboz, uveg...). Suly- es
+ * urmertek-egysegnel (500 g, 1 l) egyetlen csomagrol van szo, ott felbontaskor
+ * nincs mit szetvalasztani.
+ */
+fun isCountUnit(unit: String): Boolean = unit.trim().lowercase() !in MEASURE_UNITS
+
+private val MEASURE_UNITS = setOf("kg", "dkg", "g", "l", "dl", "cl", "ml")

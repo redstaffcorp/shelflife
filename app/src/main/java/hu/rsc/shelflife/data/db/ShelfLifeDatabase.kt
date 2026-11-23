@@ -20,11 +20,14 @@ import hu.rsc.shelflife.data.PantryItem
  */
 @Database(
     entities = [PantryItem::class, BarcodeProduct::class, KnownProductEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = true,
     autoMigrations = [
         // v2: location, status, finishedAt, snoozedUntil oszlopok (csak hozzaadas).
-        AutoMigration(from = 1, to = 2)
+        AutoMigration(from = 1, to = 2),
+        // v3: felbontas (openedAt, openedShelfDays, expiryBeforeOpening) es
+        // known_products.openedShelfDays (csak nullazhato oszlopok hozzaadasa).
+        AutoMigration(from = 2, to = 3)
     ]
 )
 @TypeConverters(Converters::class)

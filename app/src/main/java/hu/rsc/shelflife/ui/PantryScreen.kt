@@ -75,6 +75,7 @@ import hu.rsc.shelflife.ui.components.ItemHighlight
 import hu.rsc.shelflife.ui.components.LocationChips
 import hu.rsc.shelflife.ui.components.SwipeablePantryItemCard
 import hu.rsc.shelflife.ui.dialogs.ItemEditDialog
+import hu.rsc.shelflife.ui.dialogs.OpenItemDialog
 import hu.rsc.shelflife.ui.dialogs.QuickAddDialog
 import hu.rsc.shelflife.ui.dialogs.NewProductDialog
 import hu.rsc.shelflife.ui.dialogs.NotificationSettingsDialog
@@ -408,7 +409,19 @@ fun PantryScreen(
                     vm.saveManualEdit(editState, name, expiry, quantity, unit, estimated, location)
                 },
                 onDelete = { id -> vm.deleteItem(id) },
+                onOpen = { id -> vm.openOpening(id) },
                 onDismiss = { vm.closeManualEdit() }
+            )
+        }
+
+        vm.opening?.let { openingState ->
+            OpenItemDialog(
+                state = openingState,
+                onConfirm = { openedAt, shelfDays, used, kept ->
+                    vm.confirmOpening(openingState, openedAt, shelfDays, used, kept)
+                },
+                onUnopen = { vm.unopen(openingState) },
+                onDismiss = { vm.closeOpening() }
             )
         }
 

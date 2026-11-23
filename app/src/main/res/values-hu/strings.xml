@@ -330,4 +330,36 @@
     <string name="notif_outcome_too_early">túl korán, a reggelire vár</string>
     <string name="notif_outcome_already_today">ma már szólt</string>
     <string name="notif_diag_not_set">nincs beállítva</string>
+    <!-- Felbontas (opened) -->
+    <string name="action_opened">Felbontottam</string>
+    <string name="open_title">Felbontás: %1$s</string>
+    <string name="open_title_edit">Felbontás: %1$s</string>
+    <string name="open_date_label">Felbontás napja</string>
+    <string name="open_today">Ma</string>
+    <string name="open_yesterday">Tegnap</string>
+    <string name="open_other_day">Más nap…</string>
+    <string name="open_shelf_label">Felbontás után eltartható</string>
+    <string name="open_shelf_hint">Nézd meg a csomagoláson (pl. „felbontás után 3 napon belül”). Ennél a terméknél megjegyezzük.</string>
+    <string name="open_shelf_custom">Napok</string>
+    <string name="open_split_title">%1$d %2$s van belőle</string>
+    <string name="open_split_used">Már elhasználtam</string>
+    <string name="open_split_kept">Felbontva tárolom</string>
+    <string name="open_split_hint">Általában csak 1 marad felbontva.</string>
+    <string name="open_split_remaining">Bontatlan marad: %1$d %2$s</string>
+    <string name="open_result">Fogyaszd el: %1$s</string>
+    <string name="open_result_package_earlier">A csomagoláson lévő lejárat a korábbi.</string>
+    <string name="open_unopen">Mégsem bontottam fel</string>
+    <string name="undo_opened">%1$s felbontva</string>
+    <plurals name="open_shelf_known">
+        <item quantity="one">Legutóbb ennél a terméknél: %d nap</item>
+        <item quantity="other">Legutóbb ennél a terméknél: %d nap</item>
+    </plurals>
+    <plurals name="open_days_chip">
+        <item quantity="one">%d nap</item>
+        <item quantity="other">%d nap</item>
+    </plurals>
+    <plurals name="item_opened">
+        <item quantity="one">Felbontva: %1$s · %2$d napig eltartható</item>
+        <item quantity="other">Felbontva: %1$s · %2$d napig eltartható</item>
+    </plurals>
 </resources>

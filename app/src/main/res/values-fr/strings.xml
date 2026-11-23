@@ -330,4 +330,36 @@
     <string name="notif_outcome_too_early">trop tôt, attend le matin</string>
     <string name="notif_outcome_already_today">déjà notifié aujourd’hui</string>
     <string name="notif_diag_not_set">non défini</string>
+    <!-- Felbontas (opened) -->
+    <string name="action_opened">Je l’ai ouvert</string>
+    <string name="open_title">Ouvert : %1$s</string>
+    <string name="open_title_edit">Ouvert : %1$s</string>
+    <string name="open_date_label">Ouvert le</string>
+    <string name="open_today">Aujourd’hui</string>
+    <string name="open_yesterday">Hier</string>
+    <string name="open_other_day">Autre jour…</string>
+    <string name="open_shelf_label">Se conserve après ouverture</string>
+    <string name="open_shelf_hint">Voir l’emballage (ex. « à consommer dans les 3 jours après ouverture »). Nous le retiendrons pour ce produit.</string>
+    <string name="open_shelf_custom">Jours</string>
+    <string name="open_split_title">Vous en avez %1$d %2$s</string>
+    <string name="open_split_used">Déjà consommé</string>
+    <string name="open_split_kept">Gardé ouvert</string>
+    <string name="open_split_hint">En général, un seul reste ouvert.</string>
+    <string name="open_split_remaining">Reste fermé : %1$d %2$s</string>
+    <string name="open_result">À consommer avant le %1$s</string>
+    <string name="open_result_package_earlier">La date sur l’emballage est plus proche.</string>
+    <string name="open_unopen">Pas ouvert</string>
+    <string name="undo_opened">%1$s marqué comme ouvert</string>
+    <plurals name="open_shelf_known">
+        <item quantity="one">La dernière fois pour ce produit : %d jour</item>
+        <item quantity="other">La dernière fois pour ce produit : %d jours</item>
+    </plurals>
+    <plurals name="open_days_chip">
+        <item quantity="one">%d jour</item>
+        <item quantity="other">%d jours</item>
+    </plurals>
+    <plurals name="item_opened">
+        <item quantity="one">Ouvert le %1$s · se garde %2$d jour</item>
+        <item quantity="other">Ouvert le %1$s · se garde %2$d jours</item>
+    </plurals>
 </resources>

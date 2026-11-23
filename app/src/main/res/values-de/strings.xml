@@ -330,4 +330,36 @@
     <string name="notif_outcome_too_early">zu früh, wartet auf den Morgen</string>
     <string name="notif_outcome_already_today">heute schon benachrichtigt</string>
     <string name="notif_diag_not_set">nicht gesetzt</string>
+    <!-- Felbontas (opened) -->
+    <string name="action_opened">Geöffnet</string>
+    <string name="open_title">Geöffnet: %1$s</string>
+    <string name="open_title_edit">Geöffnet: %1$s</string>
+    <string name="open_date_label">Geöffnet am</string>
+    <string name="open_today">Heute</string>
+    <string name="open_yesterday">Gestern</string>
+    <string name="open_other_day">Anderer Tag…</string>
+    <string name="open_shelf_label">Haltbar nach dem Öffnen</string>
+    <string name="open_shelf_hint">Siehe Verpackung (z. B. „nach dem Öffnen innerhalb von 3 Tagen verbrauchen“). Wir merken es uns für dieses Produkt.</string>
+    <string name="open_shelf_custom">Tage</string>
+    <string name="open_split_title">Du hast %1$d %2$s</string>
+    <string name="open_split_used">Schon verbraucht</string>
+    <string name="open_split_kept">Geöffnet aufbewahrt</string>
+    <string name="open_split_hint">Meist bleibt nur eins geöffnet.</string>
+    <string name="open_split_remaining">Bleibt ungeöffnet: %1$d %2$s</string>
+    <string name="open_result">Verbrauchen bis %1$s</string>
+    <string name="open_result_package_earlier">Das Datum auf der Verpackung ist früher.</string>
+    <string name="open_unopen">Nicht geöffnet</string>
+    <string name="undo_opened">%1$s als geöffnet markiert</string>
+    <plurals name="open_shelf_known">
+        <item quantity="one">Zuletzt bei diesem Produkt: %d Tag</item>
+        <item quantity="other">Zuletzt bei diesem Produkt: %d Tage</item>
+    </plurals>
+    <plurals name="open_days_chip">
+        <item quantity="one">%d Tag</item>
+        <item quantity="other">%d Tage</item>
+    </plurals>
+    <plurals name="item_opened">
+        <item quantity="one">Geöffnet %1$s · %2$d Tag haltbar</item>
+        <item quantity="other">Geöffnet %1$s · %2$d Tage haltbar</item>
+    </plurals>
 </resources>

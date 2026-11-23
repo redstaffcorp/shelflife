@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import hu.rsc.shelflife.BuildConfig
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
@@ -82,11 +83,12 @@ object AdsManager {
         Log.d(TAG, "Consent resolved: status=${info.consentStatus}, canRequestAds=${info.canRequestAds()}, privacyOptions=${info.privacyOptionsRequirementStatus}")
         if (info.canRequestAds()) {
             initializeSdk(activity)
-        } else if (BuildConfig.DEBUG) {
+        } else if (BuildConfig.USE_TEST_ADS) {
             // Fejlesztes alatt (teszt-azonositokkal) a hozzajarulasi uzenet meg
             // nincs beallitva az AdMobban, ezert a UMP hibat ad / nem engedi a
-            // reklamot. Debug buildben ettol fuggetlenul inditunk, hogy a
-            // TESZT-reklamok lathatok legyenek. Release buildben ez nem fut.
+            // reklamot. Debug/staging buildben (teszt-azonositok) ettol
+            // fuggetlenul inditunk, hogy a TESZT-reklamok lathatok legyenek.
+            // Release buildben ez nem fut.
             Log.w(TAG, "DEBUG: consent not obtained -> starting SDK anyway (test ads only)")
             initializeSdk(activity)
         }
@@ -95,6 +97,17 @@ object AdsManager {
     private fun initializeSdk(context: Context) {
         if (!initStarted.compareAndSet(false, true)) return
         val appContext = context.applicationContext
+        // Sajat tesztkeszulekek: ott az eles azonositokkal is csak teszt-reklam
+        // jon (lasd build.gradle.kts, shelflife.admobTestDeviceIds). Az
+        // inicializalas ELOTT kell beallitani.
+        val testDevices = BuildConfig.ADMOB_TEST_DEVICE_IDS
+            .split(',').map { it.trim() }.filter { it.isNotEmpty() }
+        if (testDevices.isNotEmpty()) {
+            MobileAds.setRequestConfiguration(
+                RequestConfiguration.Builder().setTestDeviceIds(testDevices).build()
+            )
+            Log.d(TAG, "Test devices registered: ${testDevices.size}")
+        }
         // Az inicializalas lassu lehet: ne a fo szalon.
         CoroutineScope(Dispatchers.IO).launch {
             MobileAds.initialize(appContext) { status ->

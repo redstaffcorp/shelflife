@@ -44,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -246,6 +247,17 @@ fun PantryItemCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = urgencyColor
                 )
+                val openedAt = item.openedAt
+                val shelfDays = item.openedShelfDays
+                if (openedAt != null && shelfDays != null) {
+                    Text(
+                        pluralStringResource(
+                            R.plurals.item_opened, shelfDays, openedAt.format(shortDateFormatter), shelfDays
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.tertiary
+                    )
+                }
                 if (item.expiryEstimated) {
                     Text(
                         stringResource(R.string.item_estimated_hint),

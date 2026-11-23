@@ -13,9 +13,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.LockOpen
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -46,6 +49,7 @@ fun ItemEditDialog(
     knownProducts: List<KnownProduct>,
     onSave: (name: String, expiry: LocalDate, quantity: Int?, unit: String, estimated: Boolean, location: StorageLocation?) -> Unit,
     onDelete: (id: Long) -> Unit,
+    onOpen: (id: Long) -> Unit,
     onDismiss: () -> Unit
 ) {
     var nameInput by remember(editState) { mutableStateOf(editState.name) }
@@ -131,6 +135,34 @@ fun ItemEditDialog(
                     onSelect = { locationInput = it },
                     allowNone = true
                 )
+                val editId = editState.id
+                if (editId != null) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    val openedAt = editState.openedAt
+                    val shelfDays = editState.openedShelfDays
+                    if (openedAt != null && shelfDays != null) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                pluralStringResource(
+                                    R.plurals.item_opened, shelfDays, openedAt.format(shortDateFormatter), shelfDays
+                                ),
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.weight(1f)
+                            )
+                            TextButton(onClick = { onOpen(editId) }) { Text(stringResource(R.string.action_modify)) }
+                        }
+                    } else {
+                        OutlinedButton(onClick = { onOpen(editId) }, modifier = Modifier.fillMaxWidth()) {
+                            Icon(Icons.Filled.LockOpen, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(stringResource(R.string.action_opened))
+                        }
+                    }
+                }
                 if (editState.id != null) {
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(

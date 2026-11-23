@@ -65,6 +65,9 @@ interface ProductDao {
     @Query("SELECT unit FROM known_products WHERE nameKey = :nameKey")
     suspend fun unitFor(nameKey: String): String?
 
+    @Query("SELECT * FROM known_products WHERE nameKey = :nameKey")
+    suspend fun knownProduct(nameKey: String): KnownProductEntity?
+
     @Upsert
     suspend fun upsertKnownProduct(product: KnownProductEntity)
 

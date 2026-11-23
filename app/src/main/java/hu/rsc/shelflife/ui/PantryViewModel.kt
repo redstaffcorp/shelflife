@@ -14,6 +14,10 @@ import hu.rsc.shelflife.data.KnownProduct
 import hu.rsc.shelflife.data.PantryItem
 import hu.rsc.shelflife.data.PantryRepository
 import hu.rsc.shelflife.data.StorageLocation
+import hu.rsc.shelflife.data.isCountUnit
+import hu.rsc.shelflife.data.isOpened
+import hu.rsc.shelflife.data.opened
+import hu.rsc.shelflife.data.unopened
 import hu.rsc.shelflife.data.withExpiry
 import hu.rsc.shelflife.ocr.DateCandidate
 import kotlinx.coroutines.channels.Channel
@@ -60,8 +64,24 @@ data class ManualEditState(
     val quantityUnit: String,
     val recordedAt: LocalDate,
     val expiryEstimated: Boolean = false,
-    val location: StorageLocation? = null
+    val location: StorageLocation? = null,
+    val openedAt: LocalDate? = null,
+    val openedShelfDays: Int? = null
 )
+
+/**
+ * A "Felbontottam" dialogus allapota. `knownShelfDays`: a termeknel legutobb
+ * megadott felbontas utani eltarthatosag (null = meg nem tudjuk, bekerjuk).
+ * `canSplit`: tobb darabos, bontatlan tetel -- megkerdezzuk, hany darab
+ * fogyott el es hany marad felbontva (alapbol 1).
+ */
+data class OpeningState(
+    val item: PantryItem,
+    val knownShelfDays: Int?
+) {
+    val canSplit: Boolean
+        get() = !item.isOpened && (item.quantity ?: 1) > 1 && isCountUnit(item.quantityUnit)
+}
 
 /**
  * Visszavonhato muvelet utani snackbar-kerelem. `message` mar a vegleges
@@ -74,6 +94,8 @@ sealed interface UndoAction {
     data class Restore(val snapshot: PantryItem) : UndoAction
     /** Egy most felvett tetel eltavolitasa (gyorsracs). */
     data class Remove(val itemId: Long) : UndoAction
+    /** Felbontaskori szetvalasztas visszavonasa: eredeti vissza, uj tetel torolve. */
+    data class Split(val original: PantryItem, val createdId: Long) : UndoAction
 }
 
 /**
@@ -137,6 +159,10 @@ class PantryViewModel(application: Application) : AndroidViewModel(application) 
 
     // Kezi (kamera nelkuli) uj felvitel VAGY egy meglevo tetel szerkesztese.
     var manualEdit by mutableStateOf<ManualEditState?>(null)
+        private set
+
+    // A "Felbontottam" dialogus (null = nincs nyitva).
+    var opening by mutableStateOf<OpeningState?>(null)
         private set
 
     private var barcodeSighting: Pair<String?, Int> = null to 0
@@ -345,7 +371,9 @@ class PantryViewModel(application: Application) : AndroidViewModel(application) 
             quantityUnit = item.quantityUnit,
             recordedAt = item.recordedAt,
             expiryEstimated = item.expiryEstimated,
-            location = item.location
+            location = item.location,
+            openedAt = item.openedAt,
+            openedShelfDays = item.openedShelfDays
         )
     }
 
@@ -449,12 +477,80 @@ class PantryViewModel(application: Application) : AndroidViewModel(application) 
             when (action) {
                 is UndoAction.Restore -> repository.upsertItem(action.snapshot)
                 is UndoAction.Remove -> repository.deleteItem(action.itemId)
+                is UndoAction.Split -> {
+                    repository.deleteItem(action.createdId)
+                    repository.upsertItem(action.original)
+                }
             }
         }
     }
 
     private fun offerUndo(message: String, action: UndoAction) {
         undoChannel.trySend(UndoRequest(message, action))
+    }
+
+    // -- Felbontas --
+
+    /** A szerkeszto dialogusbol: "Felbontottam" / "Felbontas modositasa". */
+    fun openOpening(itemId: Long) {
+        manualEdit = null
+        viewModelScope.launch {
+            val item = repository.getItem(itemId) ?: return@launch
+            opening = OpeningState(item, repository.openedShelfDaysFor(item.productName))
+        }
+    }
+
+    fun closeOpening() {
+        opening = null
+    }
+
+    /**
+     * Felbontas mentese. Tobb darabos, bontatlan tetelnel: `used` darab mar
+     * elfogyott, `keptOpened` darab marad felbontva (kulon tetelkent, sajat
+     * lejarattal), a maradek bontatlan marad az eredeti tetelben.
+     */
+    fun confirmOpening(state: OpeningState, openedAt: LocalDate, shelfDays: Int, used: Int, keptOpened: Int) {
+        opening = null
+        viewModelScope.launch {
+            val item = repository.getItem(state.item.id) ?: return@launch
+            repository.rememberOpenedShelfDays(item.productName, item.quantityUnit, shelfDays)
+            val qty = item.quantity ?: 1
+            val message = str(R.string.undo_opened, item.productName)
+            if (!state.canSplit || qty <= 1) {
+                repository.upsertItem(item.opened(openedAt, shelfDays))
+                offerUndo(message, UndoAction.Restore(item))
+                return@launch
+            }
+            val usedCount = used.coerceIn(0, qty - 1)
+            val kept = keptOpened.coerceIn(1, qty - usedCount)
+            val remaining = qty - usedCount - kept
+            if (remaining <= 0) {
+                // Minden darab erintett: maga a tetel lesz felbontott.
+                repository.upsertItem(item.opened(openedAt, shelfDays).copy(quantity = kept))
+                offerUndo(message, UndoAction.Restore(item))
+            } else {
+                // A bontatlan maradek az eredeti tetelben marad, a felbontott
+                // darab(ok) kulon tetelt kapnak (a rogzites napja ugyanaz).
+                val created = item.copy(
+                    id = nextId(),
+                    quantity = kept,
+                    notifiedForExpiry = null,
+                    snoozedUntil = null
+                ).opened(openedAt, shelfDays)
+                repository.upsertItem(item.copy(quantity = remaining))
+                repository.upsertItem(created)
+                offerUndo(message, UndoAction.Split(item, created.id))
+            }
+        }
+    }
+
+    /** A felbontas visszavonasa (veletlen koppintas): vissza a csomagolasi lejarathoz. */
+    fun unopen(state: OpeningState) {
+        opening = null
+        viewModelScope.launch {
+            val item = repository.getItem(state.item.id) ?: return@launch
+            repository.upsertItem(item.unopened())
+        }
     }
 
     // -- Vonalkod nelkuli gyorsracs --

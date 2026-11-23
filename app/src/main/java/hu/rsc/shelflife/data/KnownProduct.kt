@@ -25,7 +25,11 @@ data class BarcodeProduct(
 data class KnownProductEntity(
     @PrimaryKey val nameKey: String,
     val name: String,
-    val unit: String
+    val unit: String,
+    // Felbontas utan hany napig tarthato el (utoljara megadott ertek). Ez a
+    // termek allando tulajdonsaga (a csomagolasra van irva), nem a vasarlas
+    // idejetol fugg -- ezert ezt szabad megjegyezni. [v3]
+    val openedShelfDays: Int? = null
 ) {
     companion object {
         fun keyOf(name: String): String = name.trim().lowercase()

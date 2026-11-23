@@ -43,7 +43,16 @@ data class PantryItem(
     // Mikor lett lezarva (elfogyott/kidobva). [v2]
     val finishedAt: LocalDate? = null,
     // "Holnap szolj": eddig a napig nem kuldunk ra ertesitest. [v2]
-    val snoozedUntil: LocalDate? = null
+    val snoozedUntil: LocalDate? = null,
+    // -- Felbontas [v3] --
+    // Mikor lett felbontva (null = bontatlan).
+    val openedAt: LocalDate? = null,
+    // Felbontas utan hany napig tarthato el (a csomagolasrol / a felhasznalotol).
+    val openedShelfDays: Int? = null,
+    // A csomagolason levo eredeti lejarat felbontas elott. Felbontott tetelnel
+    // az `expiry` mar a ketto kozul a korabbi (lasd PantryItem.opened), igy a
+    // lista, a rendezes es az ertesitesek valtozatlanul az `expiry`-t nezik.
+    val expiryBeforeOpening: LocalDate? = null
 )
 
 /** Tarolasi hely. Az enum neve kerul az adatbazisba -- atnevezni tilos! */
